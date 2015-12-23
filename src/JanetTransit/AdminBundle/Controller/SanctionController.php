@@ -75,6 +75,8 @@ class SanctionController extends Controller
             $entity->setUpdatedAt(new DateTime());
             $em->persist($entity);
             $em->flush();
+            $this->operationUpdate($entity, 'CREATION');
+
 
             return $this->redirect($this->generateUrl('sanction_show', array('id' => $entityEmploye->getId())));
         }
@@ -84,6 +86,26 @@ class SanctionController extends Controller
             'form'      => $form->createView(),
             'employe'   => $entityEmploye,
         );
+    }
+
+    /**
+     * Operation Create Entity
+     */
+
+    public function operationUpdate($entity, $action) {
+        $user  = $this->get('security.context')->getToken()->getUser();
+        $data   = array(
+            "id"                =>  $entity->getId(),
+            "entite"            => 'SANCTION',
+            'dateSanction'      =>  $entity->getDateSanction(),
+            'dateDebut'         =>  $entity->getDateDebut(),
+            'dateFin'           =>  $entity->getDateFin(),
+            "retenuSalaire"     =>  $entity->getRetenuSalaire(),
+            "employe"           =>  ($entity->getEmploye() !== NULL ) ? $entity->getEmploye()->getNom() : 'aucun'
+        );
+
+        $this->get('application.operation')->update($data, $user, $action);
+
     }
 
     /**
@@ -213,6 +235,8 @@ class SanctionController extends Controller
         if ($editForm->isValid()) {
             $entity->setUpdatedAt(new DateTime());
             $em->flush();
+            $this->operationUpdate($entity, 'MODIFICATION');
+
 
             return $this->redirect($this->generateUrl('sanction_show', array('id' => $entityEmploye->getId(), 'success'=>'true')));
         }
