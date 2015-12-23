@@ -91,6 +91,8 @@ class PresenceController extends Controller
             $entity->setUpdatedAt(new DateTime());
             $em->persist($entity);
             $em->flush();
+            $this->operationUpdate($entity, 'CREATION');
+
 
             return $this->redirect($this->generateUrl('presence_show', array('id' => $entityEmploye->getId())));
         }
@@ -100,6 +102,26 @@ class PresenceController extends Controller
             'form'      => $form->createView(),
             'employe'   => $entityEmploye,
         );
+    }
+
+    /**
+     * Operation Create Entity
+     */
+
+    public function operationUpdate($entity, $action) {
+        $user  = $this->get('security.context')->getToken()->getUser();
+        $data   = array(
+            "id"                =>  $entity->getId(),
+            "entite"            => 'PRESENCE',
+            'HA'                =>  $entity->getHeureArrivee(),
+            "HD"                =>  $entity->getHeureDepart(),
+            'statut'            =>  $entity->getStatut(),
+            "date"              =>  $entity->getAt(),
+            "employe"           =>  ($entity->getEmploye() !== NULL ) ? $entity->getEmploye()->getNom() : 'aucun'
+        );
+
+        $this->get('application.operation')->update($data, $user, $action);
+
     }
 
     /**
@@ -217,6 +239,8 @@ class PresenceController extends Controller
         if ($editForm->isValid()) {
             $entity->setUpdatedAt(new DateTime());
             $em->flush();
+            $this->operationUpdate($entity, 'MODIFICATION');
+
 
             return $this->redirect($this->generateUrl('presence_show', array('id' => $entityEmploye->getId())));
 
