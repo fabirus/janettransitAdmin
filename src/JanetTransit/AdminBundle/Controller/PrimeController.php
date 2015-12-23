@@ -56,6 +56,8 @@ class PrimeController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+            $this->operationUpdate($entity, 'CREATION');
+
 
             return $this->redirect($this->generateUrl('prime_show', array('id' => $entityEmploye->getId())));
         }
@@ -64,6 +66,24 @@ class PrimeController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
         );
+    }
+
+    /**
+     * Operation Create Entity
+     */
+
+    public function operationUpdate($entity, $action) {
+        $user  = $this->get('security.context')->getToken()->getUser();
+        $data   = array(
+            "id"                =>  $entity->getId(),
+            "entite"            => 'PRIME',
+            'mois'              =>  $entity->getPeriode(),
+            "montant"           =>  $entity->getMontant(),
+            "employe"           =>  ($entity->getEmploye() !== NULL ) ? $entity->getEmploye()->getNom() : 'aucun'
+        );
+
+        $this->get('application.operation')->update($data, $user, $action);
+
     }
 
     /**
@@ -229,6 +249,7 @@ class PrimeController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->operationUpdate($entity, 'MODIFICATION');
             return $this->redirect($this->generateUrl('prime_show', array('id' => $entityEmploye->getId())));
         }
 
