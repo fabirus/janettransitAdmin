@@ -74,6 +74,8 @@ class MouvementStockController extends Controller
             $entity->setUpdatedAt(new DateTime());
             $em->persist($entity);
             $em->flush();
+            $this->operationUpdate($entity, 'CREATION');
+
 
             if( $entity->getType() == 'achat'){
                 $this->mouvementAchat($em, $entityStock, $entity->getQte());
@@ -115,6 +117,27 @@ class MouvementStockController extends Controller
         $newQte = $entityStock->getQteStock() - $qte;
         $entityStock->setQteStock($newQte);
         $em->flush();
+    }
+
+
+    /**
+     * Operation Create Entity
+     */
+
+    public function operationUpdate($entity, $action) {
+        $user  = $this->get('security.context')->getToken()->getUser();
+        $data   = array(
+            "id"                =>  $entity->getId(),
+            "entite"            => 'MVT STOCK',
+            'mouvement'         =>  $entity->getType(),
+            "heure"             =>  $entity->getHeureMouvement(),
+            'qte'               =>  $entity->getQte(),
+            "date"              =>  $entity->getPeriodeStock()->getDatePeriode(),
+            "employe"           =>  ($entity->getEmploye() !== NULL ) ? $entity->getEmploye()->getNom() : 'aucun'
+        );
+
+        $this->get('application.operation')->update($data, $user, $action);
+
     }
 
     /**
@@ -213,6 +236,8 @@ class MouvementStockController extends Controller
         if ($editForm->isValid()) {
             $entity->setUpdatedAt(new DateTime());
             $em->flush();
+            $this->operationUpdate($entity, 'MODIFICATION');
+
             if( $entity->getType() == 'achat'){
                 $this->mouvementAchat($em, $entityStock, $entity->getQte());
             }
@@ -251,6 +276,9 @@ class MouvementStockController extends Controller
         }
         $entity->setDel($del);
         $em->flush();
+        if ($del == 1) {
+            $this->operationUpdate($entity, 'SUPPRESSION');
+        }
 
         return $this->redirect($this->generateUrl('mouvementstock_informations',
             array(

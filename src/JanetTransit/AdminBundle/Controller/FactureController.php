@@ -87,7 +87,6 @@ class FactureController extends Controller
             'stationnement'     =>  $entity->getStationnement(),
             "voiture"           =>  ($entity->getVoiture() !== NULL ) ? $entity->getVoiture()->getImmatricule() : 'aucune',
             "Date"              =>  $entity->getPeriodeFacture()->getDateFacture(),
-//            "employe"           =>  ($entity->getEmploye() !== NULL ) ? $entity->getEmploye()->getNom() : 'aucun'
         );
 
         $this->get('application.operation')->update($data, $user, $action);
