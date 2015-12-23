@@ -248,7 +248,7 @@ class SanctionController extends Controller
     }
 
     /**
-     * Valid DemandePermission entity.
+     * Valid Sanction entity.
      *
      * @Route("/sanction/{id}/{valid}/{idEmploye}", name="sanction_valid")
      * @Method("VALID")
