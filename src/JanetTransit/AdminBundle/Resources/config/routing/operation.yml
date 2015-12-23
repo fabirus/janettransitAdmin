@@ -1,0 +1,4 @@
+operation_informations:
+    path:     /operation
+    defaults: { _controller: JanetTransitAdminBundle:Operation:index }
+

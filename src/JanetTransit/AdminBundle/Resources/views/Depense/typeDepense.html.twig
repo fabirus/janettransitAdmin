@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Types de Dépenses {% endblock %}
+
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Types de Dépenses</div>
+    <a href="{{ path('depense_informations') }}">
+        <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </a>
+    <br />
+
+    <div class="result" data-route="contratets_search">
+        {% if entities is not empty %}
+            {% for entity in entities %}
+                <div class="col-md-3">
+                    <div class="panel panel-back noti-box">
+                        <a href="{{ path('periodedepense_informations', {'idTypeDepense' : entity.id, 'idContrat' : contratId}) }}">
+                            <span class="icon-box set-icon bg-color-dark">
+                                <i class="fa {{ entity.faClass }}"></i>
+                            </span>
+                        </a>
+                        <div class="text-box">
+                            <p style="font-size: 15px" class="main-text">{{ entity.nom|upper }}</p>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-file-text-o fa-5x"></i><br>
+                Aucun Contrat
+            </div>
+        {% endif %}
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+{% endblock %}

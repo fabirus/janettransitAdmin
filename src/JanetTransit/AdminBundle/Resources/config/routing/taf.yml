@@ -1,0 +1,38 @@
+taf_informations:
+    path:     /taf
+    defaults: { _controller: JanetTransitAdminBundle:Taf:index }
+
+
+taf_create:
+    path:     /taf/create
+    defaults: { _controller: JanetTransitAdminBundle:Taf:create }
+
+
+#taf_delete:
+#    path:     /taf/delete/{id}/{del}
+#    defaults: { _controller: JanetTransitAdminBundle:Taf:delete, del: 0 }
+#    options:
+#        expose: true
+
+taf_edit:
+    path:     /taf/{id}/edit
+    defaults: { _controller: JanetTransitAdminBundle:Taf:edit }
+
+taf_update:
+    path:     /taf/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Taf:update }
+
+taf_checkDate:
+    path:     /tafcheckDate/
+    defaults: { _controller: JanetTransitAdminBundle:Taf:checkDate, _locale : fr }
+    options:
+        expose: true
+
+suivi_informations:
+    path:     /suivi
+    defaults: { _controller: JanetTransitAdminBundle:Taf:suivi }
+
+
+suvi_show:
+    path:     /suivi/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Taf:suiviEmploye }

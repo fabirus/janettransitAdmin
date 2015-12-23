@@ -1,0 +1,25 @@
+stock_informations:
+    path:     /stock
+    defaults: { _controller: JanetTransitAdminBundle:Stock:index }
+
+stock_create:
+    path:     /stock/create
+    defaults: { _controller: JanetTransitAdminBundle:Stock:create }
+
+stock_show:
+    path:     /stock/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Stock:show }
+
+stock_edit:
+    path:     /stock/{id}/{idTypeStock}
+    defaults: { _controller: JanetTransitAdminBundle:Stock:edit }
+
+stock_update:
+    path:     /stock/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Stock:update }
+
+stock_delete:
+    path:     /stock/delete/{id}/{del}/{idRefresh}
+    defaults: { _controller: JanetTransitAdminBundle:Stock:delete, _locale : fr }
+    options:
+        expose: true

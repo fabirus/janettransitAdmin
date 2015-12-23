@@ -1,0 +1,169 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        user_image:
+            uri_prefix:         /img/users
+            upload_destination: %kernel.root_dir%/../web/img/users
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        employe_image:
+            uri_prefix:         /img/employes
+            upload_destination: %kernel.root_dir%/../web/img/employes
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        employe_file_identite:
+            uri_prefix:         /files/employes
+            upload_destination: %kernel.root_dir%/../web/files/employes
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        employe_file_avance:
+            uri_prefix:         /files/avancesalaire
+            upload_destination: %kernel.root_dir%/../web/files/avancesalaire
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        employe_file_permission:
+            uri_prefix:         /files/demandePermission
+            upload_destination: %kernel.root_dir%/../web/files/demandePermission
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        employe_file_sanction:
+            uri_prefix:         /files/sanction
+            upload_destination: %kernel.root_dir%/../web/files/sanction
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        employe_file_absence:
+            uri_prefix:         /files/absence
+            upload_destination: %kernel.root_dir%/../web/files/absence
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+
+        employe_file_fichedepaie:
+            uri_prefix:         /files/fichedepaie
+            upload_destination: %kernel.root_dir%/../web/files/fichedepaie
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+
+        employe_file_contrat:
+            uri_prefix:         /files/contrat
+            upload_destination: %kernel.root_dir%/../web/files/contrat
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+
+        file_carburation:
+            uri_prefix:         /files/carburation
+            upload_destination: %kernel.root_dir%/../web/files/carburation
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+
+        file_reunion:
+            uri_prefix:         /files/reunion
+            upload_destination: %kernel.root_dir%/../web/files/reunion
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+
+        voiture_cartegrise:
+            uri_prefix:         /files/cartegrise
+            upload_destination: %kernel.root_dir%/../web/files/cartegrise
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        voiture_document:
+            uri_prefix:         /files/documentVoiture
+            upload_destination: %kernel.root_dir%/../web/files/documentVoiture
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        contrat_logo:
+            uri_prefix:         /files/entreprise/logo
+            upload_destination: %kernel.root_dir%/../web/files/entreprise/logo
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        contrat_file:
+            uri_prefix:         /files/entreprise/files
+            upload_destination: %kernel.root_dir%/../web/files/entreprise/files
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+
+        depense_file:
+            uri_prefix:         /files/depenses
+            upload_destination: %kernel.root_dir%/../web/files/depenses
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        facture_file:
+            uri_prefix:         /files/factures
+            upload_destination: %kernel.root_dir%/../web/files/factures
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        procces_file:
+            uri_prefix:         /files/procces
+            upload_destination: %kernel.root_dir%/../web/files/procces
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        data_file:
+            uri_prefix:         /files/data
+            upload_destination: %kernel.root_dir%/../web/files/data
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid
+
+        mouvement_stock_file:
+            uri_prefix:         /files/stock
+            upload_destination: %kernel.root_dir%/../web/files/stock
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid

@@ -1,0 +1,129 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des taches {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+<div class="alert alert-info" role="alert" style="font-size: 18px">Liste des taches du  <b>{{ taf.dateTache }}</b> </div>
+<div>
+    <a style="margin-right: 2%" href="{{ path('taf_informations') }}">
+        <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </a>
+    <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+       data-target="#modalForm" title="Ajouter" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '{{'Liste des Taches du ' ~ taf.dateTache}}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+</div><br />
+{% if entities is not empty %}
+    <table class="table table-bordered table-hover dataTable print">
+    <thead>
+    <tr>
+        <th style="text-align: center">Nom</th>
+        <th style="text-align: center">Voiture Concerné</th>
+        <th style="text-align: center">Explication</th>
+        <th style="text-align: center">Employés</th>
+        <th style="text-align: center">Etat</th>
+        <th class="noprint" style="text-align: center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td style="text-align: center">{{ entity.nom }}</td>
+            <td style="text-align: center">
+                {% if not entity.voiture %}
+                    <span class="label label-danger">Non renseigné</span>
+                {% else %}
+                    {{ entity.voiture }}
+                {% endif %}
+            </td>
+            <td style="text-align: center">{{ entity.explication }}</td>
+            <td style="text-align: center">{% for employe in entity.employe %}{{ employe}}<br>{% endfor %}</td>
+            <td style="text-align: center">
+                {% if entity.etat == 1 %}
+                    <a href="{{ path('tache_valid', {'id' : entity.id, 'valid' : 0, idTaf : taf.id}) }}">
+                        <i title="activer" style="color: darkred; cursor: pointer;" class="fa fa-times fa-2x"></i><b style="display: none">Non</b>
+                    </a>
+                {% else %}
+                    <a href="{{ path('tache_valid', {'id' : entity.id, 'valid' : 1, idTaf : taf.id}) }}">
+                        <i title="refuser" style="color: forestgreen; cursor: pointer;" class="fa fa-check fa-2x"></i><b style="display: none">Oui</b>
+                    </a>
+                {% endif %}
+            </td>
+            <td class="noprint" style="text-align: center">
+                <a style="cursor: pointer; margin-left: 4%" href="{{ path('tache_edit', {'id' : entity.id, 'idTaf' : taf.id}) }}">
+                    <i title="Modifier" style="color: orange; cursor: pointer; margin-right: 4%" class="fa fa-pencil fa-2x"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="row" style="text-align: center; font-size: 30px">
+        <i class="fa fa-clock-o fa-5x"></i><br>
+        Aucune tache pour ce taf
+    </div>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-info">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Enregistrement d'une nouvelle tache</h4>
+            </div>
+            {{ form_start(form) }}
+            <div class="modal-body">
+                {{ form_errors(form) }}
+                {{ form_row(form.employe) }}
+                {{ form_row(form.voiture) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.explication) }}
+                <select style="display: none" id="janettransit_adminbundle_sanction_demandepermission" name="janettransit_adminbundle_tache[taf]" class="form-control">
+                    <option value="{{ taf.id  }}"></option>
+                </select>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')}}"></script>
+    <script>
+        common().initPopover();
+        common().dataTable(0);
+        $('.multiselect').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            selectAllText: 'Tout Sélectionner',
+            nonSelectedText: 'Aucun Choix'
+        });
+        $('.multiselectOne').multiselect({
+            enableFiltering: true,
+            nonSelectedText: 'Aucun Choix'
+        });
+        $(".modal-body .btn-group").css({'width' : '80%', 'margin-left' : '5%','margin-bottom': '2%'});
+        $(".multiselect-container").eq(1).find('li:eq(1)').after('<br>');
+        $("form").validate();
+        common().validation();
+        $("input[type='hidden']").prev().remove();
+    </script>
+
+{% endblock %}

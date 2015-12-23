@@ -1,0 +1,192 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Employés {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">{{ 'employe.liste.infos'|trans({}, 'employe') }}</div>
+    <div class="row">
+        <div class="col-md-6">
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </div>
+        <div class="col-md-6">
+            {% include '::common/search.html.twig' %}
+        </div>
+
+    </div><br />
+
+    <div class="row result" data-content="employe" data-route="employe_search">
+        {% for entity in entities %}
+            {#{% if entity.del == 0 %}#}
+                <div style="height: 424px" class="infos_employe
+                {% if entity.del == 1 %}
+                    alert alert-danger
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        active
+                    {% else %}
+                        not-active
+                    {% endif %}
+                {% else %} alert alert-success
+                {% endif %}
+                col-sm-6 col-md-3" aria-disabled="false">
+                    <div class="thumbnail" >
+                        {% if not entity.imageName %}
+                            <a href="{{ path('employe_show', {'id' : entity.id} ) }}">
+                                <img width="242px" height="200px" class="img-responsive avatar_employe"
+                                     {% if entity.sexe == 'feminin' %}
+                                         src="{{ asset('img/employes/default_girl_avatar.png') }}"
+                                     {% else %}
+                                         src="{{ asset('img/employes/avatar_default.jpg') }}"
+                                     {% endif %}
+
+                                 alt="{{ entity.nom }}" />
+                            </a>
+                        {% else %}
+                            <a href="{{ path('employe_show', {'id' : entity.id} ) }}">
+                                <img width="242px" height="200px" class="img-responsive avatar_employe"
+                                 src="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'imageFile') }}"
+                                 alt="{{ entity.nom }}" />
+                            </a>
+                        {% endif %}
+                        <div class="caption">
+                            <h3>{{ entity.nom }} {{ entity.prenom }}</h3>
+                            <h4>
+                                <span class="label label-success">{{ 'employe.liste.poste'|trans({}, 'employe') }}</span> {{ entity.poste }}
+                            </h4>
+                            {#<div class="description" style="display: none">#}
+                                {#<h4><span class="label label-success">Poste</span> {{ entity.poste }}</h4>#}
+                                {#<h4><span class="label label-success">Téléphone</span> {{ entity.tel }}</h4>#}
+                                {#<h4><span class="label label-success">Date d'embauche</span> {{ entity.dateEmbauche }}</h4>#}
+                            {#</div>#}
+                        </div>
+                    </div>
+                </div>
+            {#{% endif %}#}
+        {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document"  style="margin-top: 0%;">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{ 'employe.show.create'|trans({}, 'employe') }}</h4>
+                </div>
+                {{ form_start(form) }}
+                    <div class="modal-body">
+                        <div id="errors"></div>
+                        {{ form_errors(form) }}
+
+                        {{ form_row(form.nom) }}
+                        {{ form_row(form.prenom) }}
+                        {{ form_label(form.dateNaissance) }}
+                        <div class="form-group">
+                            <div class='input-group date datetimepicker'>
+                                {{ form_widget(form.dateNaissance) }}
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        {{ form_row(form.villeNaissance) }}
+                        {{ form_label(form.tel) }}
+                        <div class="form-group">
+                            <div class='input-group' id="tel">
+                                <span class="input-group-addon">+237</span>
+                                {{ form_widget(form.tel) }}
+                                <span class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </span>
+                            </div>
+                        </div>
+                        {{ form_label(form.email) }}
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <span class="input-group-addon">@</span>
+                                {{ form_widget(form.email) }}
+                                <span class="input-group-addon">
+                                    <i class="fa fa-envelope-o"></i>
+                                </span>
+                            </div>
+                        </div>
+                        {{ form_row(form.adresse) }}
+                        {{ form_row(form.sexe) }}
+                        {{ form_label(form.dateEmbauche) }}
+                        <div class="form-group">
+                            <div class='input-group date datetimepicker'>
+                                {{ form_widget(form.dateEmbauche) }}
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        {{ form_row(form.services) }}
+
+
+                        {{ form_label(form.poste) }}
+                        <select id="janettransit_adminbundle_employe_poste" name="janettransit_adminbundle_employe[poste]" class="selectPoste form-control" required>
+                        </select><br>
+                        {#{{ form_row(form.poste) }}#}
+
+
+                        {{ form_label(form.salaire) }}
+                        <div class="form-group">
+                            <div class='input-group'>
+                                {{ form_widget(form.salaire) }}
+                                <span class="input-group-addon">
+                                    FCFA
+                                </span>
+                            </div>
+                        </div>
+                        {{ form_row(form.imageFile) }}
+                        {{ form_row(form.identiteFile) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        {% if success == 'true' %}
+            common().notice('Enregistrement avec succès','ok');
+        {% endif %}
+        common().date();
+        $("form").validate({
+//            errorLabelContainer: '#errors',
+//            wrapper:'li'
+//            errorPlacement: function (error, element) {
+//                switch (element) {
+//                    case element.attr("name") === 'janettransit_adminbundle_employe[tel]':
+//                            console.log('oyoyoy');
+//                        error.insertAfter($("#tel"));
+//                        break;
+//                    default:
+//                    //nothing
+//                }
+//            }
+        });
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $(".phoneNumber").rules("add", { phone: "" });
+
+        $("input[type='hidden']").prev().remove();
+    </script>
+{% endblock %}

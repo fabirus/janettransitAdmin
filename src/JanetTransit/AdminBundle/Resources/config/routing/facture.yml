@@ -1,0 +1,44 @@
+facture_informations:
+    path:     /facture
+    defaults: { _controller: JanetTransitAdminBundle:Facture:index }
+
+type_facture:
+    path:     /typefacture/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Facture:typeFacture }
+
+facture_create:
+    path:     /facture/create
+    defaults: { _controller: JanetTransitAdminBundle:Facture:create }
+
+facture_show:
+    path:     /factureshow/{idPeriodeFacture}/{idContrat}
+    defaults: { _controller: JanetTransitAdminBundle:Facture:show }
+
+facture_edit:
+    path:     /factureedit/{id}/{idPeriodeFacture}/{idContrat}
+    defaults: { _controller: JanetTransitAdminBundle:Facture:edit }
+
+facture_valid:
+    path:     /facture/{id}/{valid}/{idPeriodeDepense}/{idContrat}
+    defaults: { _controller: JanetTransitAdminBundle:Facture:valid }
+
+facture_update:
+    path:     /facture/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Facture:update }
+
+
+facture_delete:
+    path:     /facturedel/delete/{id}/{del}/{idRefresh}/{idRefresh2}
+    defaults: { _controller: JanetTransitAdminBundle:Facture:delete, _locale : fr}
+    options:
+        expose: true
+
+facture_print:
+    path:     /facturePrint/print/{id}/{idPeriodeFacture}/{idContrat}
+    defaults: { _controller: JanetTransitAdminBundle:Facture:print}
+
+facture_search:
+    path:     /recheche/facture
+    defaults: { _controller: JanetTransitAdminBundle:Facture:search, _locale : fr }
+    options:
+        expose: true

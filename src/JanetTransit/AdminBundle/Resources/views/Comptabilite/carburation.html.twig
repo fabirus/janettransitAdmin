@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Carburations mensuels {% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Comptabilité en  Carburation de la période du <b>{{ entity.periode }}</b> </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('comptabilite_show', {'id' : entity.id}) }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+{% if entities is not empty %}
+    <div class="print">
+        <div class="panel panel-success">
+            <div class="panel-heading"><h4><b>Bilan Comptable En Carburation de la période du {{ entity.periode }}</b></h4></div>
+            <table class="table table-hover table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Montant Total de la Carburation</th>
+                        <td>{{ total}} <b>FCFA</b></td>
+                    </tr>
+                    <tr>
+                        <th>Montant de la Carburation Payé</th>
+                        <td>{{ paye}} <b>FCFA</b></td>
+                    </tr>
+                    <tr>
+                        <th>Montant de la Carburation Non Payé</th>
+                        <td>{{ Nonpaye }} <b>FCFA</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="row" style="text-align: center; font-size: 30px">
+        <i class="fa fa-dashboard fa-5x"></i><br>
+        Aucune Carburation
+    </div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+{% endblock %}

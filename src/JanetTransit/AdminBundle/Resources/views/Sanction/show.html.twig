@@ -1,0 +1,187 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Sanctions {{ employe.nom }} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Sanctions de l'employé {{ employe }}</div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('employe_show', {'id' : employe.id} ) }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+            {#{% include '::common/search.html.twig' %}#}
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '{{'Liste des sanctions de ' ~ employe}}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover table-bordered dataTable print">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Date de la Sanction</th>
+                    <th style="text-align: center">Date de Début</th>
+                    <th style="text-align: center">Date de Fin</th>
+                    <th style="text-align: center; width: 25%">Motif</th>
+                    <th style="text-align: center;">Retenu de Salaire</th>
+                    <th style="text-align: center">Statut</th>
+                    <th style="text-align: center">Justificatifs</th>
+                    <th class="noprint" style="text-align: center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td style="text-align: center">{{ entity.dateSanction }}</td>
+                        <td style="text-align: center">{{ entity.dateDebut }}</td>
+                        <td style="text-align: center">{{ entity.dateFin }}</td>
+                        <td style="text-align: center">{{ entity.motif }}</td>
+                        <td style="text-align: center">{{ entity.retenuSalaire }}</td>
+                        <td style="text-align: center">
+                            {% if entity.valid == 1 %}
+                                <button type="button" class="btn btn-danger">
+                                    <a style="color:white" href="
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {{ path('sanction_valid', {'id' : entity.id, 'valid' : 0, 'idEmploye' : employe.id}) }}
+                        {% else %}
+                            #
+                        {% endif %}
+                            ">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Annulé
+                                    </a>
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-success">
+                                    <a style="color:white" href="
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {{ path('sanction_valid', {'id' : entity.id, 'valid' : 1, 'idEmploye' : employe.id}) }}
+                        {% else %}
+                            #
+                        {% endif %}
+                            ">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validé
+                                    </a>
+                                </button>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if not entity.sanctionFileName %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% else %}
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'sanctionFile') }}">
+                                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="noprint" style="text-align: center">
+                            <a href="{{ path('sanction_print', {'id' : entity.id, 'idEmploye' : employe.id}) }}">
+                                <i class="fa fa-eye fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-ban fa-5x"></i><br>
+                Aucune Sanction pour cette employé
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'une Sanction</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {#{{ form_row(form.employe) }}#}
+                    {{ form_label(form.dateSanction) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate" data-employe="{{ employe.id }}">
+                            {{ form_widget(form.dateSanction) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour cet employé</span>
+                    </div>
+                    {{ form_label(form.dateDebut) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker'>
+                            {{ form_widget(form.dateDebut) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour cet employé</span>
+                    </div>
+                    {{ form_label(form.dateFin) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker'>
+                            {{ form_widget(form.dateFin) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour cet employé</span>
+                    </div>
+                    {{ form_row(form.motif) }}
+                    {{ form_row(form.retenuSalaire) }}
+                    <select style="display: none" id="janettransit_adminbundle_sanction_employe" name="janettransit_adminbundle_sanction[employe]" class="form-control">
+                        <option value="{{ employe.id }}"></option>
+                    </select>
+
+                    <div id="remove">
+                        {{ form_row(form.sanctionFile) }}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        {% if success == 'true' %}
+        common().notice('Enregistrement avec succès','ok');
+        {% endif %}
+        common().date();
+        common().dataTable(0);
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $("input[type='hidden']").prev().remove();
+        $('#remove').remove();
+    </script>
+{% endblock %}

@@ -1,0 +1,33 @@
+poste_informations:
+    path:     /poste
+    defaults: { _controller: JanetTransitAdminBundle:Poste:index }
+
+
+poste_create:
+    path:     /poste/create
+    defaults: { _controller: JanetTransitAdminBundle:Poste:create }
+
+poste_show:
+    path:     /poste/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Poste:show }
+
+
+poste_delete:
+    path:     /poste/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Poste:delete, _locale : fr}
+    options:
+        expose: true
+
+poste_edit:
+    path:     /poste/{id}/edit
+    defaults: { _controller: JanetTransitAdminBundle:Poste:edit }
+
+poste_update:
+    path:     /poste/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Poste:update }
+
+poste_of_service:
+    path:     /poste/service/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Poste:servicePoste, _locale : fr }
+    options:
+        expose: true

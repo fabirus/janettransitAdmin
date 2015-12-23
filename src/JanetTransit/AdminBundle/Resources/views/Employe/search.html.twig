@@ -1,0 +1,60 @@
+{% if searchText != '' %}
+    <h2 style="color:black; border-bottom: 2px solid black; line-height: 2; font-family: Arial, Helvetica, sans-serif">Recherche de <b>'{{ searchText }}'</b></h2>
+{% endif %}
+
+{% for entity in entities %}
+    {#{% if entity.del == 0 %}#}
+    <div style="height: 424px" class="result_search
+                {% if entity.del == 1 %}
+                    alert alert-danger
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        active
+                    {% else %}
+                        not-active
+                    {% endif %}
+                {% else %} alert alert-success
+                {% endif %}
+                col-sm-6 col-md-3" aria-disabled="false">
+        <div class="thumbnail" >
+            {% if not entity.imageName %}
+                <a href="{{ path('employe_show', {'id' : entity.id} ) }}">
+                    <img width="242px" height="200px" class="img-responsive avatar_employe"
+                            {% if entity.sexe == 'feminin' %}
+                                src="{{ asset('img/employes/default_girl_avatar.png') }}"
+                            {% else %}
+                                src="{{ asset('img/employes/avatar_default.jpg') }}"
+                            {% endif %}
+
+                         alt="{{ entity.nom }}" />
+                </a>
+            {% else %}
+                <a href="{{ path('employe_show', {'id' : entity.id} ) }}">
+                    <img width="242px" height="200px" class="img-responsive avatar_employe"
+                         src="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'imageFile') }}"
+                         alt="{{ entity.nom }}" />
+                </a>
+            {% endif %}
+            <div class="caption">
+                <h3>{{ entity.nom }} {{ entity.prenom }}</h3>
+                <h4>
+                    <span class="label label-success">Poste</span> {{ entity.poste }}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+
+    <div class="row" style="text-align: center; font-size: 30px">
+        <i class="fa fa-ban fa-5x"></i><br>
+        <b>Oupss</b> Aucun Employé a été trouvé !!!
+    </div>
+
+    {#<div class="alert alert-danger" style="padding: 30px; font-size: 25px">#}
+        {#<b>Oupss</b> Aucun Employé a été trouvé !!!#}
+    {#</div>#}
+
+{% endfor %}
+
+
+

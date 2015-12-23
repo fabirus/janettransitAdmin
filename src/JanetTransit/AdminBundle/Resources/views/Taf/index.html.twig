@@ -1,0 +1,127 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | TAF {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+<div class="alert alert-info" role="alert" style="font-size: 18px">Liste des T.A.F </div>
+<div class="row">
+    <div class="col-md-2">
+        <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+           data-target="#modalForm" title="Ajouter" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </div>
+    <div class="col-md-2" style="float: right">
+        <div class="panel panel-back noti-box">
+            <a href="{{ path('suivi_informations') }}">
+                <span class="icon-box bg-color-dark set-icon">
+                    <i class="fa fa-users"></i>
+                </span>
+            </a>
+            <div class="text-box">
+                <p style="font-size: 15px" class="main-text">SUIVI</p>
+            </div>
+        </div>
+    </div>
+</div><br />
+{% if entities is not empty %}
+    <table class="table table-bordered table-hover dataTable">
+    <thead>
+    <tr>
+        <th style="text-align: center">date du TAF</th>
+        <th style="text-align: center">description</th>
+        <th style="text-align: center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+            <td style="text-align: center">{{ entity.dateTache }}</td>
+            <td style="text-align: center">{{ entity.description }}</td>
+            <td style="text-align: center">
+                <a href="{{ path('taf_edit', {'id' : entity.id}) }}">
+                    <i title="Modifier" style="color: orange; cursor: pointer; margin-right: 4%" class="fa fa-pencil fa-2x"></i>
+                </a>
+                {% if entity.del == 0 %}
+                    <a style="color: red; cursor: pointer;" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="taf_delete">
+                        <i  title="Supprimer"  class="fa fa-trash-o fa-2x"></i>
+                    </a>
+                    {#Popover Content Delete#}
+                    {% include '::common/delete.html.twig' %}
+                {% else %}
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <a href="{{ path('taf_delete', {'id' : entity.id, 'del' : 0}) }}">
+                            <i title="Activer" style="color: forestgreen; cursor: pointer;" class="fa fa-check fa-2x"></i>
+                        </a>
+                    {% endif %}
+                {% endif %}
+                <a style="cursor: pointer; margin-left: 4%" href="{{ path('tache_informations', {'id' : entity.id}) }}">
+                    <i title="Voir" class="fa fa-eye fa-2x"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="row" style="text-align: center; font-size: 30px">
+        <i class="fa fa-ban fa-5x"></i><br>
+        Aucun TAF disponible
+    </div>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-info">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Enregistrement d'un nouveau TAF</h4>
+            </div>
+            {{ form_start(form) }}
+            <div class="modal-body">
+                {{ form_errors(form) }}
+
+                {{ form_label(form.dateTache) }}
+                <div class="form-group">
+                    <div class='input-group date datetimepicker' id="checkDate" data-employe="">
+                        {{ form_widget(form.dateTache) }}
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                    <span class="error_date" style="display: none; color: red">Cette date existe déja pour les Taches</span>
+                </div>
+                {{ form_row(form.description) }}
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script type="text/javascript"  src="{{ asset('js/lib/common.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+        <script>
+            common().initPopover();
+            common().dataTable(0);
+            common().date();
+            common().readOnly();
+            $("form").validate();
+            common().validation();
+        </script>
+
+    {% endblock %}

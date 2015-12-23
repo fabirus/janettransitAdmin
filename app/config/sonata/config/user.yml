@@ -1,0 +1,115 @@
+#FOSUserBundle Configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    #    pour l'ancienne config
+    user_class: Application\Sonata\UserBundle\Entity\User
+#    user_class: JanetTransit\AdminBundle\Entity\User
+
+    change_password:
+        form:
+            type: projet_client_changePassword
+
+    registration:
+        form:
+            type: projet_client_registration
+    #demander l'envoi de mail de confirmation lors de l'enregistrement de l'utilisateur
+        confirmation:
+            enabled: true
+            from_email:
+                address:        janettransit@gmail.com
+                sender_name:    Inscription JANET TRANSIT
+
+    #demander l'envoi de mail de confirmation lors du reset password
+    resetting:
+        email:
+#            template: email/password_resetting.email.twig
+            from_email:
+                address:        janettransit@gmail.com
+                sender_name:    Réinitial
+
+    group:
+        group_class:   Application\Sonata\UserBundle\Entity\Group
+        group_manager: sonata.user.orm.group_manager
+
+    profile:
+        # Authentication Form
+        form:
+            type :              projet_client_profile_edit
+#            type:               fos_user_profile
+#            handler:            fos_user.profile.form.handler.default
+#            name:               fos_user_profile_form
+#            validation_groups:  [Authentication]
+
+    service:
+        user_manager    : sonata.user.orm.user_manager
+        mailer          : fos_user.mailer.twig_swift
+
+
+
+
+#Sonata UserBundle
+sonata_user:
+    security_acl: false
+    manager_type: orm
+    class:                  # Entity Classes
+#    pour l'ancienne config
+        user:               Application\Sonata\UserBundle\Entity\User
+#        user: JanetTransit\AdminBundle\Entity\User
+        group:              Application\Sonata\UserBundle\Entity\Group
+
+    admin:                  # Admin Classes
+        user:
+            class:          Sonata\UserBundle\Admin\Entity\UserAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle
+
+        group:
+            class:          Sonata\UserBundle\Admin\Entity\GroupAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle
+
+    profile:
+        # As in SonataAdminBundle's dashboard
+        dashboard:
+            groups:
+
+                # Prototype
+                id:
+                    label:                ~
+                    label_catalogue:      ~
+                    items:                []
+                    item_adds:            []
+                    roles:                []
+            blocks:
+                - { position: left, type: sonata.block.service.text, settings: { content: "<h2>Welcome!</h2> This is a sample user profile dashboard, feel free to override it in the configuration! Want to make this text dynamic? For instance display the user's name? Create a dedicated block and edit the configuration!"} }
+                #- { position: left, type: sonata.order.block.recent_orders, settings: { title: Recent Orders, number: 5, mode: public }}
+                #- { position: right, type: sonata.timeline.block.timeline, settings: { max_per_page: 15 }}
+                #- { position: right, type: sonata.news.block.recent_posts, settings: { title: Recent Posts, number: 5, mode: public }}
+                #- { position: right, type: sonata.news.block.recent_comments, settings: { title: Recent Comments, number: 5, mode: public }}
+                #- {type: ~}
+                #- {settings:{id: []}}
+
+                    # Prototype
+                #- {position:             right}
+
+
+        # Customize user portal menu by setting links
+        menu:
+            #- { route: 'sonata_user_profile_show', label: 'sonata_profile_title', domain: 'SonataUserBundle'}
+            #- { route: 'sonata_user_profile_edit', label: 'link_edit_profile', domain: 'SonataUserBundle'}
+            #- { route: 'sonata_customer_addresses', label: 'link_list_addresses', domain: 'SonataCustomerBundle'}
+            #- { route: 'sonata_user_profile_edit_authentication', label: 'link_edit_authentication', domain: 'SonataUserBundle'}
+            #- { route: 'sonata_order_index', label: 'order_list', domain: 'SonataOrderBundle'}
+
+        # Profile Form (firstname, lastname, etc ...)
+        form:
+            type:               sonata_user_profile
+            handler:            sonata.user.profile.form.handler.default
+            name:               sonata_user_profile_form
+            validation_groups:  [Profile]
+
+
+
+
+

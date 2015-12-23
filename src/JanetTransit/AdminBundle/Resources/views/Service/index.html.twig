@@ -1,0 +1,89 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Services {% endblock %}
+
+{% block body -%}
+<div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Services</div>
+<div>
+    <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+       data-target="#modalForm" title="Ajouter" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+</div><br />
+
+<table class="table table-bordered table-hover dataTable">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th style="text-align: center">Description</th>
+        <th style="text-align: center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        {#{% if loop.index%2 == 0 %} class="success" {% endif %}#}
+        <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+            <td>{{ entity.nom }}</td>
+            <td style="text-align: center">{{ entity.description }}</td>
+            <td style="text-align: center">
+                <a href="{{ path('service_edit', {'id' : entity.id}) }}">
+                    <i title="Modifier" style="color: orange; cursor: pointer; margin-right: 4%" class="fa fa-pencil fa-2x"></i>
+                </a>
+                {% if entity.del == 0 %}
+                    <a data-toggle="popover" data-placement="left" data-route="service_delete">
+                        <i title="Supprimer" style="color: red; cursor: pointer;" class="fa fa-trash-o fa-2x"></i>
+                    </a>
+                    {#Popover Content Delete#}
+                    {% include '::common/delete.html.twig' %}
+                {% else %}
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <a href="{{ path('service_delete', {'id' : entity.id, 'del' : 0}) }}">
+                            <i title="Activer" style="color: forestgreen; cursor: pointer;" class="fa fa-check fa-2x"></i>
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-info">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Enregistrement d'un nouveau Serice</h4>
+            </div>
+            {{ form_start(form) }}
+            <div class="modal-body">
+                {{ form_errors(form) }}
+
+                {{ form_row(form.nom) }}
+                {{ form_row(form.description) }}
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('js/lib/common.js')}}"></script>
+        <script>
+            common().initPopover();
+            common().dataTable(0);
+            $("form").validate();
+            common().validation();
+        </script>
+
+    {% endblock %}

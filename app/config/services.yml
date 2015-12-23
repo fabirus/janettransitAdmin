@@ -1,0 +1,255 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    admin.category:
+        class: JanetTransit\WikiBundle\Admin\CategoryAdmin
+        arguments: [~, JanetTransit\WikiBundle\Entity\Category, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: WIKI, label: Category }
+
+    admin.article:
+        class: JanetTransit\WikiBundle\Admin\ArticleAdmin
+        arguments: [~, JanetTransit\WikiBundle\Entity\Article, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: WIKI, label: Article }
+
+    admin.poste:
+        class: JanetTransit\AdminBundle\Admin\PosteAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Poste, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Poste }
+
+    admin.service:
+        class: JanetTransit\AdminBundle\Admin\ServiceAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Service, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Service }
+
+    admin.avancesalaire:
+        class: JanetTransit\AdminBundle\Admin\AvanceSalaireAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\AvanceSalaire, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Avance de Salaire }
+
+    admin.demandepermission:
+        class: JanetTransit\AdminBundle\Admin\DemandePermissionAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\DemandePermission, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Demande de Permission }
+
+    admin.employe:
+        class: JanetTransit\AdminBundle\Admin\EmployeAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Employe, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Employés }
+
+    admin.presence:
+        class: JanetTransit\AdminBundle\Admin\PresenceAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Presence, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Présence & Absence }
+
+    admin.fichedepaie:
+        class: JanetTransit\AdminBundle\Admin\FicheDePaieAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\FicheDePaie, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Fiches de paie }
+
+    admin.prime:
+        class: JanetTransit\AdminBundle\Admin\PrimeAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Prime, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Primes }
+
+    admin.sanction:
+        class: JanetTransit\AdminBundle\Admin\SanctionAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Sanction, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Sanctions }
+
+    admin.typecontrat:
+        class: JanetTransit\AdminBundle\Admin\TypeContratAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\TypeContrat, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Types de Contrat }
+
+    admin.contrat:
+        class: JanetTransit\AdminBundle\Admin\ContratAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Contrat, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: EMPLOYES, label: Contrats }
+
+    admin.carburation:
+        class: JanetTransit\AdminBundle\Admin\CarburationAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Carburation, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: CARBURATION, label: Carburation }
+
+    admin.periodecarburation:
+        class: JanetTransit\AdminBundle\Admin\PeriodeCarburationAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\PeriodeCarburation, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: CARBURATION, label: Periode de Carburation }
+
+    admin.taf:
+        class: JanetTransit\AdminBundle\Admin\TafAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Taf, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: TAF & TACHE, label: TAF }
+
+    admin.tache:
+        class: JanetTransit\AdminBundle\Admin\TacheAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Tache, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: TAF & TACHE, label: TACHE}
+
+    admin.reunion:
+        class: JanetTransit\AdminBundle\Admin\ReunionAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Reunion, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: REUNION, label: Reunion}
+
+    admin.typeVoiture:
+        class: JanetTransit\AdminBundle\Admin\TypeVoitureAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\TypeVoiture, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: VOITURE, label: Type de Voiture}
+
+    admin.voiture:
+        class: JanetTransit\AdminBundle\Admin\VoitureAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Voiture, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: VOITURE, label: Voiture}
+
+    admin.typeDocument:
+        class: JanetTransit\AdminBundle\Admin\TypeDocumentAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\TypeDocument, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: VOITURE, label: Type de Document}
+
+    admin.marque:
+        class: JanetTransit\AdminBundle\Admin\MarqueAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Marque, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: VOITURE, label: Marques}
+
+    admin.document:
+        class: JanetTransit\AdminBundle\Admin\DocumentAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Document, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: VOITURE, label: Documents}
+
+    admin.typeContratEts:
+        class: JanetTransit\AdminBundle\Admin\TypeContratEtsAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\TypeContratEts, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: CONTRATS, label: Type de Contrat}
+
+    admin.contratEts:
+        class: JanetTransit\AdminBundle\Admin\ContratEtsAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\ContratEts, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: CONTRATS, label: Contrat}
+
+    admin.typeDepense:
+        class: JanetTransit\AdminBundle\Admin\TypeDepenseAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\TypeDepense, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: DEPENSES, label: Type de Dépenses}
+
+    admin.periodeDepense:
+        class: JanetTransit\AdminBundle\Admin\PeriodeDepenseAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\PeriodeDepense, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: DEPENSES, label: Journées des Dépenses}
+
+    admin.depense:
+        class: JanetTransit\AdminBundle\Admin\DepenseAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Depense, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: DEPENSES, label: Dépenses}
+
+    admin.data:
+        class: JanetTransit\AdminBundle\Admin\DataAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Data, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: DONNEES, label: Fichiers}
+
+    admin.perdiodeFacture:
+        class: JanetTransit\AdminBundle\Admin\PeriodeFactureAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\PeriodeFacture, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: MANUTENTION, label: Périodes}
+
+    admin.facture:
+        class: JanetTransit\AdminBundle\Admin\FactureAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Facture, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: MANUTENTION, label: Factures}
+
+    admin.typeStock:
+        class: JanetTransit\AdminBundle\Admin\TypeStockAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\TypeStock, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: STOCK, label: Type de Stock}
+
+    admin.periodeStock:
+        class: JanetTransit\AdminBundle\Admin\PeriodeStockAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\PeriodeStock, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: STOCK, label: Journée de Mouvement}
+
+    admin.stock:
+        class: JanetTransit\AdminBundle\Admin\StockAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\Stock, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: STOCK, label: Stock}
+
+    admin.mouvementStock:
+        class: JanetTransit\AdminBundle\Admin\MouvementStockAdmin
+        arguments: [~, JanetTransit\AdminBundle\Entity\MouvementStock, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: STOCK, label: Mouvements de Stock}
+
+
+
+#mes services personnalisées
+
+
+    projet.registration.form.type:
+        class: Application\Sonata\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: projet_client_registration }
+
+    projet.changePassword.form.type:
+        class: Application\Sonata\UserBundle\Form\Type\ChangePasswordFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: projet_client_changePassword }
+    projet.editProfile.form.type:
+        class: Application\Sonata\UserBundle\Form\Type\ProfileFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: projet_client_profile_edit }
+
+
+#   Mes services Personnelles
+
+    projet.search:
+        class : JanetTransit\AdminBundle\Services\Search
+        arguments: ["@doctrine.orm.entity_manager", "@request_stack" ]
+        scope: "request"
+
+    application.operation:
+        class : JanetTransit\AdminBundle\Services\OperationApp
+        arguments: ["@doctrine.orm.entity_manager", "@request_stack" ]
+        scope: "request"
+
+
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

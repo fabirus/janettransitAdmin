@@ -1,0 +1,38 @@
+prime_informations:
+    path:     /prime
+    defaults: { _controller: JanetTransitAdminBundle:Prime:index }
+
+
+prime_create:
+    path:     /prime/create
+    defaults: { _controller: JanetTransitAdminBundle:Prime:create }
+
+prime_show:
+    path:     /prime/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Prime:show }
+
+
+prime_delete:
+    path:     /prime/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Prime:delete, _locale : fr }
+    options:
+        expose: true
+
+prime_edit:
+    path:     /prime/{id}/edit/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Prime:edit }
+
+prime_update:
+    path:     /prime/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Prime:update }
+
+
+prime_checkDate:
+    path:     /prime/check/date/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Prime:checkDate, _locale : fr }
+    options:
+        expose: true
+
+prime_valid:
+    path:     /prime/{id}/{valid}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Prime:valid }

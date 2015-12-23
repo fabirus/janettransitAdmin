@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Articles{% endblock%}
+
+{% block body %}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Articles de la Catégorie <b><i>{{ category.name }}</i></b></div>
+    <a href="{{ path('janet_transit_wiki_homepage') }}">
+        <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </a><br>
+
+    {%for article in articles %}
+        <div class="media" style="background-color: #ECEDEE;margin-left: auto;margin-right: auto;width: 80%;">
+            <div class="media-left" style="width: 20pc;padding-left: 10px;">
+                <a href="{{ path('janet_transit_wiki_articles_show', {'id' : article.id, 'idCat' : category.id}) }}">
+                    <span style="width: 60px; height: 60px;text-align: center;vertical-align: middle;" class=" media-object icon-box set-icon bg-color-dark">
+                    <i class="fa fa-3x" style="font-size: 55px;font-family: cursive;">{{ loop.index }}</i>
+                    </span>
+                    {#<img class="media-object" src="{% path article.image, 'small' %}" title="{{ article.title }}">#}
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><b>{{ article.title }}</b></h4>
+                {{ article.content|slice(0, 250)|raw  }}
+                    <br><a style="float: right;margin-right: 5%;width: 10%;margin-bottom: 2%" href="{{ path('janet_transit_wiki_articles_show', {'id' : article.id, 'idCat' : category.id}) }}" class="btn btn-primary"role="button">
+                        <b>Lire Plus</b>
+                    </a>
+            </div>
+        </div>
+    {% endfor %}
+
+
+
+
+{% endblock %}

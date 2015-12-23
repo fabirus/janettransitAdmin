@@ -1,0 +1,28 @@
+tache_informations:
+    path:     /taches/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Tache:index }
+
+
+tache_create:
+    path:     /tache/create
+    defaults: { _controller: JanetTransitAdminBundle:Tache:create }
+
+
+tache_delete:
+    path:     /tache/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Tache:delete, _locale : fr }
+    options:
+        expose: true
+
+tache_edit:
+    path:     /tache/{id}/{idTaf}/edit
+    defaults: { _controller: JanetTransitAdminBundle:Tache:edit }
+
+tache_update:
+    path:     /tache/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Tache:update }
+
+
+tache_valid:
+    path:     /tache/{id}/{valid}/{idTaf}
+    defaults: { _controller: JanetTransitAdminBundle:Tache:valid }

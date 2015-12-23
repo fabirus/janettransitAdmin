@@ -1,0 +1,346 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Employé {{ entity.nom }} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">{{ 'employe.show.infos'|trans({}, 'employe') }}</div>
+    <div>
+        <a href="{{ path('employe_informations') }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+
+        {% if entity.del == 0 %}
+            <a style="color: red; cursor: pointer; float: right" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="employe_delete">
+                <i  title="Supprimer"  class="fa fa-trash-o fa-3x"></i>
+            </a>
+            {#Popover Content Delete#}
+            {% include '::common/delete.html.twig' %}
+
+            {#<a href="{{ path('employe_delete', {'id' : entity.id, 'del' : 1}) }}">#}
+        {% else %}
+            <a href="{{ path('employe_delete', {'id' : entity.id, 'del' : 0}) }}">
+                <i title="Activer" style="color: forestgreen; cursor: pointer; float: right" class="fa fa-check fa-3x"></i>
+            </a>
+        {% endif %}
+        <i title="Modifier" style="color: orange; float: right; cursor: pointer; margin-right: 2%" class="fa fa-pencil fa-3x" data-toggle="modal"
+           data-target="#modaleditForm"></i>
+        <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '{{ 'employe.show.print_message'|trans({}, 'employe') }} {{entity.nom}} {{entity.prenom}}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+
+    </div> <br />
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('contrat_show', {'id' : entity.id}) }}">
+                    <span class="icon-box set-icon bg-color-dark">
+                        <i class="fa fa-book"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">{{ 'employe.show.contrats'|trans({}, 'employe') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('fichedepaie_show', {'id' : entity.id}) }}">
+                    <span class="icon-box bg-color-dark set-icon">
+                        <i class="fa fa-file-text-o"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">{{ 'employe.show.fiche_de_paie'|trans({}, 'employe') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('avancesalaire_show', {'id' : entity.id}) }}">
+                    <span class="icon-box bg-color-dark set-icon">
+                        <i class="fa fa-money"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">{{ 'employe.show.avance_salaire'|trans({}, 'employe') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('presence_show', {'id' : entity.id}) }}">
+                    <span class="icon-box bg-color-dark set-icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">{{ 'employe.show.fiche_presence'|trans({}, 'employe') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('demandepermission_show', {'id' : entity.id}) }}">
+                    <span class="icon-box bg-color-dark set-icon">
+                        <i class="fa fa-clock-o"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">{{ 'employe.show.permission'|trans({}, 'employe') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('sanction_show', {'id' : entity.id}) }}">
+                    <span class="icon-box bg-color-dark set-icon">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">{{ 'employe.show.sanctions'|trans({}, 'employe') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover print">
+        <tbody>
+            <tr>
+                <th>{{ 'nom'|trans({}, 'array') }}</th>
+                <td>{{ entity.nom }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'prenom'|trans({}, 'array') }}</th>
+                <td>{{ entity.prenom }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'matricule'|trans({}, 'array') }}</th>
+                <td>{{ entity.matricule }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'sexe'|trans({}, 'array') }}</th>
+                <td>{{ entity.sexe }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'date_naissance'|trans({}, 'array') }}</th>
+                <td>{{ entity.dateNaissance }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'ville_naissance'|trans({}, 'array') }}</th>
+                <td>{{ entity.villeNaissance }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'adresse_email'|trans({}, 'array') }}</th>
+                <td>
+                    {% if entity.email is not null  %}
+                        {{ entity.email }}
+                    {% else %}
+                        <span class="label label-danger">Non renseigné</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'telephone'|trans({}, 'array') }}</th>
+                <td>{{ entity.tel }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'adresse'|trans({}, 'array') }}</th>
+                <td>{{ entity.adresse }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'date_embauche'|trans({}, 'array') }}</th>
+                <td>{{ entity.dateEmbauche}}</td>
+            </tr>
+            <tr>
+                <th>{{ 'service'|trans({}, 'array') }}</th>
+                <td>{{ entity.services}}</td>
+            </tr>
+            <tr>
+                <th>{{ 'poste'|trans({}, 'array') }}</th>
+                <td>{{ entity.poste}}</td>
+            </tr>
+            <tr>
+                <th>{{ 'salaire'|trans({}, 'array') }}</th>
+                <td>{{ entity.salaire}} FCFA</td>
+            </tr>
+            <tr>
+                <th>{{ 'piece_identite'|trans({}, 'array') }}</th>
+                <td>
+                    {% if entity.identiteFileName is not null  %}
+                        <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'identiteFile') }}">
+                            <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                        </a>
+                    {% else %}
+                        <span class="label label-danger">{{ 'none'|trans({}, 'array') }}</span>
+                    {% endif %}
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modaleditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{ 'employe.show.edit'|trans({}, 'employe') }} <b>{{ entity.nom }} {{ entity.prenom }}</b></h4>
+                </div>
+                {{ form_start(edit_form) }}
+                <div class="modal-body">
+                    {{ form_errors(edit_form) }}
+
+                    {{ form_row(edit_form.nom) }}
+                    {{ form_row(edit_form.prenom) }}
+                    {{ form_label(edit_form.dateNaissance) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker'>
+                            {{ form_widget(edit_form.dateNaissance) }}
+                            <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                        </div>
+                    </div>
+                    {{ form_row(edit_form.villeNaissance) }}
+                    {{ form_label(edit_form.tel) }}
+                    <div class="form-group">
+                        <div class='input-group'>
+                            <span class="input-group-addon">+237</span>
+                            {{ form_widget(edit_form.tel) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </span>
+                        </div>
+                    </div>
+                    {{ form_label(edit_form.email) }}
+                    <div class="form-group">
+                        <div class='input-group'>
+                            <span class="input-group-addon">@</span>
+                            {{ form_widget(edit_form.email) }}
+                            <span class="input-group-addon">
+                                    <i class="fa fa-envelope-o"></i>
+                                </span>
+                        </div>
+                    </div>
+                    {{ form_row(edit_form.adresse) }}
+                    {{ form_row(edit_form.sexe) }}
+                    {{ form_label(edit_form.dateEmbauche) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker'>
+                            {{ form_widget(edit_form.dateEmbauche) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                    {{ form_row(edit_form.services) }}
+                    {{ form_label(edit_form.poste) }}
+                    <select id="janettransit_adminbundle_employe_poste" name="janettransit_adminbundle_employe[poste]" class="selectPoste form-control" required>
+                    </select><br>
+                    {#{{ form_row(edit_form.poste) }}#}
+                    {{ form_label(edit_form.salaire) }}
+                    <div class="form-group">
+                        <div class='input-group'>
+                            {{ form_widget(edit_form.salaire) }}
+                            <span class="input-group-addon">
+                                    FCFA
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fileUpload1">
+                        <div class="icondelete">
+                            <div class="removeFile1" style="display: none">
+                                <i style="cursor: pointer;margin: 2%" title="Supprimer" class="delete1 fa fa-trash-o fa-4x"></i>
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'imageFile') }}" style="margin: 2%">
+                                    <i title="Voir" class="fa fa-eye fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="upload1">
+                                <i class="fa fa-upload fa-5x"></i><br>
+                                <span>PHOTO</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fileType1">
+                        {{ form_row(edit_form.imageFile) }}
+                    </div>
+                    {#{{ form_row(edit_form.logoFile) }}#}
+                    <div class="fileUpload">
+                        <div class="icondelete">
+                            <div class="removeFile" style="display: none">
+                                <i style="cursor: pointer;margin: 2%" title="Supprimer" class="delete fa fa-trash-o fa-4x"></i>
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'identiteFile') }}" style="margin: 2%">
+                                    <i title="Voir" class="fa fa-eye fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="upload">
+                                <i class="fa fa-upload fa-5x"></i><br>
+                                <span>PIECE d'IDENTITE</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fileType">
+                        {{ form_row(edit_form.identiteFile) }}
+                    </div>
+                    {#{{ form_row(edit_form.imageFile) }}#}
+                    {#{{ form_row(edit_form.identiteFile) }}#}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary'}})}}
+
+                </div>
+                {{ form_end(edit_form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/lib/common.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        {% if success == 'true' %}
+            common().notice('Modification avec succès','ok');
+        {% endif %}
+        common().initPopover();
+        common().date();
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $(".phoneNumber").rules("add", { phone: "" });
+        $("input[type='hidden']").prev().remove();
+
+        var     fileUpload = $('.fileUpload'),
+                fileType   = $('.fileType'),
+                fileUpload1 = $('.fileUpload1'),
+                fileType1   = $('.fileType1');
+
+        {% if entity.imageName is not null %}
+            fileUpload1.show();
+            fileType1.hide();
+        {% else %}
+            fileUpload1.hide();
+            fileType1.show();
+        {% endif %}
+
+        {% if entity.identiteFileName is not null %}
+            fileUpload.show();
+            fileType.hide();
+        {% else %}
+            fileUpload.hide();
+            fileType.show();
+        {% endif %}
+        common().fileShow();
+    </script>
+
+{% endblock %}

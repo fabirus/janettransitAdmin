@@ -1,0 +1,43 @@
+comptabilite_informations:
+    path:     /comptabilite
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:index }
+
+comptabilite_create:
+    path:     /comptabilite/create
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:create }
+
+comptabilite_edit:
+    path:     /comptabilite/edit/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:edit }
+
+comptabilite_show:
+    path:     /comptabilite/show/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:show }
+
+comptabilite_update:
+    path:     /comptabilite/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:update }
+
+comptabilite_delete:
+    path:     /comptabilite/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:delete, _locale : fr}
+    options:
+        expose: true
+
+comptabilite_checkDate:
+    path:     /comptabilitecheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:checkDate, _locale : fr }
+    options:
+        expose: true
+
+comptabilite_manutention:
+    path:     /comptabilite/manutention/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:manutention }
+
+comptabilite_carburation:
+    path:     /comptabilite/carburation/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:carburation }
+
+comptabilite_depense:
+    path:     /comptabilite/depense/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Comptabilite:depense }

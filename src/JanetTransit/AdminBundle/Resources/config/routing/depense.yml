@@ -1,0 +1,40 @@
+depense_informations:
+    path:     /depense
+    defaults: { _controller: JanetTransitAdminBundle:Depense:index }
+
+type_depense:
+    path:     /typedepense/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Depense:typeDepense }
+
+depense_create:
+    path:     /depense/create
+    defaults: { _controller: JanetTransitAdminBundle:Depense:create }
+
+depense_show:
+    path:     /depenseshow/{idPeriodeDepense}/{idContrat}/{idTypeDepense}
+    defaults: { _controller: JanetTransitAdminBundle:Depense:show }
+
+depense_edit:
+    path:     /depenseshow/{id}/{idPeriodeDepense}/{idContrat}/{idTypeDepense}
+    defaults: { _controller: JanetTransitAdminBundle:Depense:edit }
+
+depense_valid:
+    path:     /depense/{id}/{valid}/{idPeriodeDepense}/{idContrat}/{idTypeDepense}
+    defaults: { _controller: JanetTransitAdminBundle:Depense:valid }
+
+depense_update:
+    path:     /depense/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Depense:update }
+
+
+depense_delete:
+    path:     /depensedel/delete/{id}/{del}/{idRefresh}/{idRefresh2}/{idRefresh3}
+    defaults: { _controller: JanetTransitAdminBundle:Depense:delete, _locale : fr}
+    options:
+        expose: true
+
+depense_search:
+    path:     /recheche/depense
+    defaults: { _controller: JanetTransitAdminBundle:Depense:search, _locale : fr }
+    options:
+        expose: true

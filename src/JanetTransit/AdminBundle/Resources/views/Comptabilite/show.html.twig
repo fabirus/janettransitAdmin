@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Comptabilités {% endblock %}
+
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des sections Comptables de la période du <b>{{ entity.periode }}</b> </div>
+    <div>
+        <a href="{{ path('comptabilite_informations') }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+    </div>
+    <br />
+
+    <div class=" row result" data-route="contratets_search">
+        <div class="col-md-4">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('comptabilite_manutention', {'id' : entity.id}) }}">
+                    <span class="icon-box set-icon bg-color-dark">
+                        <i class="fa fa-truck"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">MANUTENTION</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('comptabilite_carburation', {'id' : entity.id}) }}">
+                    <span class="icon-box set-icon bg-color-dark">
+                        <i class="fa fa-dashboard"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">CARBURATION</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-back noti-box">
+                <a href="{{ path('comptabilite_depense', {'id' : entity.id}) }}">
+                    <span class="icon-box set-icon bg-color-dark">
+                        <i class="fa fa-wrench"></i>
+                    </span>
+                </a>
+                <div class="text-box">
+                    <p style="font-size: 15px" class="main-text">DEPENSES</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,26 @@
+nom : Nom
+prenom : Prénom
+matricule : Matricule
+sexe : Sexe
+date_naissance : Date de Naissance
+ville_naissance : Ville de Naissance
+adresse_email : Adresse Email
+telephone : Téléphone
+adresse : Adresse
+date_embauche : Date d'embauche
+service : Service
+poste : Poste
+salaire : Salaire
+piece_identite: Pièce d'identité
+none : Non renseigné
+type_contrat : Type de Contrat
+duree_hebdo : Durée Hebdomadaire
+date_debut : Date Début
+datefin : Date Fin
+justificatifs : Justificatifs
+actions : Actions
+employe : Employé
+objet : Objet
+contrat : Contrat
+sign_salarie : Signature du salarié
+direction : La Direction

@@ -1,0 +1,27 @@
+avancesalaire_create:
+    path:     /avancesalaire/create
+    defaults: { _controller: JanetTransitAdminBundle:AvanceSalaire:create }
+
+avancesalaire_show:
+    path:     /avancesalaire/{id}
+    defaults: { _controller: JanetTransitAdminBundle:AvanceSalaire:show }
+
+avancesalaire_valid:
+    path:     /avancesalaire/{id}/{valid}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:AvanceSalaire:valid }
+
+avancesalaire_update:
+    path:     /avancesalaire/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:AvanceSalaire:update }
+
+
+avancesalaire_print:
+    path:     /avancesalaire/{id}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:AvanceSalaire:print }
+
+
+avancesalaire_checkDate:
+    path:     /avancesalairecheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:AvanceSalaire:checkDate, _locale : fr }
+    options:
+        expose: true

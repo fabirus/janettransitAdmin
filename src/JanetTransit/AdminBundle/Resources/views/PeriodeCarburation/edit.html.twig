@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Mdification de la date de Carburations {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Modification de la date des carburations {{ entity.dateCarburation }}</div>
+    <div>
+        <a href="{{ path('periodecarburation_informations') }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+    </div><br>
+
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+
+    {{ form_label(edit_form.dateCarburation) }}
+    <div class="form-group">
+        <div class='input-group date datetimepicker'>
+            {{ form_widget(edit_form.dateCarburation) }}
+            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+        </div>
+    </div>
+
+    {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register registerPoste'}})}}
+
+    {{ form_end(edit_form) }}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript"  src="{{ asset('js/lib/common.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        common().date();
+        common().initPopover();
+        $("form").validate();
+        common().validation();
+    </script>
+
+{% endblock %}

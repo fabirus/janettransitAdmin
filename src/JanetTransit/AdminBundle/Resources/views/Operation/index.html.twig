@@ -1,0 +1,69 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste Opérations de l'application {% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste Opérations de l'application </div>
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('tomate', 'Liste des operations')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+            <table class=" table table-hover table-bordered dataTable print">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Username</th>
+                    <th style="text-align: center">Nom complet</th>
+                    <th style="text-align: center">Action</th>
+                    <th style="text-align: center">Date</th>
+                    <th style="text-align: center">Entité</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td style="text-align: center">{{ entity.username }}</td>
+                        <td style="text-align: center">
+                            {% if entity.nomComplet %}
+                                {{ entity.nomComplet }}
+                            {% else %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if entity.action == 'CREATION'%}
+                                <span class="label label-success">{{ entity.action }}</span>
+                            {% elseif entity.action == 'MODIFICATION' %}
+                                <span class="label label-warning">{{ entity.action }}</span>
+                            {% else %}
+                                <span class="label label-danger">{{ entity.action }}</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">{% if entity.updatedAt %}{{ entity.updatedAt|date('d/m/y H:i:s') }}{% endif %}</td>
+                        <td>
+                            {% for key, data in entity.entity %}
+                                <b>{{ key }}</b>
+                                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> {{ data }}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script>
+        common().dataTable(3);
+    </script>
+{% endblock %}

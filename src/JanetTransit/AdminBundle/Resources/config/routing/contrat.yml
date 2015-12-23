@@ -1,0 +1,34 @@
+contrat_create:
+    path:     /contrat/create
+    defaults: { _controller: JanetTransitAdminBundle:Contrat:create }
+
+contrat_show:
+    path:     /contrat/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Contrat:show }
+
+
+contrat_delete:
+    path:     /contrat/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Contrat:delete, _locale : fr}
+    options:
+        expose: true
+
+contrat_edit:
+    path:     /contrat/{id}/edit/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Contrat:edit }
+
+contrat_update:
+    path:     /contrat/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Contrat:update }
+
+
+contrat_print:
+    path:     /contrat/{id}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Contrat:print }
+
+contrat_checkDate:
+    path:     /contrat/check/date/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Contrat:checkDate, _locale : fr }
+    options:
+        expose: true
+

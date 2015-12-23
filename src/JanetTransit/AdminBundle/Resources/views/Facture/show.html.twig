@@ -1,0 +1,197 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Mouvements {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Mouvements de Manutention du <b>{{ entityPeriode.dateFacture }}</b> </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('periodefacture_informations', {'idContrat' : idContrat}) }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', 'Liste des Mouvements de {{ contrat.nom }} du {{ entityPeriode.dateFacture }}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover table-responsive table-bordered dataTable print">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Voiture</th>
+                    <th style="text-align: center">Départ</th>
+                    <th style="text-align: center">Destination</th>
+                    <th style="text-align: center">N° Container</th>
+                    <th style="text-align: center">Heure</th>
+                    <th style="text-align: center">Client</th>
+                    <th style="text-align: center">Perçu</th>
+                    <th style="text-align: center">Stationnement</th>
+                    <th style="text-align: center">Carburation</th>
+                    <th style="text-align: center">Route</th>
+                    <th style="text-align: center">Statut</th>
+                    <th style="text-align: center">Proccès</th>
+                    <th style="text-align: center">Facture</th>
+                    <th class="noprint" style="text-align: center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+                        <td style="text-align: center">
+                            {{ entity.voiture }}
+                        </td>
+                        <td style="text-align: center">{{ entity.depart }}</td>
+                        <td style="text-align: center">{{ entity.destination }}</td>
+                        <td style="text-align: center">{{ entity.numeroContainer }}</td>
+                        <td style="text-align: center">{{ entity.heure }}</td>
+                        <td style="text-align: center">
+                            {% if entity.client %}
+                                {{ entity.client }}
+                            {% else %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% endif %}</td>
+                        <td style="text-align: center">{{ entity.percu }} FCFA</td>
+                        <td style="text-align: center">{{ entity.stationnement }} FCFA</td>
+                        <td style="text-align: center">{{ entity.carburation }} FCFA</td>
+                        <td style="text-align: center">{{ entity.fraisRoute }} FCFA</td>
+                        <td style="text-align: center">
+                            {% if entity.valid == 1 %}
+                                <button type="button" class="btn btn-danger">
+                                    <a style="color:white" href="{{ path('facture_valid', {'id' : entity.id, 'valid' : 0, 'idPeriodeDepense' : entityPeriode.id, 'idContrat' : idContrat}) }}">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Pas Fait
+                                    </a>
+                                </button>
+                                <span style="display: none">pas</span>
+                            {% else %}
+                                <button type="button" class="btn btn-success">
+                                    <a style="color:white" href="{{ path('facture_valid', {'id' : entity.id, 'valid' : 1, 'idPeriodeDepense' : entityPeriode.id, 'idContrat' : idContrat}) }}">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Fait
+                                    </a>
+                                </button>
+                                <span style="display: none">ok</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if not entity.proccesFileName %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% else %}
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'proccesFile') }}">
+                                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if not entity.factureFileName %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% else %}
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'factureFile') }}">
+                                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="noprint" style="text-align: center">
+                            <a style="margin-right: 2%" href="{{ path('facture_edit', {'id' : entity.id, 'idPeriodeFacture' : entityPeriode.id, 'idContrat' : idContrat }) }}">
+                                <i title="Modifier" style="color: orange; cursor: pointer; margin-left: 4%" class="fa fa-pencil fa-2x"></i>
+                            </a>
+                            <a style="margin: 4%;" title="facture" href="{{ path('facture_print', {'id' : entity.id, 'idPeriodeFacture' : entityPeriode.id, 'idContrat' : idContrat}) }}">
+                                <i class="fa fa-file-text-o fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-truck fa-5x"></i><br>
+                Aucun Mouvement
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'un Mouvement de Manutention</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_row(form.client) }}
+                    {{ form_row(form.depart) }}
+                    {{ form_row(form.destination) }}
+                    {{ form_label(form.heure) }}
+                    <div class="form-group">
+                        <div class='input-group date hourpicker'>
+                            {{ form_widget(form.heure) }}
+                            <span class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </span>
+                        </div>
+                    </div>
+                    {{ form_row(form.numeroContainer) }}
+                    {{ form_row(form.voiture) }}
+                    {{ form_row(form.percu) }}
+                    {{ form_row(form.stationnement) }}
+                    {{ form_row(form.carburation) }}
+                    {{ form_row(form.fraisRoute) }}
+                    {{ form_row(form.proccesFile) }}
+                    <div id="remove">
+                        {{ form_row(form.periodeFacture) }}
+                        {{ form_row(form.factureFile) }}
+                    </div>
+                    <select style="display: none;" id="janettransit_adminbundle_depense_periodeDepense" name="janettransit_adminbundle_facture[periodeFacture]">
+                        <option value="{{ entityPeriode.id }}"></option>
+                    </select>
+                    <select style="display: none;" id="janettransit_adminbundle_depense_contrat" name="contrat">
+                        <option value="{{ idContrat }}"></option>
+                    </select>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        $('.multiselectOne').multiselect({
+            enableFiltering : true,
+            nonSelectedText : 'Aucun Choix'
+        });
+        $(".modal-body .btn-group").css({'width' : '80%', 'margin-left' : '5%','margin-bottom': '2%'});
+        common().dataTable(0);
+        common().heure();
+        common().initPopover();
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $('#remove').remove();
+    </script>
+{% endblock %}

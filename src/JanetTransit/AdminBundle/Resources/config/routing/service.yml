@@ -1,0 +1,22 @@
+service_informations:
+    path:     /service
+    defaults: { _controller: JanetTransitAdminBundle:Service:index }
+
+
+service_create:
+    path:     /service/create
+    defaults: { _controller: JanetTransitAdminBundle:Service:create }
+
+service_delete:
+    path:     /service/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Service:delete, _locale : fr }
+    options:
+        expose: true
+
+service_edit:
+    path:     /service/{id}/edit
+    defaults: { _controller: JanetTransitAdminBundle:Service:edit }
+
+service_update:
+    path:     /service/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Service:update }

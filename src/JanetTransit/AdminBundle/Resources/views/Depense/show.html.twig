@@ -1,0 +1,195 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Dépenses {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Dépenses du <b>{{ entityPeriode.dateDepense }}</b> </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('periodedepense_informations', {'idTypeDepense' : idTypeDepense, 'idContrat' : idContrat}) }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', 'Liste des Dépenses du {{ entityPeriode.dateDepense }}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover table-bordered dataTable print">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Employé</th>
+                    <th style="text-align: center">Matériel</th>
+                    <th style="text-align: center">Motif</th>
+                    <th style="text-align: center">Voiture</th>
+                    <th style="text-align: center">Montant</th>
+                    <th style="text-align: center">Statut</th>
+                    <th style="text-align: center">Justificatif</th>
+                    <th class="noprint" style="text-align: center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+                        <td style="text-align: center">
+                            {% if entity.employe %}
+                                {{ entity.employe }}
+                            {% else %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">{{ entity.materiel }}</td>
+                        <td style="text-align: center">{{ entity.motif }}</td>
+                        <td style="text-align: center">
+                            {% if entity.voiture %}
+                                {{ entity.voiture }}
+                            {% else %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">{{ entity.montant }} <b>FCFA</b></td>
+                        <td style="text-align: center">
+                            {% if entity.valid == 1 %}
+                                <button type="button" class="btn btn-danger">
+                                    <a style="color:white" href="{{ path('depense_valid', {'id' : entity.id, 'valid' : 0, 'idPeriodeDepense' : entityPeriode.id, 'idContrat' : idContrat, 'idTypeDepense' :idTypeDepense}) }}">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Non Payé
+                                    </a>
+                                </button>
+                                <span style="display: none">pas</span>
+                            {% else %}
+                                <button type="button" class="btn btn-success">
+                                    <a style="color:white" href="{{ path('depense_valid', {'id' : entity.id, 'valid' : 1, 'idPeriodeDepense' : entityPeriode.id, 'idContrat' : idContrat, 'idTypeDepense' :idTypeDepense}) }}">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Payé
+                                    </a>
+                                </button>
+                                <span style="display: none">ok</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if not entity.depenseFileName %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% else %}
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'depenseFile') }}">
+                                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="noprint" style="text-align: center">
+                            <a style="margin-right: 2%" href="{{ path('depense_edit', {'id' : entity.id, 'idPeriodeDepense' : entityPeriode.id, 'idContrat' : idContrat, 'idTypeDepense' :idTypeDepense }) }}">
+                                <i title="Modifier" style="color: orange; cursor: pointer; margin-left: 4%" class="fa fa-pencil fa-2x"></i>
+                            </a>
+                            {% if entity.del == 0 %}
+                                <a style="color: red; cursor: pointer; float: right" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="depense_delete">
+                                    <i  title="Supprimer"  class="fa fa-trash-o fa-2x"></i>
+                                </a>
+                                {#Popover Content Delete#}
+                                <div id="popoverDeleteContent" style="display: none">
+                                    <p><b>Voulez vous le supprimer définitivement ?</b></p>
+                                    Veuillez entrer <b>'OK'</b> dans le champ puis <b>Valider</b>
+                                    <input id="responseDel" type="text" class="form-control" value="KO" style=" width: 30%; float: right; margin: 10px; border-color: #0FAD8C"> <br><br><br>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="button" class="form-control btn-danger" onclick="common().closePopover()" value="Fermer" style="font-weight: bold ">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input id="valDelete" type="button" onclick='common().deleteEntity({{ entity.id }}, {{ entityPeriode.id }}, {{ idContrat }}, {{ idTypeDepense }})' class="form-control" value="Valider" style="background: #0FAD8C; color:white; font-weight: bold">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a style="color: forestgreen; cursor: pointer; float: right;" href="{{ path('depense_delete', {'id' : entity.id, 'del' : 0, 'idRefresh' : entityPeriode.id, 'idRefresh2' : idContrat, 'idRefresh3' : idTypeDepense }) }}">
+                                        <i title="Activer"  class="fa fa-check fa-2x"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-money fa-5x"></i><br>
+                Aucune Dépense
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'une Dépense</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_row(form.materiel) }}
+                    {{ form_row(form.motif) }}
+                    {{ form_row(form.employe) }}
+                    {{ form_row(form.voiture) }}
+                    {{ form_row(form.montant) }}
+                    {{ form_row(form.depenseFile) }}
+
+
+                    <div id="remove">
+                        {{ form_row(form.periodeDepense) }}
+                    </div>
+                    <select style="display: none;" id="janettransit_adminbundle_depense_periodeDepense" name="janettransit_adminbundle_depense[periodeDepense]">
+                        <option value="{{ entityPeriode.id }}"></option>
+                    </select>
+                    <select style="display: none;"  name="contrat">
+                        <option value="{{ idContrat }}"></option>
+                    </select>
+                    <select style="display: none;"  name="depense">
+                        <option value="{{ idTypeDepense }}"></option>
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')}}"></script>
+
+    <script>
+        $('.multiselectOne').multiselect({
+            enableFiltering : true,
+            nonSelectedText : 'Aucun Choix'
+        });
+        $(".modal-body .btn-group").css({'width' : '80%', 'margin-left' : '5%','margin-bottom': '2%'});
+        $(".multiselect-container").find('li:eq(1)').after('<br>');
+        common().dataTable(0);
+        common().initPopover();
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $('#remove').remove();
+    </script>
+{% endblock %}

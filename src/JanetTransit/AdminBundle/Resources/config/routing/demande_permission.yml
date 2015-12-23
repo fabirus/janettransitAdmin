@@ -1,0 +1,25 @@
+demandepermission_create:
+    path:     /demandepermission/create
+    defaults: { _controller: JanetTransitAdminBundle:DemandePermission:create }
+
+demandepermission_show:
+    path:     /demandepermission/{id}
+    defaults: { _controller: JanetTransitAdminBundle:DemandePermission:show }
+
+demandepermission_valid:
+    path:     /demandepermission/{id}/{valid}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:DemandePermission:valid }
+
+demandepermission_update:
+    path:     /demandepermission/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:DemandePermission:update }
+
+demandepermission_checkDate:
+    path:     /demandepermissioncheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:DemandePermission:checkDate, _locale : fr }
+    options:
+        expose: true
+
+demandepermission_print:
+    path:     /demandepermission/{id}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:DemandePermission:print }

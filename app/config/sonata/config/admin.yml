@@ -1,0 +1,27 @@
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.admin.block.search_result:
+            contexts: [admin]
+        # Sonata UserBundle
+        sonata.user.block.menu:
+        sonata.user.block.account:
+        #Sonata Block Bundle
+        sonata.block.service.text:
+        sonata.block.service.rss:
+        sonata.formatter.block.formatter:
+
+sonata_admin:
+    title:      JANET TRANSIT
+    title_logo: /img/logo.ico
+    templates:
+        dashboard: SonataAdminBundle:Core:dashboard.html.twig
+        search: SonataAdminBundle:Core:search.html.twig
+        search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
+        layout:  SonataAdminBundle::layout.html.twig
+    #configurer les droits pour avoir accçés à l'admin
+    security:
+        handler: sonata.admin.security.handler.role

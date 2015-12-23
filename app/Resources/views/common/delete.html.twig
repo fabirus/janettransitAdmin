@@ -1,0 +1,13 @@
+<div id="popoverDeleteContent" style="display: none">
+    <p><b>Voulez vous le supprimer définitivement ?</b></p>
+    Veuillez entrer <b>'OK'</b> dans le champ puis <b>Valider</b>
+    <input id="responseDel" type="text" class="form-control" value="KO" style=" width: 30%; float: right; margin: 10px; border-color: #0FAD8C"> <br><br><br>
+    <div class="row">
+        <div class="col-md-6">
+            <input type="button" class="form-control btn-danger" onclick="common().closePopover()" value="Fermer" style="font-weight: bold ">
+        </div>
+        <div class="col-md-6">
+            <input id="valDelete" type="button" onclick='common().deleteEntity({{ entity.id }})' class="form-control" value="Valider" style="background: #0FAD8C; color:white; font-weight: bold">
+        </div>
+    </div>
+</div>

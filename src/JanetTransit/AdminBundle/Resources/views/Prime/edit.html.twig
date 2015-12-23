@@ -1,0 +1,60 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Modification de la Fiche de Présence {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Modification de la Prime</div>
+    <div>
+        <a href="{{ path('prime_show', {'id' : idEmploye}) }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+    </div><br>
+
+    <div class="row" style="width: 30%;margin-left: auto;margin-right: auto; height: 535px;">
+        <br><br>
+        {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+        {{ form_label(edit_form.periode) }}
+        <div class="form-group">
+            <div class='input-group periodepicker' id="checkDate" data-employe="{{ idEmploye }}">
+                {{ form_widget(edit_form.periode) }}
+                <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+            </div>
+            <span class="error_date" style="display: none; color: red">Cette période existe déja pour cet employé</span>
+        </div>
+        {{ form_row(edit_form.motif) }}
+        {{ form_row(edit_form.montant) }}
+        <select style="display: none" id="janettransit_adminbundle_prime_employe" name="janettransit_adminbundle_prime[employe]" class="form-control">
+            <option value="{{ idEmploye }}"></option>
+        </select>
+
+        <div class="modal-footer">
+            {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+        </div>
+
+        {{ form_end(edit_form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        common().periode();
+        $("form").validate();
+        common().validation();
+        $("input[type='hidden']").prev().remove();
+    </script>
+{% endblock %}

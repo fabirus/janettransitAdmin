@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}JANET{% endblock %}</title>
+        {#{% stylesheets filter='cssrewrite, yui_css'#}
+        {#'assets/vendor/bootstrap/dist/css/bootstrap.min.css'#}
+        {#'css/font-awesome.css'#}
+        {#'assets/vendor/datatables.net-dt/css/jquery.dataTables.min.css'#}
+        {#'http://fonts.googleapis.com/css?family=Open+Sans'#}
+        {#'css/custom.css'#}
+        {#%}#}
+        {#<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />#}
+        {#{% endstylesheets %}#}
+
+        {#ancienne config#}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css')}}" />
+            <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet" />
+            <link href="{{ asset('assets/vendor/datatables.net-dt/css/jquery.dataTables.min.css')}}" rel="stylesheet" />
+            <link href="{{ asset('assets/vendor/flag-icon-css/css/flag-icon.min.css')}}" rel="stylesheet" />
+            {#<link href="{{ asset('js/morris/morris-0.4.3.min.css') }}" rel="stylesheet" />#}
+            <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+            <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+            <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.ico') }}" />
+    </head>
+    <body>
+        {#Notice#}
+        <div id="notice"></div>
+        <div class="loader">
+            <img src="{{ asset('img/loader.GIF') }}">
+        </div>
+
+        <div id="wrapper">
+            <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ path('admin_homepage') }}">JANET TRANSIT</a>
+                </div>
+                {% if app.user %}
+                    <span class="label" style="font-size: 20px;">
+                        {#{{ path('admin_homepage', {'_locale' : 'en'}) }}#}
+                        {#<a style="color:white;" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'en'})) }}"><span style="margin-top: 1%;" class="flag-icon flag-icon-gb"></span> EN</a>#}
+                        {#<a style="color:white;" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'fr'})) }}"><span class="flag-icon flag-icon-fr"></span> FR</a>#}
+                    </span>
+                    <div style="color: white;padding: 15px 50px 5px 50px;float: right;font-size: 16px;">
+                        {#{{ app.user.getGroups() }}#}
+                        {#{% for group in app.user.roles %}#}
+                            {#{{ group }}#}
+                        {#{% endfor %}#}
+                        {{ 'home.messages'|trans({'%username%' : app.user.username, '%date%' : app.user.lastLogin|date("d/m/Y") }) }}&nbsp;
+
+                        <div class="btn-group ">
+                            <button type="button" class="btn btn-danger">{{ 'home.user.user'|trans }}</button>
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" id="user_menu">
+                                <li><a href="{{ path('fos_user_profile_show') }}">{{ 'home.user.profile'|trans }}</a></li>
+                                <li><a href="{{ path('fos_user_profile_edit_authentication') }}">{{ 'home.user.authentification'|trans }}</a></li>
+                                <li><a href="{{ path('fos_user_change_password') }}">{{ 'home.user.mot_de_passe'|trans }}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}"> {{ 'home.user.deconnecter'|trans }}</a></li>
+                            </ul>
+                        </div>
+                        {#<a href="{{ path('fos_user_security_logout') }}" class="btn btn-danger square-btn-adjust">Changer de Mot de Passe</a>#}
+                        {#<a href="{{ path('fos_user_security_logout') }}" class="btn btn-danger square-btn-adjust">Logout</a>#}
+                    </div>
+                {% endif %}
+            </nav>
+            <nav class="navbar-default navbar-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="main-menu">
+                        <li class="text-center" >
+                            {% if app.user %}
+                                {% if app.user.imageName is not null %}
+                                    <img width="140px" height="140px" class=" user-image img-responsive img-thumbnail"  src="{{ app.request.basePath }}{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="{{ app.user.username }}" />
+                                {% else %}
+                                    <img src="{{ asset('img/users/avatar_default.png') }}" class="user-image img-responsive"/>
+                                {% endif %}
+                            {% endif %}
+                        </li>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li>
+                                <a href="{{ path('sonata_admin_dashboard') }}"><i class="fa fa-lock fa-3x"></i>{{ 'menu.admin'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_SECRETAIRE') %}
+                            <li>
+                                <a href="#"><i class="fa fa-users fa-3x"></i>{{ 'menu.employe.header'|trans }}<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    {% if is_granted('ROLE_SECRETAIRE') %}
+                                        <li>
+                                            <a href="{{ path('employe_informations') }}">{{ 'menu.employe.informations'|trans }}</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_MANAGER') %}
+                                        <li>
+                                            <a href="{{ path('poste_informations') }}">{{ 'menu.employe.postes'|trans }}</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_MANAGER') %}
+                                        <li>
+                                            <a href="{{ path('service_informations') }}">{{ 'menu.employe.services'|trans }}</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_MANAGER') %}
+                                        <li>
+                                            <a href="{{ path('taf_informations') }}">{{ 'menu.employe.taf_suivi'|trans }}</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_MANAGER') %}
+                                        <li>
+                                            <a href="{{ path('prime_informations') }}">{{ 'menu.employe.primes'|trans }}</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_SECRETAIRE') %}
+                            <li>
+                                <a href="{{ path('periodecarburation_informations') }}"><i class="fa fa-dashboard fa-3x"></i> {{ 'menu.carburation'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li>
+                                <a  href="{{ path('contratets_informations') }}"><i class="fa fa-file-text fa-3x"></i>{{ 'menu.contrats'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_SECRETAIRE') %}
+                            <li>
+                                <a  href="{{ path('facture_informations') }}"><i class="fa fa-book fa-3x"></i>{{ 'menu.manutention'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_GESTION') %}
+                            <li>
+                                <a   href="{{ path('stock_informations') }}"><i class="fa fa-archive fa-3x"></i>{{ 'menu.stocks'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_SECRETAIRE') %}
+                            <li>
+                                <a  href="{{ path('reunion_informations') }}"><i class="fa fa-table fa-3x"></i>{{ 'menu.reunion'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_GESTION') %}
+                            <li>
+                                <a  href="{{ path('typevoiture_informations') }}"><i class="fa fa-truck fa-3x"></i>{{ 'menu.voitures'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_SECRETAIRE') %}
+                            <li>
+                                <a  href="{{ path('depense_informations') }}"><i class="fa fa-money fa-3x"></i>{{ 'menu.depenses'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li>
+                                <a  href="{{ path('operation_informations') }}"><i class="fa fa-desktop fa-3x"></i>{{ 'menu.operations'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a  href="{{ path('data_informations') }}"><i class="fa fa-bars fa-3x"></i>{{ 'menu.donnees'|trans }}</a>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li>
+                                <a  href="{{ path('comptabilite_informations') }}"><i class="fa fa-credit-card fa-3x"></i>{{ 'menu.comptabilite'|trans }}</a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap fa-3x"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">Second Level Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Second Level Link</a>
+                                </li>
+                                <li>
+                                    <a href="#">Second Level Link<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#">Third Level Link</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Link</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Link</a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a  href="{{ path('janet_transit_wiki_homepage')}}"><i class="fa fa-asterisk fa-3x"></i> DOCUMENTATION</a>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </nav>
+            <div id="page-wrapper">
+                <div id="page-inner">
+                    {% block body %}{% endblock %}
+                </div>
+                {% block scrollTop %}
+                    <div class="upArrow" id="upArrow"></div>
+                {% endblock %}
+            </div>
+
+            {#{% javascripts filter='?yui_js'#}
+                {#'assets/vendor/jquery/dist/jquery.js'#}
+                {#'assets/vendor/bootstrap/dist/js/bootstrap.min.js'#}
+                {#'assets/vendor/underscore/underscore-min.js'#}
+                {#'assets/vendor/jquery-validation/dist/jquery.validate.min.js'#}
+                {#'assets/vendor/jquery-validation/dist/additional-methods.min.js'#}
+                {#'js/jquery.metisMenu.js'#}
+                {#'js/lib/external/jquery.print.js'#}
+                {#'js/custom.js'#}
+                {#'js/lib/scrollTop.js'#}
+                {#'js/lib/menu.js'#}
+                {#'assets/vendor/datatables.net/js/jquery.dataTables.min.js'#}
+                {#'js/lib/common.js'#}
+            {#%}#}
+
+            {#<script type="text/javascript" src='{{ asset_url }}'></script>#}
+            {#<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
+            {#<script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>#}
+            {#<script>#}
+                {#$(window).load(function() {#}
+                {#$(".loader").fadeOut("100000");#}
+                {#})#}
+            {#</script>#}
+            {#{% endjavascripts %}#}
+
+            {#ancienne config#}
+            {% block javascripts %}
+                <script src="{{ asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+                <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+                <script src="{{ asset('assets/vendor/underscore/underscore-min.js')}}"></script>
+                <script src="{{ asset('assets/vendor/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+                <script src="{{ asset('assets/vendor/jquery-validation/dist/additional-methods.min.js') }}"></script>
+                <script src="{{ asset('js/jquery.metisMenu.js') }}"></script>
+                <script src="{{ asset('js/lib/external/jquery.print.js') }}"></script>
+                {#<script src="{{ asset('js/morris/raphael-2.1.0.min.js') }}"></script>#}
+                {#<script src="{{ asset('js/morris/morris.js') }}"></script>#}
+                <script src="{{ asset('js/custom.js') }}"></script>
+                <script src="{{ asset('js/lib/scrollTop.js')}}"></script>
+                <script src="{{ asset('js/lib/menu.js')}}"></script>
+                <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+                <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+                <script src="{{ asset('assets/vendor/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+                {#<script src="{{ asset('js/lib/external/canvasHtml.js') }}"></script>#}
+                {#<script src="{{ asset('assets/vendor/jspdf/dist/jspdf.debug.js') }}"></script>#}
+                <script>
+                    $(window).load(function() {
+                        $(".loader").fadeOut("100000");
+                    })
+                </script>
+            {% endblock %}
+        </div>
+    </body>
+</html>

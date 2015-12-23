@@ -1,0 +1,115 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste Carburations {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des dates de Carburations</div>
+    <div class="row">
+        <div class="col-md-6">
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover table-bordered dataTable print">
+                <thead>
+                <tr>
+                    <th style="text-align: left;width: 13%;">Date de la carburation</th>
+                    <th style="text-align: right">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+                        <td style="text-align: left">{{ entity.dateCarburation }}</td>
+                        <td style="text-align: right">
+                            <a href="{{ path('periodecarburation_edit', {'id' : entity.id}) }}">
+                                <i title="Modifier" style="color: orange; cursor: pointer; margin-right: 2%" class="fa fa-pencil fa-2x"></i>
+                            </a>
+                            {% if entity.del == 0 %}
+                                <a style="color: red; cursor: pointer; margin-right: 2%" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="periodecarburation_delete">
+                                    <i  title="Supprimer"  class="fa fa-trash-o fa-2x"></i>
+                                </a>
+                                {#Popover Content Delete#}
+                                {% include '::common/delete.html.twig' %}
+                            {% else %}
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a href="{{ path('periodecarburation_delete', {'id' : entity.id, 'del' : 0}) }}">
+                                        <i title="Activer" style="color: forestgreen; cursor: pointer; margin-right: 2%" class="fa fa-check fa-2x"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                            <a href="{{ path('carburation_informations', {'id' : entity.id }) }}">
+                                <i class="fa fa-eye fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-ban fa-5x"></i><br>
+                Aucune  période de Carburation
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'une dates carburation</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_label(form.dateCarburation) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate" data-employe="1">
+                            {{ form_widget(form.dateCarburation) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour la carburation</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        {% if success == 'true' %}
+        common().notice('Enregistrement avec succès','ok');
+        {% endif %}
+        common().date();
+        common().initPopover();
+        common().dataTable(0);
+        $("form").validate();
+        common().validation();
+    </script>
+{% endblock %}

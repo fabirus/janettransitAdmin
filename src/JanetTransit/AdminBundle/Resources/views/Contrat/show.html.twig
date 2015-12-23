@@ -1,0 +1,144 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Contrats de {{ employe.nom }} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">{{ 'employe.contrat.liste'|trans({'%employe%' : employe}, 'employe')}}</div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('employe_show', {'id' : employe.id} ) }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '{{ 'employe.contrat.print_list'|trans({'%employe%' : employe}, 'employe')}}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover dataTable table-bordered print">
+                <thead>
+                <tr>
+                    <th style="text-align: center">{{ 'type_contrat'|trans({}, 'array')}}</th>
+                    <th style="text-align: center">{{ 'duree_hebdo'|trans({}, 'array')}}</th>
+                    <th style="text-align: center">{{ 'date_debut'|trans({}, 'array')}}</th>
+                    <th style="text-align: center">{{ 'datefin'|trans({}, 'array')}}</th>
+                    <th style="text-align: center">{{ 'justificatifs'|trans({}, 'array')}}</th>
+                    <th style="text-align: center" class="noprint">{{ 'actions'|trans({}, 'array')}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr {% if entity.dateFin ==  "now"|date("d/m/Y") %} class="danger" {% endif %}>
+                        <td style="text-align: center">{{ entity.typeContrat }}</td>
+                        <td style="text-align: center">{{ entity.duree }} Jour(s)</td>
+                        <td style="text-align: center">{{ entity.dateDebut }}</td>
+                        <td style="text-align: center">{{ entity.dateFin }}</td>
+                        <td style="text-align: center">
+                            {% if not entity.contratFileName %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% else %}
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'contratFile') }}">
+                                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center" class="noprint">
+                            <a href="{{ path('contrat_print', {'id' : entity.id, 'idEmploye' : employe.id}) }}">
+                                <i class="fa fa-eye fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-ban fa-5x"></i><br>
+                Aucun Contrat pour cette employé
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'un Contrat</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_row(form.typeContrat) }}
+                    {{ form_row(form.duree) }}
+                    {{ form_label(form.dateDebut) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate" data-employe="{{ employe.id }}">
+                            {{ form_widget(form.dateDebut) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour cet employé</span>
+                    </div>
+                    {{ form_label(form.dateFin) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker'>
+                            {{ form_widget(form.dateFin) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour cet employé</span>
+                    </div>
+                    <div id="remove">
+                        {{ form_row(form.contratFile) }}
+                    </div>
+                    <select style="display: none" id="janettransit_adminbundle_contrat_employe" name="janettransit_adminbundle_contrat[employe]" class="form-control">
+                        <option value="{{ employe.id }}"></option>
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        {% if success == 'true' %}
+        common().notice('Enregistrement avec succès','ok');
+        {% endif %}
+        common().date();
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        common().dataTable(0, '{{ app.request.locale }}');
+        $("input[type='hidden']").prev().remove();
+        $('#remove').remove();
+    </script>
+{% endblock %}

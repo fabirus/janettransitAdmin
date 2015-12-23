@@ -1,0 +1,33 @@
+fichedepaie_create:
+    path:     /fichedepaie/create
+    defaults: { _controller: JanetTransitAdminBundle:FicheDePaie:create }
+
+fichedepaie_show:
+    path:     /fichedepaie/{id}
+    defaults: { _controller: JanetTransitAdminBundle:FicheDePaie:show }
+
+
+fichedepaie_delete:
+    path:     /fichedepaie/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:FicheDePaie:delete, _locale : fr }
+    options:
+        expose: true
+
+fichedepaie_edit:
+    path:     /fichedepaie/{id}/edit/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:FicheDePaie:edit }
+
+fichedepaie_update:
+    path:     /fichedepaie/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:FicheDePaie:update }
+
+fichedepaie_print:
+    path:     /fichedepaie/{id}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:FicheDePaie:print }
+
+
+fichedepaie_checkDate:
+    path:     /fichedepaiecheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:FicheDePaie:checkDate, _locale : fr }
+    options:
+        expose: true

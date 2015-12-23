@@ -1,0 +1,27 @@
+periodedepense_informations:
+    path:     /periodedepense/{idTypeDepense}/{idContrat}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeDepense:index }
+
+periodedepense_create:
+    path:     /periodedepense/create
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeDepense:create }
+
+periodedepense_edit:
+    path:     /periodedepense/{id}/{idContrat}/{idTypeDepense}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeDepense:edit }
+
+periodedepense_update:
+    path:     /periodedepense/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeDepense:update }
+
+periodedepense_checkDate:
+    path:     /periodedepensecheckDate/{idContrat}/{idTypeDepense}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeDepense:checkDate, _locale : fr }
+    options:
+        expose: true
+
+periodedepense_delete:
+    path:     /periodedepensedel/delete/{id}/{del}/{idRefresh}/{idRefresh2}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeDepense:delete, _locale : fr}
+    options:
+        expose: true

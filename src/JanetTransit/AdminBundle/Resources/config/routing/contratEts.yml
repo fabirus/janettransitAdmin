@@ -1,0 +1,29 @@
+contratets_informations:
+    path:     /contratets
+    defaults: { _controller: JanetTransitAdminBundle:ContratEts:index }
+
+contratets_create:
+    path:     /contratets/create
+    defaults: { _controller: JanetTransitAdminBundle:ContratEts:create }
+
+contratets_show:
+    path:     /contratets/{id}
+    defaults: { _controller: JanetTransitAdminBundle:ContratEts:show }
+
+
+contratets_delete:
+    path:     /contratets/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:ContratEts:delete, _locale : fr }
+    options:
+        expose: true
+
+contratets_update:
+    path:     /contratets/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:ContratEts:update }
+
+
+contratets_search:
+    path:     /recheche/contratets
+    defaults: { _controller: JanetTransitAdminBundle:ContratEts:search, _locale : fr }
+    options:
+        expose: true

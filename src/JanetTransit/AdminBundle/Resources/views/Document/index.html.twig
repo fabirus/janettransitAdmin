@@ -1,0 +1,155 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Documents {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Documents de la voiture <b>{{ voiture.marque|upper }} </b> Immatriculé <b> {{ voiture.immatricule|upper }}</b></div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('voiture_informations', {'id' : typeVoiture.id }) }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', 'Liste des Voitures de Type {{ typeVoiture.nom|upper }}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover dataTable print table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Type de Document</th>
+                    <th style="text-align: center">Date Fait</th>
+                    <th style="text-align: center">Date d'échéance</th>
+                    <th style="text-align: center">Justificatifs</th>
+                    <th class="noprint" style="text-align: center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+                        <td style="text-align: center">{{ entity.typeDocument }}</td>
+                        <td style="text-align: center">{{ entity.dateFait }}</td>
+                        <td style="text-align: center">{{ entity.dateEcheance }}</td>
+                        <td style="text-align: center">
+                            {% if not entity.documentFileName %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% else %}
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'documentFile') }}">
+                                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="noprint" style="text-align: center">
+                            <a href="{{ path('document_edit', {'id' : entity.id, 'idVoiture' : voiture.id, 'idType' : typeVoiture.id}) }}">
+                                <i title="Modifier" style="color: orange; cursor: pointer; margin-right: 4%" class="fa fa-pencil fa-2x"></i>
+                            </a>
+                            {% if entity.del == 0 %}
+                                <a style="color: red; cursor: pointer;" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="document_delete">
+                                    <i  title="Supprimer"  class="fa fa-trash-o fa-2x"></i>
+                                </a>
+                                {#Popover Content Delete#}
+                                {% include '::common/delete.html.twig' %}
+                            {% else %}
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a href="{{ path('document_delete', {'id' : entity.id, 'del' : 0}) }}">
+                                        <i title="Activer" style="color: forestgreen; cursor: pointer;" class="fa fa-check fa-2x"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-file-text-o fa-5x"></i><br>
+                Aucun Document pour cette Voiture
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'un Document</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_row(form.typeDocument) }}
+                    {{ form_label(form.dateFait) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate">
+                            {{ form_widget(form.dateFait) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                    {{ form_label(form.dateEcheance) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate">
+                            {{ form_widget(form.dateEcheance) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                    {{ form_row(form.documentFile) }}
+
+                    <select style="display: none" id="janettransit_adminbundle_document_voiture" name="janettransit_adminbundle_document[voiture]" class="form-control">
+                        <option value="{{ voiture.id }}"></option>
+                    </select>
+                    <select style="display: none" id="janettransit_adminbundle_voiture_typeVoiture" name="janettransit_adminbundle_voiture[typeVoiture]" class="form-control">
+                        <option value="{{ typeVoiture.id }}"></option>
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        {#{% if success == 'true' %}#}
+        {#common().notice('Enregistrement avec succès','ok');#}
+        {#{% endif %}#}
+        common().date();
+        common().initPopover();
+        common().dataTable(0);
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+
+        $("input[type='hidden']").prev().remove();
+    </script>
+{% endblock %}

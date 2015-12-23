@@ -1,0 +1,31 @@
+{
+  "name": "bower",
+  "authors": [
+    "fabienwandji <fabienwandji@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "bootstrap": "~3.3.5",
+    "underscore": "~1.8.3",
+    "jquery-validation": "~1.14.0",
+    "jspdf": "~1.1.135",
+    "datatables.net": "~1.10.10",
+    "datatables.net-dt": "~1.10.9",
+    "bootstrap-multiselect": "~0.9.13",
+    "jquery": "~2.1.4",
+    "flag-icon-css": "~0.8.5"
+  }
+}

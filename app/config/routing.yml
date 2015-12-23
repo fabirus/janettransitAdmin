@@ -1,0 +1,43 @@
+#janet_transit_admin:
+#    resource: "@JanetTransitAdminBundle/Resources/config/routing.yml"
+#    prefix:   /{_locale}
+#    requirements:
+#        _locale: en|fr
+#
+#janet_transit_wiki:
+#    resource: "@JanetTransitWikiBundle/Resources/config/routing.yml"
+#    prefix:   /{_locale}
+#    requirements:
+#        _locale: en|fr
+
+
+janet_transit_admin:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
+janet_transit_wiki:
+    resource: "@JanetTransitWikiBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#    prefix:   /{_locale}
+#    requirements:
+#        _locale: en|fr
+
+sonata_admin:
+    resource: "sonata/routing/admin.yml"
+    prefix:   /
+
+sonata_media:
+    resource: "sonata/routing/media.yml"
+    prefix:   /
+
+sonata_user:
+    resource: "sonata/routing/user.yml"
+    prefix:   /
+
+
+#FOSJsRoutingBundle pour l'appel des routes dans le JS
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+

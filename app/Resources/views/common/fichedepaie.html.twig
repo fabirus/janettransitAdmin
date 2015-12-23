@@ -1,0 +1,89 @@
+{% if prime is not null %}
+    {% set primeMontant = prime.montant %}
+{% else %}
+    {% set primeMontant = 0 %}
+{% endif %}
+
+{% if avanceSalaire is not null %}
+    {% set avanceSalaireMontant = avanceSalaire.montant %}
+{% else %}
+    {% set avanceSalaireMontant = 0 %}
+{% endif %}
+{% set salaire = (entity.employe.salaire/joursTravail)|round(0, 'floor')  %}
+<div class="row">
+    <h3 style="text-align:center;text-decoration:underline"><b>Bulletin de Paie {{ date }}</b></h3>
+    <div style="float:right;margin-right:10%">
+        <h4>Douala le {{ "now"|date("d/m/Y") }}</h4>
+    </div>
+</div>
+<br>
+<table class="table table-hover table-bordered">
+    <tbody>
+        <tr>
+            <th><b>EMPLOYEUR</b></th>
+            <td><b>SALARIE</b></td>
+        </tr>
+        <tr>
+            <td>
+                <p> ETS                 : JANET TRANSIT <br>
+                    N° Contribuable     : M100100012880 <br>
+                    TRC  : 027726 <br>
+                    Siège Social : Douala P.A.D
+                </p>
+            </td>
+            <td>
+                <p>
+                    Noms : {{ entity.employe.nom }} <br>
+                    Prénoms : {{ entity.employe.prenom }} <br>
+                    Poste : {{ entity.employe.poste }} <br>
+                    Matricule : {{ entity.employe.matricule }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th><b>INFORMATIONS FINANCIERES</b></th>
+            <td><b>INFORMATIONS COMPLEMENTAIRES</b></td>
+        </tr>
+        <tr>
+            <td>
+                <p> SALAIRE MENSUEL     : {{ entity.employe.salaire }} FCFA <br>
+                    Jours de Travail    : {{ joursTravail }} jour(s) <br>
+                    salaire Journalier  : {{ salaire }} FCFA <br>
+                    Primes              : {{ primeMontant }} FCFA
+                </p>
+            </td>
+            <td>
+                <p>
+                    Avance sur Salaire : {{ avanceSalaireMontant }} FCFA <br>
+                    Nbre d'absences : {{ absences }} jour(s) <br>
+                    Retenu sur absence : {{ salaire * absences }} FCFA <br>
+                    Retenu sur sanction: : {{ retenuSalire }} FCFA
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th><b>Sous Total : {{ entity.employe.salaire + primeMontant }} FCFA</b></th>
+            <td><b>Sous Total :  - {{ (salaire * absences) + retenuSalire  }} FCFA</b></td>
+        </tr>
+        <tr>
+            <th><b>OBSERVATIONS</b></th>
+            <td><b>RECOMMANDATIONS</b></td>
+        </tr>
+        <tr>
+            <td>{{ entity.observation }}</td>
+            <td>{{ entity.recommandation }}</td>
+        </tr>
+        <tr>
+            <th><b>SALAIRE NET A PAYER</b></th>
+            <td><b>{{ (entity.employe.salaire + primeMontant) - ((salaire * absences) + retenuSalire) }} FCFA</b></td>
+        </tr>
+    </tbody>
+</table>
+<div class="row" style="margin-top : 10%">
+    <div class="col-md-6" style="margin-left:15%;">
+        <b>Signature du salarié</b>
+    </div>
+    <div class="col-md-6" style="float:right;margin-right: 15%;text-align: right;">
+        <b>La Direction</b>
+    </div>
+</div>

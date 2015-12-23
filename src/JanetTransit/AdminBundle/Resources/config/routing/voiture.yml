@@ -1,0 +1,27 @@
+typevoiture_informations:
+    path:     /typevoiture
+    defaults: { _controller: JanetTransitAdminBundle:TypeVoiture:index }
+
+voiture_informations:
+    path:     /voitureinfos/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Voiture:index }
+
+voiture_create:
+    path:     /voiture/create
+    defaults: { _controller: JanetTransitAdminBundle:Voiture:create }
+
+voiture_edit:
+    path:     /voiture/{id}/{idType}
+    defaults: { _controller: JanetTransitAdminBundle:Voiture:edit }
+
+
+voiture_update:
+    path:     /voiture/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Voiture:update }
+
+
+voiture_delete:
+    path:     /voituredel/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Voiture:delete, _locale : fr }
+    options:
+        expose: true

@@ -1,0 +1,28 @@
+periodestock_informations:
+    path:     /periodestock/{idStock}/{idTypeStock}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeStock:index }
+
+periodestock_create:
+    path:     /periodestockcreate/create
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeStock:create }
+
+periodestock_edit:
+    path:     /periodestock/{id}/{idStock}/{idTypeStock}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeStock:edit }
+
+periodestock_update:
+    path:     /periodestock/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeStock:update }
+
+periodestock_checkDate:
+    path:     /periodestockcheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeStock:checkDate, _locale : fr }
+    options:
+        expose: true
+
+periodestock_delete:
+    path:     /periodestockdel/delete/{id}/{del}/{idRefresh}/{idRefresh2}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeStock:delete, _locale : fr}
+    options:
+        expose: true
+

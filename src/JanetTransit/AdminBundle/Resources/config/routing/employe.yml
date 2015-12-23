@@ -1,0 +1,31 @@
+employe_informations:
+    path:     /employe
+    defaults: { _controller: JanetTransitAdminBundle:Employe:index }
+
+
+employe_create:
+    path:     /employe/create
+    defaults: { _controller: JanetTransitAdminBundle:Employe:create }
+
+employe_show:
+    path:     /employe/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Employe:show }
+
+
+employe_delete:
+    path:     /employe/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Employe:delete, _locale : fr }
+    options:
+        expose: true
+
+
+employe_update:
+    path:     /employe/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Employe:update }
+
+
+employe_search:
+    path:     /recheche/employe
+    defaults: { _controller: JanetTransitAdminBundle:Employe:search, _locale : fr }
+    options:
+        expose: true

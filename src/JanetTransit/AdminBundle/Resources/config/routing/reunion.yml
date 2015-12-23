@@ -1,0 +1,28 @@
+reunion_informations:
+    path:     /reunion
+    defaults: { _controller: JanetTransitAdminBundle:Reunion:index }
+
+reunion_create:
+    path:     /reunion/create
+    defaults: { _controller: JanetTransitAdminBundle:Reunion:create }
+
+
+reunion_delete:
+    path:     /reunion/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Reunion:delete, _locale : fr }
+    options:
+        expose: true
+
+reunion_show:
+    path:     /reunion/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Reunion:show }
+
+reunion_update:
+    path:     /reunion/update/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Reunion:update }
+
+reunion_checkDate:
+    path:     /reunioncheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Reunion:checkDate, _locale : fr }
+    options:
+        expose: true

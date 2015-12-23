@@ -1,0 +1,26 @@
+carburation_informations:
+    path:     /carburation/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Carburation:index }
+
+carburation_create:
+    path:     /carburation/create/create
+    defaults: { _controller: JanetTransitAdminBundle:Carburation:create }
+
+
+carburation_delete:
+    path:     /carburation/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Carburation:delete, _locale : fr}
+    options:
+        expose: true
+
+carburation_edit:
+    path:     /carburation/{id}/edit/{idPeriode}
+    defaults: { _controller: JanetTransitAdminBundle:Carburation:edit }
+
+carburation_update:
+    path:     /carburation/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Carburation:update }
+
+carburation_valid:
+    path:     /carburation/{id}/{valid}/{idPeriode}
+    defaults: { _controller: JanetTransitAdminBundle:Carburation:valid }

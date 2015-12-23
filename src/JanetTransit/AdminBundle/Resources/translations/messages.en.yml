@@ -1,0 +1,70 @@
+home :
+    messages  : Hello %username% Last connection: %date%
+    user :
+        user : Users
+        profile : Profile
+        authentification : Authentication
+        mot_de_passe : Password
+        deconnecter : Log Out
+    welcome :  Welcome to Janet Transit Administration Software
+    informations   :  News
+    question : Hello, and thanks to connect to our application. Failure Visualization Management menu, you can use and benefit from our services, please get closer to a director or manager of the company <b>JANET TRANSIT</b>
+    alert :
+        tache :
+            header : Alert Spots
+            content : Some weekly spots are not yet completed, it is advised to perform as part of good business management !!
+            none    : All tasks are performed
+            infos   : "This is one of the spots whose name is <b> %nom% </b> and the date is <b> %date% </b>"
+        contrat :
+            header  : Contracts Alert
+            content : Some employees of contracts coming to an end soon, it will take the necessary steps to renevouller them !!
+            none    : All contracts are in the standards
+            infos   : This is the employee whose name is <b> %employe% </b>
+        voiture :
+            header  : Car Alert Documents
+            content : Some documents of Cars come to an end soon, it will take the necessary steps to renevouller them !!
+            none    : All the cars are in the standards Documents
+            infos   : This is the car brand <b> %marque% </b> Registered <b> %immatricule% </b>
+        carburation :
+            header  : Alert Carburetion
+            content : Some carburetors have not yet been paid, it will take the necessary steps to regularize !!
+            none    : All fuels are in the standards
+            infos   : This is taken by carburization <b>%employe%</b><b>%date%</b> which amount is <b>%montant% FCFA </b>
+        depense :
+            header  : Spending Alert
+            content : Some expenses have not yet been paid, it will take the necessary steps to regularize !!
+            none    : All expenditures are in the standards
+            infos   : This is the expenditure of <b> %date% </b> on <b> %materiel% </b> which amount is <b> %montant%  FCFA </ b>
+        manutention :
+            header  : Handling Movement Alert
+            content : Handling Certain movements have not yet been made, it will take the necessary steps to regularize !!
+            none    : All movements are in the standards Handling
+            infos   : This is the movement on <b>%contrat%</b> destination <b>%destination%</b> is <b>%date%</b>
+        presence :
+            header  : Presence Sheets Alert
+            content : Some earlier Attendance Sheets are not updated, it will arrange for update
+            none    : All Presence Sheets are current
+            infos   : This work concerns the <b> Secretary </b>, it is the presence of Sheets <b>%presence%</b>
+
+menu :
+    admin : ADMIN
+    employe :
+        header : EMPLOYEES
+        informations : Informations
+        postes : Posts
+        services : Services
+        taf_suivi : Taf & Monitoring
+        primes : Premiums
+    carburation : CARBURATION
+    contrats : CONTRACTS
+    manutention : HANDLING
+    stocks : STOCKS
+    reunion : MEETING
+    voitures : CARS
+    depenses : SPENDING
+    operations : OPERATIONS
+    donnees : DATA
+    comptabilite : ACCOUNTING
+
+common :
+    search : Search

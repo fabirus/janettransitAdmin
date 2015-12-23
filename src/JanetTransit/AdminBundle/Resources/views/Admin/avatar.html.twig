@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <form action="{{ path('avatar_change_update', {'id' : user}) }}" method="POST" class="form-horizontal">
+        <div>
+            <label for="fos_user_registration_form_imageFile">Avatar (jpeg|png)</label>
+            <input type="file" id="fos_user_registration_form_imageFile" name="fos_user_registration_form[imageFile]" class="btn btn-success form-control avatar file fileImage">
+        </div>
+        <div class="form-actions">
+            <button type="submit" name="submit" class="btn btn-primary pull-right">Envoyer</button>
+        </div>
+    </form>
+{% endblock %}

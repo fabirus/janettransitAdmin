@@ -1,0 +1,23 @@
+employe :
+    liste :
+        poste : Poste
+        infos : Liste des Employés
+    show :
+        infos : Description de l'employé
+        contrats : Contrats
+        fiche_de_paie : Fiches de paie
+        avance_salaire: Avances Salaire
+        fiche_presence : Fiche Présence
+        permission: Permissions
+        sanctions : Sanctions
+        print_message : Informations de l\'employé
+        edit : Modification de l'employé
+        create : Enregistrement d'un nouvel employé
+    contrat :
+        liste : Liste des Contrats de l'employé %employe%
+        print_list : Liste des Contrats de l\'employé %employe%
+        print : Contrat %typeContrat% pour %employe%
+    fiche_de_paie :
+        liste : Liste des Fiches de paie de l'employé %employe%
+        print_list : Liste des Fiches de paie de l\'employé %employe%
+        print : Fiche de paie pour %employe%, <b>%date%</b> !!

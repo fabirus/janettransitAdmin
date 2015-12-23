@@ -1,0 +1,59 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Suivi {% endblock %}
+
+
+{% block body %}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Suivis de l'employé {{ employe }}</div>
+    <div>
+        <a href="{{ path('suivi_informations') }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+        <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('print', '{{'suivi' ~ employe}}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+    </div>
+    <br />
+    {% if entities is not empty %}
+        <table class="table table-bordered table-hover dataTable print">
+            <thead>
+            <tr>
+                <th style="text-align: center">Date</th>
+                <th style="text-align: center">Nom</th>
+                <th style="text-align: center; width: 70%">Explication</th>
+                <th style="text-align: center">Etat</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td style="text-align: center">{{ entity.taf }}</td>
+                    <td style="text-align: center">{{ entity.nom }}</td>
+                    <td style="text-align: center; width: 70%">{{ entity.explication }}</td>
+                    <td style="text-align: center">
+                        {% if entity.etat == 1 %}
+                            <i style="color: darkred; cursor: pointer;" class="fa fa-times fa-2x"></i> <b style="display: none">Non</b>
+                        {% else %}
+                            <i style="color: forestgreen; cursor: pointer;" class="fa fa-check fa-2x"></i> <b style="display: none"> Oui</b>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="row" style="text-align: center; font-size: 30px">
+            <i class="fa fa-ban fa-5x"></i><br>
+            Aucun Suivi trouvé
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script src="http://mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
+    <script>
+        common().dataTable(0);
+    </script>
+{% endblock %}

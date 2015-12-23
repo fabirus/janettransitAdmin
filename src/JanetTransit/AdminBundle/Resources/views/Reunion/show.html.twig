@@ -1,0 +1,161 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Sanction {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Réuinion {{ entity.dateReunion }}</div>
+
+    <a href="{{ path('reunion_informations') }}">
+        <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </a>
+    <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+    <i title="Modifier" style="color: orange; float: right; cursor: pointer; margin-right: 2%" class="fa fa-pencil fa-3x" data-toggle="modal"
+       data-target="#modaleditForm"></i>
+    <div class="print">
+        <h4 style="float: right; margin-right: 5%">Douala, le <b>{{ entity.dateReunion }}</b></h4><br><br><br><br>
+        <div class="row" style="text-align: center;">
+            <h4><b style="text-decoration: underline;">COMPTE RENDU DE LA REUNION</b></h4>
+        </div>
+        {#<div style="width:73%; margin-right: auto; margin-left: auto;margin-top: 10%; font-size: 23px">#}
+        {#Nous Soussignons Janet Transit d'avoir remis <b>{{ entity.montant }} FCFA</b>#}
+        {#à l'employé <b>{{ entity.employe }}</b> pour avance<br> de Salaire Comptant pour le mois de <b>{{ date }}</b>#}
+        {#</div>#}
+        <table class="table table-hover table-bordered" id="tabAvance" style="width: 70%;margin-left: auto;margin-right: auto;margin-top: 2%">
+            <tbody>
+            <tr>
+                <th>Sujet</th>
+                <td>{{ entity.libelle  }}</td>
+            </tr>
+            <tr>
+                <th>Président</th>
+                <td>{{ entity.employePresident}}</td>
+            </tr>
+            <tr>
+                <th>Assistant(e)</th>
+                <td>{{ entity.employeAssistant}}</td>
+            </tr>
+            <tr>
+                <th>Participants</th>
+                <td>
+                    {% for entityIntervenant in entity.employeIntervenants  %}
+                        {{  entityIntervenant }},
+                    {% endfor %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-md-12" style=" padding-left: 10%;width: 95%;">
+                <p>{{ entity.compteRendu|markdown }}</p>
+            </div>
+
+        </div>
+        <div id="infos" class="row" style="margin-top: 12%;text-align: center">
+            <div class="col-md-6" style="text-decoration: underline; float: right">
+                Direction Générale
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modaleditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modification de la réunion du <b>{{ entity.dateReunion }}</b></h4>
+                </div>
+                {{ form_start(edit_form) }}
+                <div class="modal-body">
+                    {{ form_errors(edit_form) }}
+                    {{ form_label(edit_form.dateReunion) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate" data-employe="1">
+                            {{ form_widget(edit_form.dateReunion) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour la réunion</span>
+                    </div>
+                    {{ form_row(edit_form.employePresident) }}
+                    {{ form_row(edit_form.employeAssistant) }}
+                    {{ form_row(edit_form.employeIntervenants) }}
+                    {{ form_row(edit_form.libelle) }}
+                    {{ form_row(edit_form.compteRendu) }}
+                    <div class="fileUpload">
+                        <div class="icondelete">
+                            <div class="removeFile" style="display: none">
+                                <i style="cursor: pointer;margin: 2%" title="Supprimer" class="delete fa fa-trash-o fa-4x"></i>
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'reunionFile') }}" style="margin: 2%">
+                                    <i title="Voir" class="fa fa-eye fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="upload">
+                                <i class="fa fa-upload fa-5x"></i><br>
+                                <span>JUSTIFICATIF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fileType">
+                        {{ form_row(edit_form.reunionFile) }}
+                    </div>
+                    {#{{ form_row(edit_form.reunionFile) }}#}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')}}"></script>
+    <script src="http://mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
+    <script src="{{ asset('js/lib/common.js')}}"></script>
+    <script>
+        {% if success == 'true' %}
+        common().notice('Ajout du justificatif avec succès','ok');
+        {% endif %}
+        common().date();
+        $('.multiselectAll').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            selectAllText: 'Tout Sélectionner',
+            nonSelectedText: 'Aucun Choix'
+        });
+        $('.multiselectOne').multiselect({
+            enableFiltering: true,
+            nonSelectedText: 'Aucun Choix'
+        });
+        $(".modal-body .btn-group").css({'width' : '80%', 'margin-left' : '5%','margin-bottom': '2%'});
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+
+        var     fileUpload = $('.fileUpload'),
+                fileType   = $('.fileType');
+
+        {% if entity.reunionFileName is not null %}
+            fileUpload.show();
+            fileType.hide();
+        {% else %}
+            fileUpload.hide();
+            fileType.show();
+        {% endif %}
+        common().fileShow();
+    </script>
+{% endblock %}

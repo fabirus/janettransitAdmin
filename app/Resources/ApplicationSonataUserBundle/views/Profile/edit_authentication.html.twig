@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Reset Authentication{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/style_login.css')}}" rel='stylesheet' type='text/css' />
+{% endblock %}
+{% block body %}
+    <div style="font-size: 18px;" class="alert alert-info" role="alert">Vous avez la possibilité de  Changer vos informations d'authentification ici !!!</div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+            <div class="panel panel-default" id="change" style="background: white !important;color:black !important;">
+                <div class="panel-heading" style="background: white !important;color:black !important;border-color: #C90000 !important;">
+                    <p style="text-align: center;"><i class="fa fa-users fa-5x"></i></p>
+                    <h3><strong> Modiication des Infos de Connexion </strong></h3>
+                </div>
+                <div class="panel-body" id="changeP" style="color: black !important;">
+                    <form action="{{ path('sonata_user_profile_edit_authentication') }}" {{ form_enctype(form) }} method="POST">
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+
+                        {{ form_row(form.username,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_row(form.email,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_row(form.imageFile,{'attr': {'class': 'form-control'}}) }}
+                        {{ form_row(form.current_password,{'attr': {'class': 'form-control'}}) }}
+                        {#{{ form_row(form.imageFile) }}#}
+
+                        <div class="submit" style="margin-top: 5%;">
+                            <input id="changeSubmit" style=" background: #C90000; color:white;border-color: #C90000" type="submit" value="{{ 'sonata_user_submit'|trans({}, 'SonataUserBundle') }}"/>
+                        </div>
+                        {{ form_end(form) }}
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Contrats {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Contrats</div>
+    <div class="row">
+        <div class="col-md-6">
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+            {% include '::common/search.html.twig' %}
+        </div>
+    </div><br />
+
+    <div class="result" data-route="contratets_search">
+        {% if entities is not empty %}
+                {% for entity in entities %}
+                    <div class="col-md-3">
+                        <div class="panel panel-back noti-box ">
+                            <a href="{{ path('contratets_show', {'id' : entity.id}) }}">
+                                {% if entity.del == 1 %}
+                                    <i style="color:red;font-size: 100px;" class="fa fa-times-circle fa-5x"></i>
+                                {% else %}
+                                    <img class="bg-hover" style="border-radius: 100px;" src="
+                                    {% if not entity.logoFileName %}
+                                        {{ asset('files/entreprise/logo/logo_default.jpg') }}
+                                    {% else %}
+                                        {{ app.request.basePath }}{{ vich_uploader_asset(entity, 'logoFile') }}
+                                    {% endif %}
+                                    " width="100" height="100" title="{{ entity.nom }}">
+                                {% endif %}
+                            </a>
+                            <span style="margin-left:2%;font-size: 25px;"><b>{{ entity.nom|upper }}</b></span>
+                            <div class="text-box">
+                                <p style="font-size: 20px; font-family: monospace" class="main-text">
+                                    <span class="label label-primary">{{ entity.typeContratEts|upper }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-file-text-o fa-5x"></i><br>
+                Aucun Contrat
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'un Contrat</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_row(form.typeContratEts) }}
+                    {{ form_row(form.nom) }}
+                    {{ form_row(form.representant) }}
+                    {{ form_row(form.adresse) }}
+                    {{ form_row(form.tel) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.logoFile) }}
+                    {{ form_row(form.contratFile) }}
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script>
+        {#{% if success == 'true' %}#}
+        {#common().notice('Enregistrement avec succès','ok');#}
+        {#{% endif %}#}
+        $("form").validate();
+        common().validation();
+        $(".phoneNumber").rules("add", { phone: "" });
+        $(".file").rules("add", { filesize: 2 });
+
+    </script>
+{% endblock %}

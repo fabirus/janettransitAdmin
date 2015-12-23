@@ -1,0 +1,110 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Modification de la Fiche de Présence {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Modification de la fiche de présence</div>
+    <div>
+        <a href="{{ path('presence_show', {'id' : idEmploye}) }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+    </div><br>
+
+    <div class="row" style="width: 30%;margin-left: auto;margin-right: auto; height: 535px;">
+        <br><br>
+        {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+        {{ form_label(edit_form.at) }}
+        <div class="form-group">
+            <div class='input-group date datetimepicker' id="checkDate" data-employe="{{ idEmploye }}">
+                {{ form_widget(edit_form.at) }}
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+            <span class="error_date" style="display: none; color: red">Cette date existe déja pour cet employé</span>
+        </div>
+        {{ form_label(edit_form.heureArrivee) }}
+        <div class="form-group">
+            <div class='input-group date hourpicker'>
+                {{ form_widget(edit_form.heureArrivee) }}
+                <span class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </span>
+            </div>
+        </div>
+        {{ form_label(edit_form.heureDepart) }}
+        <div class="form-group">
+            <div class='input-group date hourpicker'>
+                {{ form_widget(edit_form.heureDepart) }}
+                <span class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </span>
+            </div>
+        </div>
+        {{ form_row(edit_form.statut) }}
+        {{ form_row(edit_form.infos) }}
+        <div class="fileUpload">
+            <div class="icondelete">
+                <div class="removeFile" style="display: none">
+                    <i style="cursor: pointer;margin: 5%" title="Supprimer" class="delete fa fa-trash-o fa-4x"></i>
+                    <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'absenceFile') }}" style="margin: 5%">
+                        <i title="Voir" class="fa fa-eye fa-4x"></i>
+                    </a>
+                </div>
+                <div class="upload">
+                    <i class="fa fa-upload fa-5x"></i><br>
+                    <span>JUSTIFICATIF</span>
+                </div>
+            </div>
+        </div>
+        <div class="fileType">
+            {{ form_row(edit_form.absenceFile) }}
+        </div>
+        {#{{ form_row(edit_form.absenceFile) }}#}
+        <select style="display: none" id="janettransit_adminbundle_presence_employe" name="janettransit_adminbundle_presence[employe]" class="form-control">
+            <option value="{{ idEmploye }}"></option>
+        </select>
+
+        <div class="modal-footer">
+            {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+        </div>
+
+        {{ form_end(edit_form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        common().date();
+        common().heure();
+        common().dataTable(0);
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $("input[type='hidden']").prev().remove();
+
+        var     fileUpload = $('.fileUpload'),
+                fileType   = $('.fileType');
+        {% if entity.absenceFileName is not null %}
+            fileUpload.show();
+            fileType.hide();
+        {% else %}
+            fileUpload.hide();
+            fileType.show();
+        {% endif %}
+        common().fileShow();
+    </script>
+{% endblock %}

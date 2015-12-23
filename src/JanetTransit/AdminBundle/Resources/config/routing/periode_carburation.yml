@@ -1,0 +1,27 @@
+periodecarburation_informations:
+    path:     /periodecarburation
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeCarburation:index }
+
+periodecarburation_create:
+    path:     /periodecarburation/create
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeCarburation:create }
+
+periodecarburation_delete:
+    path:     /periodecarburation/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeCarburation:delete, _locale : fr }
+    options:
+        expose: true
+
+periodecarburation_edit:
+    path:     /periodecarburation/edit/{id}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeCarburation:edit }
+
+periodecarburation_update:
+    path:     /periodecarburation/{id}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeCarburation:update }
+
+periodecarburation_checkDate:
+    path:     /periodecarburationcheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:PeriodeCarburation:checkDate, _locale : fr }
+    options:
+        expose: true

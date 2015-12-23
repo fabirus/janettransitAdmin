@@ -1,0 +1,185 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Contrat {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Contrat <b>{{ entity.nom }}</b> </div>
+    <div>
+        <a href="{{ path('contratets_informations') }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+        {% if entity.del == 0 %}
+            <a style="color: red; cursor: pointer; float: right" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="contratets_delete">
+                <i  title="Supprimer"  class="fa fa-trash-o fa-3x"></i>
+            </a>
+            {#Popover Content Delete#}
+            {% include '::common/delete.html.twig' %}
+        {% else %}
+            <a href="{{ path('contratets_delete', {'id' : entity.id, 'del' : 0}) }}">
+                <i title="Activer" style="color: forestgreen; cursor: pointer; float: right" class="fa fa-check fa-3x"></i>
+            </a>
+        {% endif %}
+        <i title="Modifier" style="color: orange; float: right; cursor: pointer; margin-right: 2%" class="fa fa-pencil fa-3x" data-toggle="modal"
+           data-target="#modalForm"></i>
+    </div> <br />
+
+    <table class="table table-hover table-bordered">
+        <tbody>
+        <tr>
+            <th>Nom de l'entreprise</th>
+            <td>{{ entity.nom }}</td>
+        </tr>
+        <tr>
+            <th>Type de Contrat</th>
+            <td>{{ entity.typeContratEts }}</td>
+        </tr>
+        <tr>
+            <th>Réprésentant</th>
+            <td>{{ entity.representant }}</td>
+        </tr>
+        <tr>
+            <th>Adresse</th>
+            <td>{{ entity.adresse }}</td>
+        </tr>
+        <tr>
+            <th>Téléphone</th>
+            <td>{{ entity.tel }}</td>
+        </tr>
+        <tr>
+            <th>Adresse Email</th>
+            <td>
+                {% if entity.email is not null  %}
+                    {{ entity.email }}
+                {% else %}
+                    <span class="label label-danger">Non renseigné</span>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Justificatif du Contrat</th>
+            <td>
+                {% if entity.contratFileName is not null  %}
+                    <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'contratFile') }}">
+                        <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                    </a>
+                {% else %}
+                    <span class="label label-danger">Non renseigné</span>
+                {% endif %}
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modification du Contrat <b>{{ entity.nom }}</b> </h4>
+                </div>
+                {{ form_start(edit_form) }}
+                <div class="modal-body">
+                    {{ form_errors(edit_form) }}
+                    {{ form_row(edit_form.typeContratEts) }}
+                    {{ form_row(edit_form.nom) }}
+                    {{ form_row(edit_form.representant) }}
+                    {{ form_row(edit_form.adresse) }}
+                    {{ form_row(edit_form.tel) }}
+                    {{ form_row(edit_form.email) }}
+                    <div class="fileUpload1">
+                        <div class="icondelete">
+                            <div class="removeFile1" style="display: none">
+                                <i style="cursor: pointer;margin: 5%" title="Supprimer" class="delete1 fa fa-trash-o fa-4x"></i>
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'logoFile') }}" style="margin: 5%">
+                                    <i title="Voir" class="fa fa-eye fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="upload1">
+                                <i class="fa fa-upload fa-5x"></i><br>
+                                <span>LOGO</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fileType1">
+                        {{ form_row(edit_form.logoFile) }}
+                    </div>
+                    {#{{ form_row(edit_form.logoFile) }}#}
+                    <div class="fileUpload">
+                        <div class="icondelete">
+                            <div class="removeFile" style="display: none">
+                                <i style="cursor: pointer;margin: 5%" title="Supprimer" class="delete fa fa-trash-o fa-4x"></i>
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'contratFile') }}" style="margin: 5%">
+                                    <i title="Voir" class="fa fa-eye fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="upload">
+                                <i class="fa fa-upload fa-5x"></i><br>
+                                <span>JUSTIFICATIF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fileType">
+                        {{ form_row(edit_form.contratFile) }}
+                    </div>
+                    {#{{ form_row(edit_form.contratFile) }}#}
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script>
+        {#{% if success == 'true' %}#}
+        {#common().notice('Enregistrement avec succès','ok');#}
+        {#{% endif %}#}
+        common().initPopover();
+        $("form").validate();
+        common().validation();
+        $(".phoneNumber").rules("add", { phone: "" });
+        $(".file").rules("add", { filesize: 2 });
+
+        var     fileUpload = $('.fileUpload'),
+                fileType   = $('.fileType'),
+                fileUpload1 = $('.fileUpload1'),
+                fileType1   = $('.fileType1');
+
+        {% if entity.logoFileName is not null %}
+            fileUpload1.show();
+            fileType1.hide();
+        {% else %}
+            fileUpload1.hide();
+            fileType1.show();
+        {% endif %}
+
+        {% if entity.contratFileName is not null %}
+            fileUpload.show();
+            fileType.hide();
+        {% else %}
+            fileUpload.hide();
+            fileType.show();
+        {% endif %}
+        common().fileShow();
+
+    </script>
+{% endblock %}

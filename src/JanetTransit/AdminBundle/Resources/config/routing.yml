@@ -1,0 +1,116 @@
+admin_homepage:
+    path:     /
+    defaults: { _controller: JanetTransitAdminBundle:Admin:index }
+
+employe:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/employe.yml"
+    prefix:   /
+
+poste:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/poste.yml"
+    prefix:   /
+
+service:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/service.yml"
+    prefix:   /
+
+
+avance_salaire:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/avance_salaire.yml"
+    prefix:   /
+
+demande_permission:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/demande_permission.yml"
+    prefix:   /
+
+sanction:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/sanction.yml"
+    prefix:   /
+
+presence:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/presence.yml"
+    prefix:   /
+
+prime:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/prime.yml"
+    prefix:   /
+
+fiche_de_paie:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/fiche_de_paie.yml"
+    prefix:   /
+
+contrat:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/contrat.yml"
+    prefix:   /
+
+taf:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/taf.yml"
+    prefix:   /
+
+tache:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/tache.yml"
+    prefix:   /
+
+carburation:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/carburation.yml"
+    prefix:   /
+
+periode_carburation:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/periode_carburation.yml"
+    prefix:   /
+
+reunion:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/reunion.yml"
+    prefix:   /
+
+voiture:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/voiture.yml"
+    prefix:   /
+
+document:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/document.yml"
+    prefix:   /
+
+contratEts:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/contratEts.yml"
+    prefix:   /
+
+depense:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/depense.yml"
+    prefix:   /
+
+periodedepense:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/periodedepense.yml"
+    prefix:   /
+
+operation:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/operation.yml"
+    prefix:   /
+
+facture:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/facture.yml"
+    prefix:   /
+
+periodefacture:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/periodefacture.yml"
+    prefix:   /
+
+data:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/data.yml"
+    prefix:   /
+
+comptabilite:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/comptabilite.yml"
+    prefix:   /
+
+stock:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/stock.yml"
+    prefix:   /
+
+mouvementstock:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/mouvementstock.yml"
+    prefix:   /
+
+periodestock:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/periodestock.yml"
+    prefix:   /

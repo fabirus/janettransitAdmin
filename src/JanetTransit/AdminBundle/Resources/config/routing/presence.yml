@@ -1,0 +1,35 @@
+presence_create:
+    path:     /presence/create
+    defaults: { _controller: JanetTransitAdminBundle:Presence:create }
+
+presence_show:
+    path:     /presence/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Presence:show }
+
+
+presence_delete:
+    path:     /presence/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Presence:delete, _locale : fr }
+    options:
+        expose: true
+
+presence_edit:
+    path:     /presence/{id}/edit/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Presence:edit }
+
+presence_update:
+    path:     /presence/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Presence:update }
+
+
+presence_checkFile:
+    path:     /presence/check/{file}/
+    defaults: { _controller: JanetTransitAdminBundle:Presence:checkFile, _locale : fr }
+    options:
+        expose: true
+
+presence_checkDate:
+    path:     /presence/check/date/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Presence:checkDate, _locale : fr }
+    options:
+        expose: true

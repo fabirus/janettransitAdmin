@@ -1,0 +1,170 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Demande de Permission {{ entity.employe.nom }} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Demande pour {{ entity.employe }} !! <br>
+        {% if entity.valid == 1 %}
+            <b style="text-decoration: underline">NB:</b> Pour pouvoir imprimer, la Demande doit etre valider par un responsable
+        {% endif %}
+    </div>
+
+    <a href="{{ path('demandepermission_show', {id : idEmploye}) }}">
+        <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </a>
+    <i title="Ajouter un justificatif" style="color: orange; float: right; cursor: pointer; margin-right: 2%" class="fa fa-pencil fa-3x" data-toggle="modal"
+       data-target="#modaleditForm"></i>
+    {% if entity.valid == 0 %}
+        <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+    {% endif %}
+    <div class="print">
+        <h3 style="float: right; margin-right: 5%">Douala, le <b>{{ "now"|date("d/m/Y") }}</b></h3><br><br><br><br>
+        <h3><b style="text-decoration: underline;margin-left: 5%">Objet:</b> Demande de Permission</h3>
+        <table class="table table-hover table-bordered" id="tabAvance" style="margin-left: auto;margin-right: auto;font-size: 20px;margin-top: 7%">
+            <tbody>
+            <tr>
+                <th>Employé</th>
+                <td>{{ entity.employe}}</td>
+            </tr>
+            <tr>
+                <th>Service</th>
+                <td>{{ entity.employe.services}}</td>
+            </tr>
+            <tr>
+                <th>Poste</th>
+                <td>{{ entity.employe.poste}}</td>
+            </tr>
+            <tr>
+                <th>Date de la Demande</th>
+                <td>{{ entity.dateDemande }}</td>
+            </tr>
+            <tr>
+                <th>Date Début</th>
+                <td>{{ entity.dateDebut}}</td>
+            </tr>
+            <tr>
+                <th>Date de Fin</th>
+                <td>{{ entity.dateFin }}</td>
+            </tr>
+            <tr>
+                <th style="height: 200px; vertical-align: middle">Motif</th>
+                <td style="width: 50%">{{ motif }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row" style="margin-top : 10%; font-size: 20px">
+            <div class="col-md-6">
+                <b>Signature du salarié</b>
+            </div>
+            <div class="col-md-6" style="float:right;text-align: right;">
+                <b>La Direction</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modaleditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modification de la demande de permission de l'employé <b>{{ entity.employe }}</b></h4>
+                </div>
+                {{ form_start(edit_form) }}
+                <div class="modal-body">
+                    {{ form_errors(edit_form) }}
+                    {#{{ form_row(edit_form.employe) }}#}
+                    {{ form_label(edit_form.dateDemande) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate" data-employe="{{ idEmploye }}">
+                            {{ form_widget(edit_form.dateDemande) }}
+                            <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                        </div>
+                    </div>
+                    {{ form_label(edit_form.dateDebut) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker'>
+                            {{ form_widget(edit_form.dateDebut) }}
+                            <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                        </div>
+                    </div>
+                    {{ form_label(edit_form.dateFin) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker'>
+                            {{ form_widget(edit_form.dateFin) }}
+                            <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                        </div>
+                    </div>
+                    {{ form_row(edit_form.motif) }}
+                    <div class="fileUpload">
+                        <div class="icondelete">
+                            <div class="removeFile" style="display: none">
+                                <i style="cursor: pointer;margin: 5%" title="Supprimer" class="delete fa fa-trash-o fa-4x"></i>
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'permissionFile') }}" style="margin: 5%">
+                                    <i title="Voir" class="fa fa-eye fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="upload">
+                                <i class="fa fa-upload fa-5x"></i><br>
+                                <span>JUSTIFICATIF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fileType">
+                        {{ form_row(edit_form.permissionFile) }}
+                    </div>
+                    {#{{ form_row(edit_form.permissionFile) }}#}
+                    <select style="display: none" id="janettransit_adminbundle_sanction_demandepermission" name="janettransit_adminbundle_demandepermission[employe]" class="form-control">
+                        <option value="{{ idEmploye }}"></option>
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script src="{{ asset('js/lib/common.js')}}"></script>
+    <script>
+        {% if success == 'true' %}
+        common().notice('Ajout du justificatif avec succès','ok');
+        {% endif %}
+        common().date();
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $("input[type='hidden']").prev().remove();
+
+        var     fileUpload = $('.fileUpload'),
+                fileType   = $('.fileType');
+        {% if entity.permissionFileName is not null %}
+            fileUpload.show();
+            fileType.hide();
+        {% else %}
+            fileUpload.hide();
+            fileType.show();
+        {% endif %}
+        common().fileShow();
+    </script>
+{% endblock %}

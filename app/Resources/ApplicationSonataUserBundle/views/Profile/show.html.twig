@@ -1,0 +1,45 @@
+{#{% extends "SonataUserBundle:Profile:action.html.twig" %}#}
+
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Profile{% endblock %}
+
+{% block body %}
+
+    <div class="panel panel-info">
+        <div class="panel-heading">Informations</div>
+        <div class="panel-body">
+            <p>Retrouvez ici toutes les informations liées à votre compte</p>
+        </div>
+        <table class="table table-hover" id="tableProfile">
+            <tr>
+                <td>Login</td>
+                <td>{{ app.user.username }}</td>
+            </tr>
+            <tr>
+                <td>E-mail</td>
+                <td>{{ app.user.email }}</td>
+            </tr>
+            <tr>
+                <td>Date de Création</td>
+                <td>{{ app.user.createdAt|date('d-m-Y') }}</td>
+            </tr>
+            <tr>
+                <td>Nom</td>
+                {% if app.user.firstname is not null %}
+                    <td>{{ app.user.firstname }}</td>
+                {% else %}
+                    <td><span class="label label-danger">Non renseigné</span></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Prénom</td>
+                {% if app.user.lastname is not null %}
+                    <td>{{ app.user.lastname }}</td>
+                {% else %}
+                    <td><span class="label label-danger">Non renseigné</span></td>
+                {% endif %}
+            </tr>
+
+        </table>
+    </div>
+{% endblock %}

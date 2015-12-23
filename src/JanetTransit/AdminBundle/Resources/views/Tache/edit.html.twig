@@ -1,0 +1,60 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Modification TAF {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Modification de la tache</div>
+    <div>
+        <a href="{{ path('tache_informations',{'id' : taf.id}) }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+    </div><br>
+<div style="width: 50%;margin-left: auto;margin-right: auto;margin-top: 5%;">
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+    {{ form_row(edit_form.employe) }}
+    {{ form_row(edit_form.voiture) }}
+    {{ form_row(edit_form.nom) }}
+    {{ form_row(edit_form.explication) }}
+    <select style="display: none" id="janettransit_adminbundle_sanction_demandepermission" name="janettransit_adminbundle_tache[taf]" class="form-control">
+        <option value="{{ taf.id  }}"></option>
+    </select>
+
+    {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register registerPoste'}})}}
+
+    {{ form_end(edit_form) }}
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript"  src="{{ asset('js/lib/common.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')}}"></script>
+    <script>
+        common().initPopover();
+        $('.multiselect').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            selectAllText: 'Tout Sélectionner',
+            nonSelectedText: 'Aucun Choix'
+        });
+        $('.multiselectOne').multiselect({
+            enableFiltering: true,
+            nonSelectedText: 'Aucun Choix'
+        });
+        $("#page-inner .btn-group").css({'width' : '80%', 'margin-left' : '5%','margin-bottom': '2%'});
+        $(".multiselect-container").eq(1).find('li:eq(1)').after('<br>');
+        $("form").validate();
+        common().validation();
+        $("input[type='hidden']").prev().remove();
+    </script>
+
+{% endblock %}

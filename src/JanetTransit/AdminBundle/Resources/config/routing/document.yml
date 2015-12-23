@@ -1,0 +1,21 @@
+document_informations:
+    path:     /document/{id}/{idType}
+    defaults: { _controller: JanetTransitAdminBundle:Document:index }
+
+document_create:
+    path:     /document/create
+    defaults: { _controller: JanetTransitAdminBundle:Document:create }
+
+document_edit:
+    path:     /documentEdit/{id}/{idVoiture}/{idType}
+    defaults: { _controller: JanetTransitAdminBundle:Document:edit }
+
+document_update:
+    path:     /document/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Document:update }
+
+document_delete:
+    path:     /documentDel/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Document:delete, _locale : fr}
+    options:
+        expose: true

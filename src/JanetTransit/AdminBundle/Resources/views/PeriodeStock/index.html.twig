@@ -1,0 +1,117 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des Journées {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Journées du Stock <b>{{  typeStock.nom|upper }}</b> </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('stock_show', {'id' : typeStock.id} ) }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover table-bordered dataTable print">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Date</th>
+                    <th class="noprint" style="text-align: center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+                        <td style="text-align: center">{{ entity.datePeriode }}</td>
+                        <td class="noprint" style="text-align: center">
+                            <a href="{{ path('mouvementstock_informations', {'idPeriode' : entity.id, 'idTypeStock' : typeStock.id, 'idStock' : stock.id}) }}">
+                                <i class="fa fa-eye fa-2x"></i>
+                            </a>
+                            <a href="{{ path('periodestock_edit', {'id' : entity.id, 'idStock' : stock.id , 'idTypeStock' : typeStock.id}) }}">
+                                <i title="Modifier" style="color: orange; cursor: pointer; margin-left: 6%" class="fa fa-pencil fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-calendar fa-5x"></i><br>
+                Aucune Journée
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'une Journée</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_label(form.datePeriode) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate" data-employe="{{ stock.id }}">
+                            {{ form_widget(form.datePeriode) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour ce Stock</span>
+                    </div>
+                    <select style="display: none" id="janettransit_adminbundle_periodestock_stock" name="janettransit_adminbundle_periodestock[stock]" class="form-control">
+                        <option value="{{ stock.id }}"></option>
+                    </select>
+                    <select style="display: none" id="typeStock" name="typeStock" class="form-control">
+                        <option value="{{ typeStock.id}}"></option>
+                    </select>
+
+                    <div id="remove">
+                        {{ form_row(form.stock) }}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        common().date();
+        common().dataTable(0);
+        $("form").validate();
+        common().validation();
+        $('#remove').remove();
+    </script>
+{% endblock %}

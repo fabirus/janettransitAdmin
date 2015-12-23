@@ -1,0 +1,76 @@
+{% extends "SonataUserBundle::layout.html.twig" %}
+    {% block title %}Login{% endblock %}
+    {% block body %}
+    {% block fos_user_content %}
+        {% if error %}
+            <div class="alert alert-danger" role="alert" id="error">
+                {{ 'Bad credentials'|trans({}, 'FOSUserBundle') }}
+            </div>
+        {% endif %}
+
+        <div class="row ">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <p style="text-align: center;"><i class="fa fa-user fa-5x"></i></p>
+                        <h3><strong>   Connexion </strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="{{ path("fos_user_security_check") }}" method="post">
+                            <br>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                <input type="text" id="username" name="_username" required="required" class="form-control" value="{{ last_username }}" placeholder="Nom d'utilisateur">
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input class="form-control" type="password" id="password" name="_password" required="required" placeholder="Mot de passe">
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="remember_me" name="_remember_me" value="on"> <b>Se Souvenir de Moi</b>
+                                </label>
+                                <span class="pull-right">
+                                       <a href="{{ path("fos_user_resetting_request") }}">Mot de Passe Oublié ? </a>
+                                </span>
+                            </div>
+                            <div class="submit">
+                                <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" >
+                            </div>
+                            <hr>
+                            Pas encore Enregistré ? <a href="{{ path("sonata_user_registration_register") }}">Cliquez Ici </a>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        {#<div class="main">#}
+            {#<div class="login-form" style="margin-top: 3%;background: darkslategray;">#}
+                {#<p><i class="fa fa-user fa-5x"></i></p>#}
+                {#<h1>Member Login</h1>#}
+                {#<form action="{{ path("fos_user_security_check") }}" method="post">#}
+                    {#<input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />#}
+                    {#<input type="text" id="username" name="_username" required="required" class="text" value="{{ last_username }}" placeholder="Nom d'utilisateur">#}
+                    {#<input type="password" id="password" name="_password" required="required" placeholder="Mot de passe" >#}
+                    {#<br>#}
+                    {#<input type="checkbox" id="remember_me" name="_remember_me" value="on" />#}
+                    {#<label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>#}
+                    {#<div class="submit">#}
+                        {#<input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" >#}
+                    {#</div>#}
+                    {#<p><a href="{{ path("fos_user_resetting_request") }}">Mot de passe Oublié?</a></p>#}
+                    {#<p><a href="{{ path("sonata_user_registration_register") }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></p>#}
+                {#</form>#}
+            {#</div>#}
+        {#</div>#}
+        {#<div class="copy-right">#}
+            {#<p>@Copiright 2015 <a target="_blank" href="https://www.facebook.com/fabienski.foureur">FABIEN WANDJI</a></p>#}
+        {#</div>#}
+    {% endblock fos_user_content %}
+    {% endblock %}
+
+
+

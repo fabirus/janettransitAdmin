@@ -1,0 +1,117 @@
+{% if prime is not null %}
+    {% set primeMontant = prime.montant %}
+{% else %}
+    {% set primeMontant = 0 %}
+{% endif %}
+
+{% if avanceSalaire is not null %}
+    {% set avanceSalaireMontant = avanceSalaire.montant %}
+{% else %}
+    {% set avanceSalaireMontant = 0 %}
+{% endif %}
+{% set salaire = (entity.employe.salaire/joursTravail)|round(0, 'floor')  %}
+<div class="row">
+    <h3 style="text-align:center;text-decoration:underline"><b>Bulletin de Paie {{ date }}</b></h3>
+    <div style="float:right;margin-right:10%">
+        <h4>Douala le {{ "now"|date("d/m/Y") }}</h4>
+    </div>
+</div>
+<div class="row" style="margin-top:10%">
+    <div class="col-md-6" style="margin-left:2%; width:48%;border: 2px solid black;">
+        <b>EMPLOYEUR</b>
+        <div class="row">
+            <div class="col-md-6">ETS:</div>
+            <div class="col-md-6">JANET TRANSIT</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">N° Contribuable:</div>
+            <div class="col-md-6">M100100012880</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">TRC:</div>
+            <div class="col-md-6">027726</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Siège Social:</div>
+            <div class="col-md-6">Douala P.A.D</div>
+        </div>
+    </div>
+    <div class="col-md-6" style="float:right;width: 48%;margin-right: 2%;border: 2px solid black;">
+        <b>SALARIE</b>
+        <div class="row">
+            <div class="col-md-6">Noms:</div>
+            <div class="col-md-6">{{ entity.employe.nom }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Prénoms:</div>
+            <div class="col-md-6">{{ entity.employe.prenom }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Poste:</div>
+            <div class="col-md-6">{{ entity.employe.poste }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Matricule:</div>
+            <div class="col-md-6">{{ entity.employe.matricule }}</div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top : 10%">
+    <div class="col-md-6" style="margin-left:2%; width:48%;border: 2px solid black;">
+        <b>INFORMATIONS FINANCIERES</b>
+        <div class="row">
+            <div class="col-md-6">SALAIRE MENSUEL</div>
+            <div class="col-md-6">{{ entity.employe.salaire }} FCFA</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Jours de Travail</div>
+            <div class="col-md-6">{{ joursTravail }} jour(s)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">salaire Journalier</div>
+            <div class="col-md-6">{{ salaire }} FCFA</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Primes</div>
+            <div class="col-md-6">{{ primeMontant }} FCFA</div>
+        </div>
+        <div class="row" style="border-top:2px solid black">
+            <div class="col-md-6"><b>Sous Total</b></div>
+            <div class="col-md-6"><b>{{ entity.employe.salaire + primeMontant }} FCFA</b></div>
+        </div>
+    </div>
+    <div class="col-md-6" style="float:right;width: 48%;margin-right: 2%;border: 2px solid black;">
+        <b>INFORMATIONS COMPLEMENTAIRES</b>
+        <div class="row">
+            <div class="col-md-6">Avance sur Salaire:</div>
+            <div class="col-md-6">{{ avanceSalaireMontant }} FCFA</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Nbre d'absences</div>
+            <div class="col-md-6">{{ absences }} jour(s)</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Retenu sur absence</div>
+            <div class="col-md-6">{{ salaire * absences }} FCFA</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Retenu sur sanction:</div>
+            <div class="col-md-6">{{ retenuSalire }} FCFA</div>
+        </div>
+        <div class="row" style="border-top:2px solid black">
+            <div class="col-md-6"><b>Sous Total</b></div>
+            <div class="col-md-6"><b>- {{ (salaire * absences) + retenuSalire  }} FCFA</b></div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:5%;border: 2px solid black;text-align:center;width: 50%;margin-left:auto;margin-right: auto;">
+    Salaire Net à Payer : <b>{{ (entity.employe.salaire + primeMontant) - ((salaire * absences) + retenuSalire) }} FCFA</b>
+</div>
+<div class="row" style="margin-top : 20%">
+    <div class="col-md-6" style="margin-left:15%; width:25%;">
+        <b>Signature du salarié</b>
+    </div>
+    <div class="col-md-6" style="float:right;width: 25%;margin-right: 15%;text-align: right;">
+        <b>La Direction</b>
+    </div>
+</div>

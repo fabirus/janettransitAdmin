@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {#<img style="margin: 0;box-shadow: 5px 10px darkred;" width="140px" height="140px" class=" user-image img-responsive img-thumbnail" src="{{ asset('img/logo.jpg') }}" alt="toto">#}
+    <i title="Infos" data-toggle="modal" data-target="#myModal" class="fa fa-question-circle fa-3x" style=" float: right; color: darkred; cursor: pointer"></i>
+    <div class="row">
+        <div class="col-md-12" id="wikiTitle">
+            <h1>JANET ADMIN</h1>
+            <h4 style="line-height: 2; border-bottom: 2px solid">
+                {{  'home.welcome'|trans }}
+            </h4>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal col-md-12 fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 70%;margin-left: 25%;margin-top: 5%;">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{ 'home.informations'|trans }}</h4>
+                </div>
+                <div class="modal-body" style="font-size: 16px">
+                    {{ 'home.question'|trans|raw }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-6">
+            <div style="min-height: 162px" class="panel {% if tache.response %} panel-danger {% else %} panel-success {% endif %}">
+                <div class="panel-heading"><i class="fa fa-clock-o fa-2x"></i>&nbsp; {{ 'home.alert.tache.header'|trans }}</div>
+                <div class="panel-body">
+                    {% if tache.response %}
+                        {{ 'home.alert.tache.content'|trans }}<br>
+                    {% else %}
+                        {{ 'home.alert.tache.none'|trans }}
+                    {% endif %}
+                </div>
+                {% if tache.response %}
+                    <div class="panel-footer">
+                        {{ 'home.alert.tache.infos'|trans({'%nom%' :tache.entity.nom , '%date%' : tache.entity.taf})|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="min-height: 162px;" class="panel {% if contrat.response %} panel-danger {% else %} panel-success {% endif %}">
+                <div class="panel-heading"><i class="fa fa-file-text fa-2x"></i>&nbsp; {{ 'home.alert.contrat.header'|trans }} </div>
+                <div class="panel-body">
+                    {% if contrat.response %}
+                        {{ 'home.alert.contrat.content'|trans }}
+                    {% else %}
+                        {{ 'home.alert.contrat.none'|trans }}
+                    {% endif %}
+                </div>
+                {% if contrat.response %}
+                    <div class="panel-footer">
+                        {{ 'home.alert.contrat.infos'|trans({'%employe%' :contrat.entity.employe})|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="min-height: 162px;" class="panel {% if document.response %} panel-danger {% else %} panel-success {% endif %}">
+                <div class="panel-heading"><i class="fa fa-file-text-o fa-2x"></i>&nbsp; {{ 'home.alert.voiture.header'|trans }}</div>
+                <div class="panel-body">
+                    {% if document.response %}
+                        {{ 'home.alert.voiture.content'|trans }}
+                    {% else %}
+                        {{ 'home.alert.voiture.none'|trans }}
+                    {% endif %}
+                </div>
+                {% if document.response %}
+                    <div class="panel-footer">
+                        {{ 'home.alert.voiture.infos'|trans({'%marque%' : document.entity.voiture.marque, '%immatricule%': document.entity.voiture.immatricule })|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="min-height: 162px;" class="panel {% if carburation.response %} panel-danger {% else %} panel-success {% endif %}">
+                <div class="panel-heading"><i class="fa fa-dashboard fa-2x"></i>&nbsp; {{ 'home.alert.carburation.header'|trans }}</div>
+                <div class="panel-body">
+                    {% if carburation.response %}
+                        {{ 'home.alert.carburation.content'|trans }}
+                    {% else %}
+                        {{ 'home.alert.carburation.none'|trans }}
+                    {% endif %}
+                </div>
+                {% if carburation.response %}
+                    <div class="panel-footer">
+                        {{ 'home.alert.carburation.infos'|trans({'%employe%' : carburation.entity.employe, '%date%': carburation.entity.periodeCarburation,
+                        '%montant%' : carburation.entity.montant })|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="min-height: 162px;" class="panel {% if depense.response %} panel-danger {% else %} panel-success {% endif %}">
+                <div class="panel-heading"><i class="fa fa-money fa-2x"></i>&nbsp; {{ 'home.alert.depense.header'|trans }}</div>
+                <div class="panel-body">
+                    {% if depense.response %}
+                        {{ 'home.alert.depense.content'|trans }}
+                    {% else %}
+                        {{ 'home.alert.depense.none'|trans }}
+                    {% endif %}
+                </div>
+                {% if depense.response %}
+                    <div class="panel-footer">
+                        {{ 'home.alert.depense.infos'|trans({'%date%' : depense.entity.periodeDepense, '%materiel%': depense.entity.materiel,
+                            '%montant%' : depense.entity.montant })|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="min-height: 162px;" class="panel {% if manutention.response %} panel-danger {% else %} panel-success {% endif %}">
+                <div class="panel-heading"><i class="fa fa-truck fa-2x"></i>&nbsp; {{ 'home.alert.manutention.header'|trans }}</div>
+                <div class="panel-body">
+                    {% if manutention.response %}
+                        {{ 'home.alert.manutention.content'|trans }}
+                    {% else %}
+                        {{ 'home.alert.manutention.none'|trans }}
+                    {% endif %}
+                </div>
+                {% if manutention.response %}
+                    <div class="panel-footer">
+                        {{ 'home.alert.manutention.infos'|trans({'%contrat%' : manutention.entity.periodeFacture.contrat, '%destination%': manutention.entity.destination,
+                            '%date%' :  manutention.entity.periodeFacture })|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="min-height: 162px;" class="panel {% if presence.response %} panel-danger {% else %} panel-success {% endif %}">
+                <div class="panel-heading"><i class="fa fa-calendar fa-2x"></i>&nbsp; {{ 'home.alert.presence.header'|trans }}</div>
+                <div class="panel-body">
+                    {% if presence.response %}
+                        {{ 'home.alert.presence.content'|trans }}
+                    {% else %}
+                        {{ 'home.alert.presence.none'|trans }}
+                    {% endif %}
+                </div>
+                {% if presence.response %}
+                    <div class="panel-footer">
+                        {{ 'home.alert.presence.infos'|trans({'%presence%' : presence.entity })|raw }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

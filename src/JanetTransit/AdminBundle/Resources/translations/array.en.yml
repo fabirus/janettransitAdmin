@@ -1,0 +1,26 @@
+nom : Last Name
+prenom : First Name
+matricule : Registration Number
+sexe : Sex
+date_naissance : Birth Date
+ville_naissance : Birth City
+adresse_email : Email address
+telephone : Phone
+adresse : Address
+date_embauche : Date of Hire
+service : Service
+poste : Post
+salaire : Salary
+piece_identite: ID Card
+none : Not Specified
+type_contrat : Type of Contract
+duree_hebdo : Weekly Duration
+date_debut : Start Date
+datefin : End Date
+justificatifs : Supporting
+actions : Actions
+employe : Employee
+objet : Object
+contrat : Contract
+sign_salarie : Signature of employee
+direction : The Direction

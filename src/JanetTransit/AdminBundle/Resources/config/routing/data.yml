@@ -1,0 +1,21 @@
+data_informations:
+    path:     /data
+    defaults: { _controller: JanetTransitAdminBundle:Data:index }
+
+data_create:
+    path:     /data/create
+    defaults: { _controller: JanetTransitAdminBundle:Data:create }
+
+data_edit:
+    path:     /data/edit/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Data:edit }
+
+data_update:
+    path:     /data/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Data:update }
+
+data_delete:
+    path:     /data/delete/{id}/{del}
+    defaults: { _controller: JanetTransitAdminBundle:Data:delete, _locale : fr}
+    options:
+        expose: true

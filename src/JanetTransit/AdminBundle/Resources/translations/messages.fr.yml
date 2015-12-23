@@ -1,0 +1,75 @@
+home :
+    messages  : Bonjour %username%, Dernière connexion : %date%
+    user :
+        user : Utilisateurs
+        profile : Profile
+        authentification : Authentification
+        mot_de_passe : Mot de Passe
+        deconnecter : Se Déconnecter
+    welcome :  Bienvenue au logiciel d'administration de Janet Transit
+    informations   :  Informations
+    question : "Bonjour, et Merci de vous connecter sur notre application.\nEn cas de non Visualisation du menu de Gestion, Pour pouvoir utiliser et beneficier de nos services, veuillez vous rapprocher vers\n                    un administrateur ou un responsable de l'entreprise <b>JANET TRANSIT</b>"
+    alert :
+        tache :
+            header : Alerte Taches
+            content : Certaines Taches hebdommadaires ne sont pas encore effectuées, il est conseiller de les effectuer dans le cadre d'une bonne gestion de l'entreprise !!
+            none    : Tous les taches sont effectuées
+            infos   : "Il s'agit d'une des taches dont le nom est <b> %nom% </b> et la date est  <b> %date% </b>"
+        contrat :
+            header  : Alerte Contrats
+            content : Certains Contrats des employés arrivent bientot à terme, il faudra prendre les dispositions nécessaires à les renevouller !!
+            none    : Tous les contrats sont dans les normes
+            infos   : Il s'agit de l'employé dont le nom est <b>%employe%</b>
+        voiture :
+            header  : Alerte Documents des Voitures
+            content : Certaines Documents des Voitures arrivent bientot à terme, il faudra prendre les dispositions nécessaires à les renevouller !!
+            none    : Tous les Documents des Voitures sont dans les normes
+            infos   : Il s'agit de la voiture de marque <b>%marque%</b> Immatriculé <b>%immatricule%</b>
+        carburation :
+            header  : Alerte Carburation
+            content : Certaines Carburations n'ont pas encore été payées, il faudra prendre les dispositions nécessaires à les régulariser !!
+            none    : Toutes les Carburations sont dans les normes
+            infos   : Il s'agit de la carburation prise par <b>%employe%</b> le <b>%date%</b> dont le montant est <b>%montant% FCFA</b>
+        depense :
+            header  : Alerte Dépenses
+            content : Certaines Dépenses n'ont pas encore été payées, il faudra prendre les dispositions nécessaires à les régulariser !!
+            none    : Toutes les Dépenses sont dans les normes
+            infos   : Il s'agit de la dépense du <b>%date%</b> concernant <b>%materiel%</b> dont le montant est <b>%montant% FCFA</b>
+        manutention :
+            header  : Alerte Mouvements de Manutention
+            content : Certaines mouvements en Manutention n'ont pas encore été faits, il faudra prendre les dispositions nécessaires pour les régulariser !!
+            none    : Toutes les mouvements en Manutention sont dans les normes
+            infos   : Il s'agit du mouvement concernant <b>%contrat%</b> de destination  <b>%destination%</b> fait le <b>%date%</b>
+        presence :
+            header  : Alerte Fiches de Présence
+            content : Certaines Fiches de Présence antérieures ne sont pas à jour, il faudra prendre les dispositions nécessaires pour les mettre à jour
+            none    : Toutes les Fiches de Présence sont à jour
+            infos   : Ce travail concerne la <b>Sécrétaire</b>, il s'agit des Fiches de présence du <b>%presence%</b>
+
+
+menu :
+    admin : ADMIN
+    employe :
+        header : EMPLOYES
+        informations : Informations
+        postes : Postes
+        services : Services
+        taf_suivi : Taf & Suivi
+        primes : Primes
+    carburation : CARBURATION
+    contrats : CONTRATS
+    manutention : MANUTENTION
+    stocks : STOCKS
+    reunion : REUNION
+    voitures : VOITURES
+    depenses : DEPENSES
+    operations : OPERATIONS
+    donnees : DONNEES
+    comptabilite : COMPTABILITE
+
+common :
+    search : Rechercher
+
+
+
+

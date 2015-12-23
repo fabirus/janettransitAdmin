@@ -1,0 +1,21 @@
+mouvementstock_informations:
+    path:     /mouvementstock/{idPeriode}/{idStock}/{idTypeStock}
+    defaults: { _controller: JanetTransitAdminBundle:MouvementStock:index }
+
+mouvementstock_create:
+    path:     /mouvementstock/create
+    defaults: { _controller: JanetTransitAdminBundle:MouvementStock:create }
+
+mouvementstock_edit:
+    path:     /mouvementstock/{id}/{idPeriode}/{idStock}/{idTypeStock}
+    defaults: { _controller: JanetTransitAdminBundle:MouvementStock:edit }
+
+mouvementstock_update:
+    path:     /mouvementstock/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:MouvementStock:update }
+
+mouvementstock_delete:
+    path:     /mouvementstockdel/delete/{id}/{del}/{idRefresh}/{idRefresh2}/{idRefresh3}
+    defaults: { _controller: JanetTransitAdminBundle:MouvementStock:delete, _locale : fr}
+    options:
+        expose: true

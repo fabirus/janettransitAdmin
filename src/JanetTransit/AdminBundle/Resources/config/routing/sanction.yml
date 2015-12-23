@@ -1,0 +1,27 @@
+sanction_create:
+    path:     /sanction/create
+    defaults: { _controller: JanetTransitAdminBundle:Sanction:create }
+
+sanction_show:
+    path:     /sanction/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Sanction:show }
+
+sanction_valid:
+    path:     /sanction/{id}/{valid}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Sanction:valid }
+
+sanction_update:
+    path:     /sanction/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Sanction:update }
+
+
+sanction_print:
+    path:     /sanction/{id}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Sanction:print }
+
+
+sanction_checkDate:
+    path:     /sanctioncheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Sanction:checkDate, _locale : fr }
+    options:
+        expose: true

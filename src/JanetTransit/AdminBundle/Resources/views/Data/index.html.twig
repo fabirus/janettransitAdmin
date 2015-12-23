@@ -1,0 +1,83 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Données {% endblock %}
+
+{% block body -%}
+<div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Données</div>
+<div>
+    <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+       data-target="#modalForm" title="Ajouter" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+</div><br />
+
+<table class="table table-hover table-bordered dataTable">
+    <thead>
+    <tr>
+        <th style="text-align: center">Nom du Fichier</th>
+        <th style="text-align: center">Description</th>
+        <th style="text-align: center">Date</th>
+        <th style="text-align: center">Fichier</th>
+        <th style="text-align: center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        {#{% if loop.index%2 == 0 %} class="success" {% endif %}#}
+        <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+            <td style="text-align: center">{{ entity.nom }}</td>
+            <td style="text-align: center">{{ entity.description }}</td>
+            <td style="text-align: center">{{ entity.updatedAt|date('d/m/y H:i:s') }}</td>
+            <td style="text-align: center">
+                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'dataFile') }}">
+                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                </a>
+            </td>
+            <td style="text-align: center">
+                <a href="{{ path('data_edit', {'id' : entity.id}) }}">
+                    <i title="Modifier" style="color: orange; cursor: pointer; margin-right: 4%" class="fa fa-pencil fa-2x"></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert alert-info">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Enregistrement d'un nouveau Fichier</h4>
+            </div>
+            {{ form_start(form) }}
+            <div class="modal-body">
+                {{ form_errors(form) }}
+
+                {{ form_row(form.nom) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.dataFile) }}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock %}
+
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script type="text/javascript"  src="{{ asset('js/lib/common.js')}}"></script>
+        <script>
+            common().dataTable(0);
+            $("form").validate();
+            common().validation();
+            $(".file").rules("add", { filesize: 2 });
+        </script>
+
+    {% endblock %}

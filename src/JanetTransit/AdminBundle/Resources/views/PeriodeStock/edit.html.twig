@@ -1,0 +1,87 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} |Modification de la Journée {% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Modification de la journée <b>{{ entity.datePeriode }}</b></div>
+    <div>
+        <a href="{{ path('periodestock_informations', {'idStock' : idStock, 'idTypeStock' : idTypeStock}) }}">
+            <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+        </a>
+        {% if entity.del == 0 %}
+            <a style="color: red; cursor: pointer; float: right" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="periodestock_delete">
+                <i  title="Supprimer"  class="fa fa-trash-o fa-3x"></i>
+            </a>
+            {#Popover Content Delete#}
+            <div id="popoverDeleteContent" style="display: none">
+                <p><b>Voulez vous le supprimer définitivement ?</b></p>
+                Veuillez entrer <b>'OK'</b> dans le champ puis <b>Valider</b>
+                <input id="responseDel" type="text" class="form-control" value="KO" style=" width: 30%; float: right; margin: 10px; border-color: #0FAD8C"> <br><br><br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="button" class="form-control btn-danger" onclick="common().closePopover()" value="Fermer" style="font-weight: bold ">
+                    </div>
+                    <div class="col-md-6">
+                        <input id="valDelete" type="button" onclick='common().deleteEntity({{ entity.id }}, {{ idStock }}, {{ idTypeStock }} )' class="form-control" value="Valider" style="background: #0FAD8C; color:white; font-weight: bold">
+                    </div>
+                </div>
+            </div>
+
+            {#<a href="{{ path('employe_delete', {'id' : entity.id, 'del' : 1}) }}">#}
+        {% else %}
+            <a href="{{ path('periodestock_delete', {'id' : entity.id, 'del' : 0, 'idRefresh' : idStock, 'idRefresh2' : idTypeStock}) }}">
+                <i title="Activer" style="color: forestgreen; cursor: pointer; float: right" class="fa fa-check fa-3x"></i>
+            </a>
+        {% endif %}
+    </div><br>
+
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+
+    {{ form_label(edit_form.datePeriode) }}
+    <div class="form-group">
+        <div class='input-group date datetimepicker' id="checkDate" data-employe="{{ idStock }}">
+            {{ form_widget(edit_form.datePeriode) }}
+            <span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </span>
+        </div>
+        <span class="error_date" style="display: none; color: red">Cette date existe déja pour ce Stock</span>
+    </div>
+    <select style="display: none" id="janettransit_adminbundle_periodestock_stock" name="janettransit_adminbundle_periodestock[stock]" class="form-control">
+        <option value="{{ idStock }}"></option>
+    </select>
+    <select style="display: none" id="typeStock" name="typeStock" class="form-control">
+        <option value="{{ idTypeStock }}"></option>
+    </select>
+
+    <div id="remove">
+        {{ form_row(edit_form.stock) }}
+    </div>
+
+    {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register registerPoste'}})}}
+
+    {{ form_end(edit_form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script>
+        common().date();
+        common().initPopover();
+        $("form").validate();
+        common().validation();
+        $('#remove').remove();
+    </script>
+{% endblock %}

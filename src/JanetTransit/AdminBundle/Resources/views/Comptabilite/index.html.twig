@@ -1,0 +1,90 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Comptabilité {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Périodes de la Comptabilité</div>
+    <div>
+        <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+           data-target="#modalForm" title="Ajouter" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </div><br />
+
+    <table class="table table-hover table-bordered dataTable">
+        <thead>
+        <tr>
+            <th style="text-align: center; width: 75%">Période</th>
+            <th style="text-align: center; width: 25%">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            {#{% if loop.index%2 == 0 %} class="success" {% endif %}#}
+            <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+                <td style="text-align: center">{{ entity.periode }}</td>
+                <td style="text-align: center">
+                    <a style="margin-right: 5%" href="{{ path('comptabilite_show', {'id' : entity.id}) }}">
+                        <i class="fa fa-eye fa-2x"></i>
+                    </a>
+                    <a style="margin-left: 5%" href="{{ path('comptabilite_edit', {'id' : entity.id}) }}">
+                        <i title="Modifier" style="color: orange; cursor: pointer;" class="fa fa-pencil fa-2x"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'une Période</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+
+                    {{ form_label(form.periode) }}
+                    <div class="form-group">
+                        <div class='input-group date periodepicker' id="checkDate" data-employe="5">
+                            {{ form_widget(form.periode) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette période existe déja</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script type="text/javascript"  src="{{ asset('js/lib/common.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+        <script>
+            common().periode();
+            common().dataTable(0);
+            $("form").validate();
+            common().validation();
+        </script>
+
+    {% endblock %}

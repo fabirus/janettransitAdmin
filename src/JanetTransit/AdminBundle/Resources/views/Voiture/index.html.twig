@@ -1,0 +1,160 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | Liste des voitures {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    {#{% include '::common/employe.html.twig' %}#}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des voitures de type <b>{{ typeVoiture.nom|upper }}</b></div>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ path('typevoiture_informations') }}">
+                <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+            </a>
+            <i class="fa fa-plus-square fa-3x" data-toggle="modal"
+               data-target="#modalForm" title="Ajouter" style="color:#0FAD8C;cursor: pointer;margin-left: 3%"></i>
+        </div>
+        <div class="col-md-6">
+            <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', 'Liste des Voitures de Type {{ typeVoiture.nom|upper }}')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+        </div>
+    </div><br />
+
+    <div class="result" data-route="employe_search">
+        {% if entities is not empty %}
+            <table class=" table table-hover dataTable print table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Marque</th>
+                    <th style="text-align: center">Modèle</th>
+                    <th style="text-align: center">Immatricule</th>
+                    <th style="text-align: center">Chauffeur</th>
+                    <th style="text-align: center">Motoboy</th>
+                    <th style="text-align: center">Carte Grise</th>
+                    <th class="noprint" style="text-align: center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr {% if entity.del == 1 %} class="danger" {% endif %}>
+                        <td style="text-align: center">{{ entity.marque }}</td>
+                        <td style="text-align: center">{{ entity.modele }}</td>
+                        <td style="text-align: center">{{ entity.immatricule }}</td>
+                        <td style="text-align: center">
+                            {% if not entity.chauffeur %}
+                                <span class="label label-danger">Pas de Chauffeur</span>
+                            {% else %}
+                                {{ entity.chauffeur }}
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if not entity.motoboy %}
+                                <span class="label label-danger">Pas de Motoboy</span>
+                            {% else %}
+                                {{ entity.motoboy }}
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if not entity.cartegriseFileName %}
+                                <span class="label label-danger">Non renseigné</span>
+                            {% else %}
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'cartegriseFile') }}">
+                                    <i style="color: darkred;" class="fa fa-file-text fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="noprint" style="text-align: center">
+                            <a href="{{ path('voiture_edit', {'id' : entity.id, 'idType' : typeVoiture.id}) }}">
+                                <i title="Modifier" style="color: orange; cursor: pointer; margin-right: 4%" class="fa fa-pencil fa-2x"></i>
+                            </a>
+                            {% if entity.del == 0 %}
+                                <a style="color: red; cursor: pointer;" tabindex="0"  role="button" data-toggle="popover" data-placement="left" data-route="voiture_delete">
+                                    <i  title="Supprimer"  class="fa fa-trash-o fa-2x"></i>
+                                </a>
+                                {#Popover Content Delete#}
+                                {% include '::common/delete.html.twig' %}
+                            {% else %}
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a href="{{ path('voiture_delete', {'id' : entity.id, 'del' : 0}) }}">
+                                        <i title="Activer" style="color: forestgreen; cursor: pointer;" class="fa fa-check fa-2x"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                            <a style="margin: 4%;" title="documents" href="{{ path('document_informations', {'id' : entity.id, 'idType' : typeVoiture.id}) }}">
+                                <i class="fa fa-file-text-o fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="row" style="text-align: center; font-size: 30px">
+                <i class="fa fa-truck fa-5x"></i><br>
+                Aucun Véhicule
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrement d'une Voiture</h4>
+                </div>
+                {{ form_start(form) }}
+                <div class="modal-body">
+                    {{ form_errors(form) }}
+                    {{ form_row(form.marque) }}
+                    {{ form_row(form.modele) }}
+                    {{ form_row(form.immatricule) }}
+                    {{ form_row(form.chauffeur) }}
+                    {{ form_row(form.motoboy) }}
+                    {{ form_row(form.cartegriseFile) }}
+
+                    <select style="display: none" id="janettransit_adminbundle_voiture_typeVoiture" name="janettransit_adminbundle_voiture[typeVoiture]" class="form-control">
+                        <option value="{{ typeVoiture.id }}"></option>
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/lib/common.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')}}"></script>
+    <script>
+        {#{% if success == 'true' %}#}
+        {#common().notice('Enregistrement avec succès','ok');#}
+        {#{% endif %}#}
+        common().initPopover();
+        common().dataTable(0);
+        $('.multiselectOne').multiselect({
+            enableFiltering : true,
+            nonSelectedText : 'Aucun Choix',
+        });
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+
+        $(".modal-body .btn-group").css({'width' : '80%', 'margin-left' : '5%','margin-bottom': '2%'});
+        $("input[type='hidden']").prev().remove();
+    </script>
+{% endblock %}

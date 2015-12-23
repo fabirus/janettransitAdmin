@@ -1,0 +1,80 @@
+body{
+    overflow-x: hidden;
+    /*overflow: hidden;*/
+    background-color: black !important;
+}
+
+#error{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+
+#changeP label{
+    color :black !important;
+}
+
+label{
+    color : white;
+}
+
+.panel-body a {
+    color: darkgoldenrod;
+    font-weight: bold;
+}
+
+.panel-body a:hover {
+    color: darkorange;
+    text-decoration: underline;
+}
+
+ul li, .error{
+    color: darkgoldenrod !important;
+    font-weight: bold;
+}
+
+#change ul li, #change .error{
+    color: #C90000 !important;
+    font-weight: bold;
+}
+
+.panel-default{
+    background: darkslategray !important;
+    color:white !important;
+}
+
+.panel-heading{
+    text-align: center;
+    background: darkslategray !important;
+    color:white !important;
+    border-color: darkgoldenrod !important;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+}
+
+input[type='submit']{
+    width:100%;
+    background: darkgoldenrod;
+    border-color: darkgoldenrod;
+    border-radius: 5px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+
+input[type='submit']:hover{
+    background: darkorange;
+}
+
+#changeSubmit:hover{
+    background: darkred !important;
+
+}

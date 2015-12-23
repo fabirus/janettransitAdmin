@@ -1,0 +1,23 @@
+employe :
+    liste :
+        poste : Post
+        infos : List of Employees
+    show :
+        infos : Employee Description
+        contrats : Contracts
+        fiche_de_paie : Pay sheets
+        avance_salaire: Salary Advances
+        fiche_presence : Sheet Presence
+        permission: Permissions
+        sanctions : Sanctions
+        print_message : Employee Information
+        edit : Changing Employee
+        create : Registering a New Employee
+    contrat :
+        liste : List of Contracts %employe%
+        print : Contract %typeContrat% for %employe%
+        print_list : List of Contracts %employe%
+    fiche_de_paie :
+        liste : List of Pay sheets %employe%
+        print_list : List of Pay sheets %employe%
+        print : Pay sheets for %employe%, <b>%date%</b>
