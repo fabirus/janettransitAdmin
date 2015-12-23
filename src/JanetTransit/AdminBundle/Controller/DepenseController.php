@@ -346,7 +346,6 @@ class DepenseController extends Controller
 
             )));
 
-//        return $this->redirect($this->generateUrl('depense_show', array('idPeriodeDepense' => $idRefresh)));
     }
 
 }

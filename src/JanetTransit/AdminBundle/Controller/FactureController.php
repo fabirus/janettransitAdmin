@@ -59,6 +59,8 @@ class FactureController extends Controller
             $entity->setUpdatedAt(new DateTime());
             $em->persist($entity);
             $em->flush();
+            $this->operationUpdate($entity, 'CREATION');
+
 
             return $this->redirect($this->generateUrl('facture_show', array('idPeriodeFacture' => $idPeriodeFacture, 'idContrat' => $idContrat)));
         }
@@ -67,6 +69,29 @@ class FactureController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
         );
+    }
+
+    /**
+     * Operation Create Entity
+     */
+
+    public function operationUpdate($entity, $action) {
+        $user  = $this->get('security.context')->getToken()->getUser();
+        $data   = array(
+            "id"                =>  $entity->getId(),
+            "entite"            => 'MANUTENTION',
+            "heure"             =>  $entity->getHeure(),
+            'container'         =>  $entity->getNumeroContainer(),
+            'client'            =>  $entity->getClient(),
+            'montant'           =>  $entity->getPercu(),
+            'stationnement'     =>  $entity->getStationnement(),
+            "voiture"           =>  ($entity->getVoiture() !== NULL ) ? $entity->getVoiture()->getImmatricule() : 'aucune',
+            "Date"              =>  $entity->getPeriodeFacture()->getDateFacture(),
+//            "employe"           =>  ($entity->getEmploye() !== NULL ) ? $entity->getEmploye()->getNom() : 'aucun'
+        );
+
+        $this->get('application.operation')->update($data, $user, $action);
+
     }
 
     /**
@@ -256,6 +281,8 @@ class FactureController extends Controller
         if ($editForm->isValid()) {
             $entity->setUpdatedAt(new DateTime());
             $em->flush();
+            $this->operationUpdate($entity, 'MODIFICATION');
+
 
             return $this->redirect($this->generateUrl('facture_show', array('idPeriodeFacture' => $idPeriodeFacture, 'idContrat' => $idContrat)));
         }
@@ -301,6 +328,9 @@ class FactureController extends Controller
         }
         $entity->setDel($del);
         $em->flush();
+        if ($del == 1) {
+            $this->operationUpdate($entity, 'SUPPRESSION');
+        }
 
 
         return $this->redirect($this->generateUrl('facture_show', array('idPeriodeFacture' => $idRefresh, 'idContrat' => $idRefresh2)));
