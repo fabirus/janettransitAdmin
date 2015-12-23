@@ -87,7 +87,6 @@ class PresenceController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
             $entity->setUpdatedAt(new DateTime());
             $em->persist($entity);
             $em->flush();
