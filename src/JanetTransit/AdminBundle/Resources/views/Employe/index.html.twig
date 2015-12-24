@@ -27,7 +27,7 @@
                 <div style="height: 424px" class="infos_employe
                 {% if entity.del == 1 %}
                     alert alert-danger
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted('ROLE_ADMIN') %}
                         active
                     {% else %}
                         not-active
