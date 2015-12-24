@@ -26,7 +26,7 @@ fos_user:
 #            template: email/password_resetting.email.twig
             from_email:
                 address:        janettransit@gmail.com
-                sender_name:    Réinitial
+                sender_name:    Réinitialisation Mot de Passe
 
     group:
         group_class:   Application\Sonata\UserBundle\Entity\Group
