@@ -5,13 +5,13 @@ parameters:
     database_name: janettransitadmin
     database_user: root
     database_password: null
-#    mailer_transport: smtp
-#    mailer_host: 127.0.0.1
-#    mailer_user: null
-#    mailer_password: null
-    mailer_transport: gmail
-    mailer_host: ~
-    mailer_user: janettransit@gmail.com
-    mailer_password: janetfamily
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+#    mailer_transport: gmail
+#    mailer_host: ~
+#    mailer_user: janettransit@gmail.com
+#    mailer_password: janetfamily
     secret: 857fffb2cc66651c7221e5ff2b064af1318c1ff7
     locale: fr
