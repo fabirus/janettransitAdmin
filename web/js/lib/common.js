@@ -358,7 +358,13 @@ function common() {
                 console.log(response);
                 if(response !== false){
                     $('.register').prop('disabled', true);
-                    $('.error_qte').html('Il ne reste plus que '+response+' en stock').show('slow');
+                    if(response == 0) {
+                        $('.error_qte').html('Le stock est vide').show('slow');
+                    }
+                    else {
+                        $('.error_qte').html('Il ne reste plus que '+response+' en stock').show('slow');
+
+                    }
                 }
                 else {
                     $('.register').prop('disabled', false);
