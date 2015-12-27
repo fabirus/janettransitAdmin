@@ -1,0 +1,25 @@
+materiel_create:
+    path:     /materiel/create
+    defaults: { _controller: JanetTransitAdminBundle:Materiel:create }
+
+materiel_show:
+    path:     /materiel/{id}
+    defaults: { _controller: JanetTransitAdminBundle:Materiel:show }
+
+materiel_edit:
+    path:     /materiel/{id}/edit/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Materiel:edit }
+
+materiel_update:
+    path:     /materiel/{id}/
+    defaults: { _controller: JanetTransitAdminBundle:Materiel:update }
+
+materiel_print:
+    path:     /materiel/{id}/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Materiel:print }
+
+materiel_checkDate:
+    path:     /materielcheckDate/{idEmploye}
+    defaults: { _controller: JanetTransitAdminBundle:Materiel:checkDate, _locale : fr }
+    options:
+        expose: true

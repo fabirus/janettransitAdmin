@@ -167,3 +167,11 @@ vich_uploader:
             delete_on_update:   true
             delete_on_remove:   true
             namer:              vich_uploader.namer_uniqid
+
+        materiel_file:
+            uri_prefix:         /files/materiel
+            upload_destination: %kernel.root_dir%/../web/files/materiel
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid

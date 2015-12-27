@@ -114,3 +114,7 @@ mouvementstock:
 periodestock:
     resource: "@JanetTransitAdminBundle/Resources/config/routing/periodestock.yml"
     prefix:   /
+
+materiel:
+    resource: "@JanetTransitAdminBundle/Resources/config/routing/materiel.yml"
+    prefix:   /

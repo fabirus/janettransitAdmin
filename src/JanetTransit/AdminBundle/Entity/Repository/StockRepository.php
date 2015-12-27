@@ -10,4 +10,14 @@ namespace JanetTransit\AdminBundle\Entity\Repository;
  */
 class StockRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAdministratifQueryBuilder(){
+
+        $qb =  $this->createQueryBuilder('s')
+            ->leftJoin('s.typeStock', 't')
+            ->addSelect('t')
+            ->where('t.nom LIKE :administratif AND s.del = 0')
+            ->setParameter('administratif', '%administratif%')
+        ;
+        return $qb;
+    }
 }
