@@ -1,0 +1,161 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ parent() }} | M&tériel {{ entity.employe.nom }} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
+{% endblock %}
+
+{% block body -%}
+    <div class="alert alert-info" role="alert" style="font-size: 18px">Matériel pour {{ entity.employe }} !! <br>
+    </div>
+
+    <a href="{{ path('materiel_show', {id : idEmploye}) }}">
+        <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
+        #0FAD8C;cursor: pointer;"></i>
+    </a>
+    <i title="Ajouter un justificatif" style="color: orange; float: right; cursor: pointer; margin-right: 2%" class="fa fa-pencil fa-3x" data-toggle="modal"
+       data-target="#modaleditForm"></i>
+    <i title="Imprimer" class="fa fa-print fa-3x" onclick="common().print('noprint', '')" style="float: right; cursor: pointer; margin-right: 2%"></i>
+    <div class="print">
+        <h3 style="float: right; margin-right: 5%">Douala, le <b>{{ "now"|date("d/m/Y") }}</b></h3><br><br><br><br>
+        <h3><b style="text-decoration: underline;margin-left: 5%">Objet:</b> Matériel Fourni</h3>
+        {#<div style="width:73%; margin-right: auto; margin-left: auto;margin-top: 10%; font-size: 23px">#}
+        {#Nous Soussignons Janet Transit d'avoir remis <b>{{ entity.montant }} FCFA</b>#}
+        {#à l'employé <b>{{ entity.employe }}</b> pour avance<br> de Salaire Comptant pour le mois de <b>{{ date }}</b>#}
+        {#</div>#}
+        <table class="table table-hover table-bordered" id="tabAvance" style="width: 70%;margin-left: auto;margin-right: auto;font-size: 18px;margin-top: 7%">
+            <tbody>
+            <tr>
+                <th>Employé</th>
+                <td>{{ entity.employe}}</td>
+            </tr>
+            <tr>
+                <th>Service</th>
+                <td>{{ entity.employe.services}}</td>
+            </tr>
+            <tr>
+                <th>Poste</th>
+                <td>{{ entity.employe.poste}}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ entity.at  }}</td>
+            </tr>
+            <tr>
+                <th>Matériel Fourni</th>
+                <td>{{ entity.stock }}</td>
+            </tr>
+            <tr>
+                <th>Quantité</th>
+                <td>{{ entity.qte }}</td>
+            </tr>
+            <tr>
+                <th>Motif</th>
+                <td>{{ entity.motif }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row" style="margin-top : 10%; font-size: 20px">
+            <div class="col-md-6">
+                <b>Signature de l'employé</b>
+            </div>
+            <div class="col-md-6" style="float:right;text-align: right;">
+                <b>La Direction</b>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modaleditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modification de l'avance de l'employé <b>{{ entity.employe }}</b></h4>
+                </div>
+                {{ form_start(edit_form) }}
+                <div class="modal-body">
+                    {{ form_errors(edit_form) }}
+                    {{ form_label(edit_form.at) }}
+                    <div class="form-group">
+                        <div class='input-group date datetimepicker' id="checkDate" data-employe="{{ idEmploye}}">
+                            {{ form_widget(edit_form.at) }}
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <span class="error_date" style="display: none; color: red">Cette date existe déja pour cet employé</span>
+                    </div>
+                    {{ form_row(edit_form.stock) }}
+                    {{ form_row(edit_form.qte) }}
+                    <span class="error_qte" style="display: none; color: red"></span>
+                    {{ form_row(edit_form.motif) }}
+                    <div class="fileUpload">
+                        <div class="icondelete">
+                            <div class="removeFile" style="display: none">
+                                <i style="cursor: pointer;margin: 5%" title="Supprimer" class="delete fa fa-trash-o fa-4x"></i>
+                                <a target="_blank" href="{{ app.request.basePath }}{{ vich_uploader_asset(entity, 'materielFile') }}" style="margin: 5%">
+                                    <i title="Voir" class="fa fa-eye fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="upload">
+                                <i class="fa fa-upload fa-5x"></i><br>
+                                <span>JUSTIFICATIF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fileType">
+                        {{ form_row(edit_form.materielFile) }}
+                    </div>
+                    {#{{ form_row(edit_form.materielFile) }}#}
+                    <select style="display: none" id="janettransit_adminbundle_materiel_employe" name="janettransit_adminbundle_materiel[employe]" class="form-control">
+                        <option value="{{ idEmploye }}"></option>
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        {{ form_widget(edit_form.submit, { 'label': 'Enregister', 'attr' :{'type' : 'button', 'class' :'btn btn-primary register'}})}}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')}}"></script>
+    <script src="{{ asset('js/lib/common.js')}}"></script>
+    <script>
+        $('.multiselectOne').multiselect({
+            enableFiltering: true,
+            nonSelectedText: 'Aucun Choix'
+        });
+        $(".modal-body .btn-group").css({'width' : '80%', 'margin-left' : '5%','margin-bottom': '2%'});
+        common().date();
+        $("form").validate();
+        common().validation();
+        $(".file").rules("add", { filesize: 2 });
+        $("input[type='hidden']").prev().remove();
+
+
+        var     fileUpload = $('.fileUpload'),
+                fileType   = $('.fileType');
+        {% if entity.materielFileName is not null %}
+            fileUpload.show();
+            fileType.hide();
+        {% else %}
+            fileUpload.hide();
+            fileType.show();
+        {% endif %}
+        common().fileShow();
+
+
+
+    </script>
+{% endblock %}

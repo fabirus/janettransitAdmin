@@ -6,10 +6,6 @@ materiel_show:
     path:     /materiel/{id}
     defaults: { _controller: JanetTransitAdminBundle:Materiel:show }
 
-materiel_edit:
-    path:     /materiel/{id}/edit/{idEmploye}
-    defaults: { _controller: JanetTransitAdminBundle:Materiel:edit }
-
 materiel_update:
     path:     /materiel/{id}/
     defaults: { _controller: JanetTransitAdminBundle:Materiel:update }

@@ -66,8 +66,6 @@ class MaterielController extends Controller
         $qte            = $request->query->get('qte');
         $entityStock    = $em->getRepository('JanetTransitAdminBundle:Stock')->find($idStock);
 
-//        echo $entityStock->getQteStock();
-
         if($entityStock->getQteStock() >= $qte) {
             $response = new Response('false');
         }
@@ -119,6 +117,16 @@ class MaterielController extends Controller
         $newQte = $entityStock->getQteStock() - $qte;
         $entityStock->setQteStock($newQte);
         $em->flush();
+//        echo 'update'.$entityStock->getQteStock();
+
+    }
+
+    public function mouvementStockPreUpdate($em, $entityStock, $qte){
+        $newQte = $entityStock->getQteStock() + $qte;
+        $entityStock->setQteStock($newQte);
+        $em->flush();
+//        echo 'preupdate'.$entityStock->getQteStock();
+
     }
 
     /**
@@ -141,6 +149,32 @@ class MaterielController extends Controller
     }
 
     /**
+     * Finds and displays a AvanceSalaire entity.
+     *
+     * @Route("/avancesalaire/{id}/{idEmploye}", name="avancesalaire_print")
+     * @Method("GET")
+     * @Template("")
+     */
+    public function printAction($id, $idEmploye)
+    {
+        $em         = $this->getDoctrine()->getManager();
+        $entity     = $em->getRepository('JanetTransitAdminBundle:Materiel')->find($id);
+        $editForm   = $this->createEditForm($entity);
+        $motif      = wordwrap($entity->getMotif(), 50, "\n", true);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find AvanceSalaire entity.');
+        }
+
+        return array(
+            'entity'        => $entity,
+            'edit_form'     => $editForm->createView(),
+            'motif'         => $motif,
+            'idEmploye'     => $idEmploye,
+        );
+    }
+
+    /**
      * Creates a form to create a Materiel entity.
      *
      * @param Materiel $entity The entity
@@ -159,23 +193,6 @@ class MaterielController extends Controller
         return $form;
     }
 
-    /**
-     * Displays a form to create a new Materiel entity.
-     *
-     * @Route("/new", name="materiel_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Materiel();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
 
     /**
      * Finds and displays a Materiel entity.
@@ -209,30 +226,6 @@ class MaterielController extends Controller
         );
     }
 
-    /**
-     * Displays a form to edit an existing Materiel entity.
-     *
-     * @Route("/{id}/edit", name="materiel_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('JanetTransitAdminBundle:Materiel')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Materiel entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-        );
-    }
 
     /**
     * Creates a form to edit a Materiel entity.
@@ -261,9 +254,15 @@ class MaterielController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em             = $this->getDoctrine()->getManager();
+        $dataform       = $request->request->get('janettransit_adminbundle_materiel');
+        $idEmploye      = $dataform['employe'];
+        $idStock        = $dataform['stock'];
+        $entityEmploye  = $em->getRepository('JanetTransitAdminBundle:Employe')->find($idEmploye);
+        $entityStock    = $em->getRepository('JanetTransitAdminBundle:Stock')->find($idStock);
 
         $entity = $em->getRepository('JanetTransitAdminBundle:Materiel')->find($id);
+        $qteStock =  $entity->getQte();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Materiel entity.');
@@ -273,9 +272,14 @@ class MaterielController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $this->mouvementStockPreUpdate($em, $entityStock, $qteStock);
+            $entity->setUpdatedAt(new DateTime());
             $em->flush();
+            $this->operationUpdate($entity, 'MODIFICATION');
+            $this->mouvementStock($em, $entityStock, $entity->getQte());
+            echo 'afer'.$entity->getQte();
 
-            return $this->redirect($this->generateUrl('materiel_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('materiel_show', array('id' => $entityEmploye->getId())));
         }
 
         return array(
