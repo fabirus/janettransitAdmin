@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JanetTransit\AdminBundle\Entity\Materiel;
 use JanetTransit\AdminBundle\Form\MaterielType;
-
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\HttpFoundation\Response;
 /**
  * Materiel controller.
  *
@@ -17,6 +18,38 @@ use JanetTransit\AdminBundle\Form\MaterielType;
  */
 class MaterielController extends Controller
 {
+
+    /**
+     * Check Date.
+     *
+     * @Route("/avancesalairecheckDate/{idEmploye}", name="avancesalaire_checkDate")
+     * @Method("GET")
+     * @Template()
+     */
+    public function checkDateAction($idEmploye){
+
+        $request        = $this->get('request');
+        $date           = $request->query->get('date');
+
+        $query = $this->getDoctrine()
+            ->getRepository('JanetTransitAdminBundle:Materiel')
+            ->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.employe =:idEmploye AND a.at =:date')
+            ->setParameters(array('date' => $date,'idEmploye' => $idEmploye))
+            ->getQuery();
+
+        $results = $query->getArrayResult();
+
+        if(count($results) == 0) {
+            $response = new Response('false');
+        }
+        else {
+            $response = new Response('true');
+        }
+        return $response;
+
+    }
 
     /**
      * Creates a new Materiel entity.
@@ -27,22 +60,57 @@ class MaterielController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Materiel();
-        $form = $this->createCreateForm($entity);
+        $entity         = new Materiel();
+        $em             = $this->getDoctrine()->getManager();
+        $dataform       = $request->request->get('janettransit_adminbundle_materiel');
+        $idEmploye      = $dataform['employe'];
+        $idStock        = $dataform['stock'];
+        $entityEmploye  = $em->getRepository('JanetTransitAdminBundle:Employe')->find($idEmploye);
+        $entityStock    = $em->getRepository('JanetTransitAdminBundle:Stock')->find($idStock);
+
+        $form   = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $entity->setUpdatedAt(new DateTime());
             $em->persist($entity);
             $em->flush();
+            $this->mouvementStock($em, $entityStock, $entity->getQte());
+            $this->operationUpdate($entity, 'CREATION');
 
-            return $this->redirect($this->generateUrl('materiel_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('materiel_show', array('id' => $entityEmploye->getId())));
         }
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'entity'    => $entity,
+            'form'      => $form->createView(),
+            'employe'   => $entityEmploye,
         );
+    }
+
+    public function mouvementStock($em, $entityStock, $qte){
+        $newQte = $entityStock->getQteStock() - $qte;
+        $entityStock->setQteStock($newQte);
+        $em->flush();
+    }
+
+    /**
+     * Operation Create Entity
+     */
+
+    public function operationUpdate($entity, $action) {
+        $user  = $this->get('security.context')->getToken()->getUser();
+        $data   = array(
+            "id"                =>  $entity->getId(),
+            "entite"            => 'MATERIEL FOURNI',
+            "date"              =>  $entity->getAt(),
+            "qte"               =>  $entity->getQte(),
+            "materiel"          =>  $entity->getStock(),
+            "employe"           =>  $entity->getEmploye()->getNom()
+        );
+
+        $this->get('application.operation')->update($data, $user, $action);
+
     }
 
     /**

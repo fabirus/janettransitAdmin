@@ -45,7 +45,7 @@ class Materiel
      *
      * @ORM\Column(name="qteStock", type="integer")
      */
-    private $qte;
+    private $qte = 1;
 
 
     /**

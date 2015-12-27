@@ -54,6 +54,13 @@ class MaterielType extends AbstractType
                     'accept' =>'application/pdf'
                 )
             ))
+            ->add('employe', null, array(
+                'label' => 'Employé',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control'
+                )
+            ))
         ;
     }
     
