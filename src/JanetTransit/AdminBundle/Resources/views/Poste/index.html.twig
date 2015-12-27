@@ -21,7 +21,6 @@
         </thead>
         <tbody>
         {% for entity in entities %}
-            {#{% if loop.index%2 == 0 %} class="success" {% endif %}#}
             <tr {% if entity.del == 1 %} class="danger" {% endif %}>
                 <td style="text-align: center">{{ entity.nom }}</td>
                 <td style="text-align: center">{{ entity.service }}</td>
@@ -37,7 +36,7 @@
                         {#Popover Content Delete#}
                         {% include '::common/delete.html.twig' %}
                     {% else %}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ path('poste_delete', {'id' : entity.id, 'del' : 0}) }}">
                                 <i title="Activer" style="color: forestgreen; cursor: pointer;" class="fa fa-check fa-2x"></i>
                             </a>
