@@ -96,6 +96,7 @@
                     </div>
                     {{ form_row(form.stock) }}
                     {{ form_row(form.qte) }}
+                    <span class="error_qte" style="display: none; color: red"></span>
                     {{ form_row(form.motif) }}
                     <select style="display: none" id="janettransit_adminbundle_materiel_employe" name="janettransit_adminbundle_materiel[employe]" class="form-control">
                         <option value="{{ employe.id }}"></option>

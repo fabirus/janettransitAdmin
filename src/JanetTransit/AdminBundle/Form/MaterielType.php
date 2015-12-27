@@ -34,7 +34,8 @@ class MaterielType extends AbstractType
                 'label' => 'Quantité *',
                 'required' => true,
                 'attr' => array(
-                    'class' => 'form-control number'
+                    'class' => 'form-control number qte',
+                    'onBlur'   => "common().checkQte('materiel_checkQte', 'qte', 'stock')"
                 )))
             ->add('stock','entity', array(
                 'class' =>'JanetTransit\AdminBundle\Entity\Stock',
@@ -44,7 +45,7 @@ class MaterielType extends AbstractType
                 'label' => 'Matériel *',
                 'required' => true,
                 'attr' => array(
-                    'class' => 'form-control multiselectOne'
+                    'class' => 'form-control multiselectOne stock'
                 )))
             ->add('materielFile', 'file', array(
                 'label' => 'Justificatif (pdf)',

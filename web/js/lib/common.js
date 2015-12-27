@@ -345,6 +345,33 @@ function common() {
     };
 
     /**
+     * Search qte in BDD
+     */
+    var checkQte = function checkQte(router, qte, stockId){
+        $.ajax({
+            type: "GET",
+            url : Routing.generate(router, {'idStock' : $('.'+stockId).val() }),
+            cache: false,
+            dataType: 'json',
+            data: {qte : $('.'+qte).val()},
+            success : function(response){
+                console.log(response);
+                if(response !== false){
+                    $('.register').prop('disabled', true);
+                    $('.error_qte').html('Il ne reste plus que '+response+' en stock').show('slow');
+                }
+                else {
+                    $('.register').prop('disabled', false);
+                    $('.error_qte').hide('slow').css('display','none');
+                }
+            },
+            error : function(err){
+                console.log('erreur',err);
+            }
+        });
+    };
+
+    /**
      * Search existing date in BDD
      */
     var checkDateCustomBDD = function checkDateCustomBDD(router, date){
@@ -509,7 +536,8 @@ function common() {
         readOnly            : readOnly,
         validation          : validation,
         checkDateCustomBDD  : checkDateCustomBDD,
-        fileShow            : fileShow
+        fileShow            : fileShow,
+        checkQte            : checkQte
     };
 }
 

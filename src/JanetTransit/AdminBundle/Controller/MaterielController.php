@@ -51,6 +51,33 @@ class MaterielController extends Controller
 
     }
 
+
+    /**
+     * Check Qte.
+     *
+     * @Route("/avancesalairecheckDate/{idEmploye}", name="avancesalaire_checkDate")
+     * @Method("GET")
+     * @Template()
+     */
+    public function checkQteAction($idStock){
+
+        $em             = $this->getDoctrine()->getManager();
+        $request        = $this->get('request');
+        $qte            = $request->query->get('qte');
+        $entityStock    = $em->getRepository('JanetTransitAdminBundle:Stock')->find($idStock);
+
+//        echo $entityStock->getQteStock();
+
+        if($entityStock->getQteStock() >= $qte) {
+            $response = new Response('false');
+        }
+        else {
+            $response = new Response($entityStock->getQteStock());
+        }
+        return $response;
+
+    }
+
     /**
      * Creates a new Materiel entity.
      *
