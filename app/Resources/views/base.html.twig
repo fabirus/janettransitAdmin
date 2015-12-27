@@ -119,11 +119,11 @@
                                             <a href="{{ path('taf_informations') }}">TAF</a>
                                         </li>
                                     {% endif %}
-                                    {% if is_granted('ROLE_MANAGER') %}
-                                        <li>
-                                            <a href="{{ path('prime_informations') }}">{{ 'menu.employe.primes'|trans }}</a>
-                                        </li>
-                                    {% endif %}
+                                    {#{% if is_granted('ROLE_MANAGER') %}#}
+                                        {#<li>#}
+                                            {#<a href="{{ path('prime_informations') }}">{{ 'menu.employe.primes'|trans }}</a>#}
+                                        {#</li>#}
+                                    {#{% endif %}#}
                                 </ul>
                             </li>
                         {% endif %}

@@ -8,11 +8,10 @@
 {% endblock %}
 
 {% block body -%}
-    {#{% include '::common/employe.html.twig' %}#}
     <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Primes de l'employé {{ employe }}</div>
     <div class="row">
         <div class="col-md-6">
-            <a href="{{ path('prime_informations') }}">
+            <a href="{{ path('employe_show', {'id' : employe.id} ) }}">
                 <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
         #0FAD8C;cursor: pointer;"></i>
             </a>
