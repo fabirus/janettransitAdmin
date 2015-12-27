@@ -6,7 +6,7 @@
 {% block body %}
     <div class="alert alert-info" role="alert" style="font-size: 18px">Liste des Suivis de l'employé {{ employe }}</div>
     <div>
-        <a href="{{ path('suivi_informations') }}">
+        <a href="{{ path('employe_show', {'id' : employe.id} ) }}">
             <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
         #0FAD8C;cursor: pointer;"></i>
         </a>
