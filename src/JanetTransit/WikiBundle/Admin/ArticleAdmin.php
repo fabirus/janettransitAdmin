@@ -36,7 +36,15 @@ class ArticleAdmin extends Admin
 //                    'listener'       => true,
 //                    'event_dispatcher' => $formMapper->getFormBuilder()->getEventDispatcher()
 //                ))
-                ->add('image', 'sonata_type_model', array('label' => 'Image') )
+            ->add('articleFile', 'file', array(
+                'label' => 'Image de l\'article (jpeg|png)',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control file fileImage',
+                    'accept' =>'image/jpeg, image/png'
+                )
+            ))
+//                ->add('image', 'sonata_type_model', array('label' => 'Image') )
             ->end()
             ->with('Catégorie de l\'article', array('class' => 'col-md-5'))
                 ->add('category', 'sonata_type_model', array(
@@ -45,6 +53,9 @@ class ArticleAdmin extends Admin
                     'class'     => 'JanetTransit\WikiBundle\Entity\Category',
                     'property'  => 'name'
                 ))
+            ->add('updatedAt', 'datetime', array(
+                'label'     => 'date courrante',
+            ))
             ->end();
     }
 

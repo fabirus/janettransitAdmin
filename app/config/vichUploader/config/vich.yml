@@ -175,3 +175,11 @@ vich_uploader:
             delete_on_update:   true
             delete_on_remove:   true
             namer:              vich_uploader.namer_uniqid
+
+        article_file:
+            uri_prefix:         /img/article
+            upload_destination: %kernel.root_dir%/../web/img/article
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            namer:              vich_uploader.namer_uniqid

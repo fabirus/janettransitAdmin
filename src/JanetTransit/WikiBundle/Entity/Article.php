@@ -3,12 +3,15 @@
 namespace JanetTransit\WikiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * Article
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="JanetTransit\WikiBundle\Entity\ArticleRepository")
+ * @Vich\Uploadable
  */
 class Article
 {
@@ -58,25 +61,105 @@ class Article
 
 
     /**
-     * @ORM\OneToOne(targetEntity="\Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"})
+     *
+     * @Vich\UploadableField(mapping="article_file", fileNameProperty="articleFileName")
+     * @Assert\File(
+     * maxSize="2M",
+     * maxSizeMessage = "Taille max 2Mo",
+     * mimeTypes = {"image/jpeg", "image/png"},
+     * mimeTypesMessage = "Uploader une image au format jpg ou png"
+     * )
+     *
+     * @var File
      */
-    private $image;
+    private $articleFile;
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $articleFileName;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
 
     /**
      * @return mixed
      */
-    public function getImage()
+    public function getUpdatedAt()
     {
-        return $this->image;
+        return $this->updatedAt;
     }
 
     /**
-     * @param mixed $image
+     * @param mixed $updatedAt
      */
-    public function setImage($image)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->image = $image;
+        $this->updatedAt = new \Datetime();
     }
+
+    /**
+     * @return File
+     */
+    public function getArticleFile()
+    {
+        return $this->articleFile;
+    }
+
+    /**
+     * @param File $articleFile
+     */
+    public function setArticleFile($articleFile)
+    {
+        $this->articleFile = $articleFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArticleFileName()
+    {
+        return $this->articleFileName;
+    }
+
+    /**
+     * @param string $articleFileName
+     */
+    public function setArticleFileName($articleFileName)
+    {
+        $this->articleFileName = $articleFileName;
+    }
+
+
+//    /**
+//     * @ORM\OneToOne(targetEntity="\Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"})
+//     */
+//    private $image;
+
+//    /**
+//     * @return mixed
+//     */
+//    public function getImage()
+//    {
+//        return $this->image;
+//    }
+//
+//    /**
+//     * @param mixed $image
+//     */
+//    public function setImage($image)
+//    {
+//        $this->image = $image;
+//    }
+
+
 
     /**
      * @return mixed

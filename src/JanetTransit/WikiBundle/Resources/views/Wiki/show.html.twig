@@ -14,35 +14,21 @@
                 <div class="panel-body">
                     <div class="media" style="">
                         <div class="media-left" style="width: 20pc;padding-left: 10px;">
-                            <img data-toggle="modal" data-target="#modalForm" title="Ajouter" id="image" class="media-object" src="{% path article.image, 'small' %}" title="{{ article.title }}" data-zoom-image="{% path article.image, 'wiki' %}">
+                            <img height="140px" width="140px" id="image"
+                                 class="media-object" src="{{ app.request.basePath }}{{ vich_uploader_asset(article, 'articleFile') }}"
+                                 title="{{ article.title }}">
                         </div>
                         <div class="media-body">
                             {{ article.content|raw }}
                         </div>
                     </div>
-                    <img id="imageSize" style="display: none" src="{% path article.image, 'wiki' %}" title="{{ article.title }}">
+                    <img width="500px" height="500px" id="imageSize" style="display: none"
+                         src="{{ app.request.basePath }}{{ vich_uploader_asset(article, 'articleFile') }}}"
+                         title="{{ article.title }}">
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <img src="http://127.0.0.1/janet/janettransitAdmin/web/img/employes/56808b2414819.png">
-                    <img id="imageSize" style="display: none" src="{% path article.image, 'wiki' %}" title="{{ article.title }}">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     {#<div class="media" style="background-color: #ECEDEE;margin-left: auto;margin-right: auto;width: 80%;">#}
         {#<div class="media-left" style="width: 20pc;padding-left: 10px;">#}
