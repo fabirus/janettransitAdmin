@@ -2,10 +2,10 @@
 
 {% block title %} {{ parent() }} | Employés {% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
-{% endblock %}
+{#{% block stylesheets %}#}
+    {#{{ parent() }}#}
+    {#<link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />#}
+{#{% endblock %}#}
 
 {% block body -%}
     <div class="alert alert-info" role="alert" style="font-size: 18px">{{ 'employe.liste.infos'|trans({}, 'employe') }}</div>

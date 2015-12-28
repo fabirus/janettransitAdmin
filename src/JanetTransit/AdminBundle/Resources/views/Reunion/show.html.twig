@@ -2,11 +2,11 @@
 
 {% block title %} {{ parent() }} | Sanction {% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />
-{% endblock %}
+{#{% block stylesheets %}#}
+    {#{{ parent() }}#}
+    {#<link rel="stylesheet" href="{{ asset('assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}}" />#}
+    {#<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css')}}" />#}
+{#{% endblock %}#}
 
 {% block body -%}
     <div class="alert alert-info" role="alert" style="font-size: 18px">Réuinion {{ entity.dateReunion }}</div>
@@ -23,10 +23,6 @@
         <div class="row" style="text-align: center;">
             <h4><b style="text-decoration: underline;">COMPTE RENDU DE LA REUNION</b></h4>
         </div>
-        {#<div style="width:73%; margin-right: auto; margin-left: auto;margin-top: 10%; font-size: 23px">#}
-        {#Nous Soussignons Janet Transit d'avoir remis <b>{{ entity.montant }} FCFA</b>#}
-        {#à l'employé <b>{{ entity.employe }}</b> pour avance<br> de Salaire Comptant pour le mois de <b>{{ date }}</b>#}
-        {#</div>#}
         <table class="table table-hover table-bordered" id="tabAvance" style="width: 70%;margin-left: auto;margin-right: auto;margin-top: 2%">
             <tbody>
             <tr>

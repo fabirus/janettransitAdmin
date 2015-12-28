@@ -4,28 +4,30 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}JANET ADMIN{% endblock %}</title>
-        {#{% stylesheets filter='cssrewrite, yui_css'#}
-        {#'assets/vendor/bootstrap/dist/css/bootstrap.min.css'#}
-        {#'css/font-awesome.css'#}
-        {#'assets/vendor/datatables.net-dt/css/jquery.dataTables.min.css'#}
-        {#'http://fonts.googleapis.com/css?family=Open+Sans'#}
-        {#'https://fonts.googleapis.com/css?family=Lobster'#}
-        {#'css/custom.css'#}
-        {#%}#}
-        {#<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />#}
-        {#{% endstylesheets %}#}
+        {% stylesheets filter='cssrewrite, ?yui_css'
+        'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
+        'css/font-awesome.css'
+        'assets/vendor/datatables.net-dt/css/jquery.dataTables.min.css'
+        'http://fonts.googleapis.com/css?family=Open+Sans'
+        'https://fonts.googleapis.com/css?family=Lobster'
+        'css/custom.css'
+        'assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
+        'assets/vendor/bootstrap-multiselect/dist/css/bootstrap-multiselect.css'
+        %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        {% endstylesheets %}
 
         {#ancienne config#}
-        {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css')}}" />
-            <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet" />
-            <link href="{{ asset('assets/vendor/datatables.net-dt/css/jquery.dataTables.min.css')}}" rel="stylesheet" />
-            {#<link href="{{ asset('assets/vendor/flag-icon-css/css/flag-icon.min.css')}}" rel="stylesheet" />#}
-            {#<link href="{{ asset('js/morris/morris-0.4.3.min.css') }}" rel="stylesheet" />#}
-            <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
-            <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-            <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-        {% endblock %}
+        {#{% block stylesheets %}#}
+            {#<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css')}}" />#}
+            {#<link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet" />#}
+            {#<link href="{{ asset('assets/vendor/datatables.net-dt/css/jquery.dataTables.min.css')}}" rel="stylesheet" />#}
+            {#&#123;&#35;<link href="{{ asset('assets/vendor/flag-icon-css/css/flag-icon.min.css')}}" rel="stylesheet" />&#35;&#125;#}
+            {#&#123;&#35;<link href="{{ asset('js/morris/morris-0.4.3.min.css') }}" rel="stylesheet" />&#35;&#125;#}
+            {#<link href="{{ asset('css/custom.css') }}" rel="stylesheet" />#}
+            {#<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />#}
+            {#<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>#}
+        {#{% endblock %}#}
         <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.ico') }}" />
     </head>
     <body>
@@ -232,6 +234,8 @@
                 {#'js/lib/menu.js'#}
                 {#'assets/vendor/datatables.net/js/jquery.dataTables.min.js'#}
                 {#'js/lib/common.js'#}
+                {#'assets/vendor/moment/min/moment-with-locales.min.js'#}
+                {#'assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'#}
             {#%}#}
             {#<script type="text/javascript" src='{{ asset_url }}'></script>#}
             {#<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
