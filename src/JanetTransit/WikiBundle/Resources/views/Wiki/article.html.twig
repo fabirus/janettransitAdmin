@@ -7,26 +7,43 @@
     <a href="{{ path('janet_transit_wiki_homepage') }}">
         <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
         #0FAD8C;cursor: pointer;"></i>
-    </a><br>
+    </a><br><br><br>
 
     {%for article in articles %}
-        <div class="media" style="background-color: #ECEDEE;margin-left: auto;margin-right: auto;width: 80%;">
-            <div class="media-left" style="width: 20pc;padding-left: 10px;">
-                <a href="{{ path('janet_transit_wiki_articles_show', {'id' : article.id, 'idCat' : category.id}) }}">
-                    <span style="width: 60px; height: 60px;text-align: center;vertical-align: middle;" class=" media-object icon-box set-icon bg-color-dark">
-                    <i class="fa fa-3x" style="font-size: 55px;font-family: cursive;">{{ loop.index }}</i>
-                    </span>
-                    {#<img class="media-object" src="{% path article.image, 'small' %}" title="{{ article.title }}">#}
-                </a>
-            </div>
-            <div class="media-body">
-                <h4 class="media-heading"><b>{{ article.title }}</b></h4>
-                {{ article.content|slice(0, 250)|raw  }}
-                    <br><a style="float: right;margin-right: 5%;width: 10%;margin-bottom: 2%" href="{{ path('janet_transit_wiki_articles_show', {'id' : article.id, 'idCat' : category.id}) }}" class="btn btn-primary"role="button">
+        <div class="col-md-6">
+            <div style="min-height: 300px" class="panel panel-info">
+                <div class="panel-heading">
+                    <button style="font-weight: bold;font-size: 30px;" type="button" class="btn btn-primary btn-circle">{{ loop.index }}</button>
+                    &nbsp; <b>{{ article.title }}</b></div>
+                <div class="panel-body">
+                    {{ article.content|slice(0, 250)|raw  }}
+                    <br><a style="float: right" href="{{ path('janet_transit_wiki_articles_show', {'id' : article.id, 'idCat' : category.id}) }}" class="btn btn-primary"role="button">
                         <b>Lire Plus</b>
                     </a>
+                </div>
             </div>
         </div>
+
+
+
+
+        {#<div class="media" style="background-color: #ECEDEE;margin-left: auto;margin-right: auto;width: 80%;">#}
+            {#<div class="media-left" style="width: 20pc;padding-left: 10px;">#}
+                {#<a href="{{ path('janet_transit_wiki_articles_show', {'id' : article.id, 'idCat' : category.id}) }}">#}
+                    {#<span style="width: 60px; height: 60px;text-align: center;vertical-align: middle;" class=" media-object icon-box set-icon bg-color-dark">#}
+                    {#<i class="fa fa-3x" style="font-size: 55px;font-family: cursive;">{{ loop.index }}</i>#}
+                    {#</span>#}
+                    {#&#123;&#35;<img class="media-object" src="{% path article.image, 'small' %}" title="{{ article.title }}">&#35;&#125;#}
+                {#</a>#}
+            {#</div>#}
+            {#<div class="media-body">#}
+                {#<h4 class="media-heading"><b>{{ article.title }}</b></h4>#}
+                {#{{ article.content|slice(0, 250)|raw  }}#}
+                    {#<br><a style="float: right;margin-right: 5%;width: 10%;margin-bottom: 2%" href="{{ path('janet_transit_wiki_articles_show', {'id' : article.id, 'idCat' : category.id}) }}" class="btn btn-primary"role="button">#}
+                        {#<b>Lire Plus</b>#}
+                    {#</a>#}
+            {#</div>#}
+        {#</div>#}
     {% endfor %}
 
 

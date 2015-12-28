@@ -8,16 +8,35 @@
         <i class="fa fa-backward fa-3x" title="Revenir à la liste" style="color:
         #0FAD8C;cursor: pointer;"></i>
     </a><br><br><br>
-    <div class="media" style="background-color: #ECEDEE;margin-left: auto;margin-right: auto;width: 80%;">
-        <div class="media-left" style="width: 20pc;padding-left: 10px;">
-            <img id="image" class="media-object" src="{% path article.image, 'small' %}" title="{{ article.title }}" data-zoom-image="{% path article.image, 'wiki' %}">
-        </div>
-        <div class="media-body">
-            <h4 class="media-heading"><b>{{ article.title }}</b></h4>
-            {{ article.content|raw }}
+    <div class="row">
+        <div class="col-md-12">
+            <div style="min-height: 300px" class="panel panel-info">
+                <div class="panel-body">
+                    <div class="media" style="">
+                        <div class="media-left" style="width: 20pc;padding-left: 10px;">
+                            <img id="image" class="media-object" src="{% path article.image, 'small' %}" title="{{ article.title }}" data-zoom-image="{% path article.image, 'wiki' %}">
+                        </div>
+                        <div class="media-body">
+                            {{ article.content|raw }}
+                        </div>
+                    </div>
+                    <img id="imageSize" style="display: none" src="{% path article.image, 'wiki' %}" title="{{ article.title }}">
+                </div>
+            </div>
         </div>
     </div>
-    <img id="imageSize" style="display: none" src="{% path article.image, 'wiki' %}" title="{{ article.title }}">
+
+
+    {#<div class="media" style="background-color: #ECEDEE;margin-left: auto;margin-right: auto;width: 80%;">#}
+        {#<div class="media-left" style="width: 20pc;padding-left: 10px;">#}
+            {#<img id="image" class="media-object" src="{% path article.image, 'small' %}" title="{{ article.title }}" data-zoom-image="{% path article.image, 'wiki' %}">#}
+        {#</div>#}
+        {#<div class="media-body">#}
+            {#<h4 class="media-heading"><b>{{ article.title }}</b></h4>#}
+            {#{{ article.content|raw }}#}
+        {#</div>#}
+    {#</div>#}
+    {#<img id="imageSize" style="display: none" src="{% path article.image, 'wiki' %}" title="{{ article.title }}">#}
 
 
 {% endblock %}
